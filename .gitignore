@@ -1,0 +1,8 @@
+# Ignoring files and directories #
+##################################
+
+bin/
+obj/
+
+*.user
+*.suo

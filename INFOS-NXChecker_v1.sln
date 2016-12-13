@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "INFOS-NXChecker-configurator", "INFOS-NXChecker-configurator\INFOS-NXChecker-configurator.csproj", "{0115A174-7075-4D6E-A56D-278A27159FA4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "INFOS-NXChecker-service", "INFOS-NXChecker-service\INFOS-NXChecker-service.csproj", "{879B2D93-C0E9-440B-8FAC-CE9E00E86587}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0115A174-7075-4D6E-A56D-278A27159FA4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0115A174-7075-4D6E-A56D-278A27159FA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0115A174-7075-4D6E-A56D-278A27159FA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0115A174-7075-4D6E-A56D-278A27159FA4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{879B2D93-C0E9-440B-8FAC-CE9E00E86587}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{879B2D93-C0E9-440B-8FAC-CE9E00E86587}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{879B2D93-C0E9-440B-8FAC-CE9E00E86587}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{879B2D93-C0E9-440B-8FAC-CE9E00E86587}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
