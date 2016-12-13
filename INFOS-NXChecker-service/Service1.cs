@@ -9,6 +9,7 @@ using System.ServiceProcess;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
+using INFOS_NXChecker_regInfo;
 
 namespace INFOS_NXChecker_service
 {
@@ -26,16 +27,15 @@ namespace INFOS_NXChecker_service
         {
             try
             {
-                RegistryKey ServiceKey  = Registry.LocalMachine.OpenSubKey("SYSTEM\\CurrentControlSet\\Services\\INFOS-NXChecker");
+                ServiceInfo serviceInfo = new ServiceInfo();
 
-                period   = (string) ServiceKey.GetValue("xx27aMZ");
-                path     = (string) ServiceKey.GetValue("01vEllQ");
+                period   = serviceInfo.getPeriod();
+                path     = serviceInfo.getPath();
 
                 string logPath  = path + @"\NXChecker_service_" + DateTime.Now.ToString("dd_MM_yyy__HH_mm_ss") + ".nxch";
                 string text     = "Dobro je sve! Period servisa je: " + period;
 
-                //tmr.Interval = Convert.ToInt16(period) * 1000;
-                tmr.Interval = 5000;
+                tmr.Interval = Convert.ToInt16(period);
                 tmr.Elapsed += Tmr_Elapsed;
                 tmr.Start();
 

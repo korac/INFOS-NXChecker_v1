@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using INFOS_NXChecker_regInfo;
 
 namespace INFOS_NXChecker_configurator
 {
@@ -20,22 +21,20 @@ namespace INFOS_NXChecker_configurator
 
         private void LoginForm_Load(object sender, EventArgs e)
         {
-            RegistryKey loginKey    = Registry.CurrentUser.CreateSubKey("SOFTWARE\\C#\\NXServisAuth");
+            LoginInfo login         = new LoginInfo();
 
-            string korisnicko       = (string) loginKey.GetValue(RegistryNames.username);
-            string lozinka          = (string) loginKey.GetValue(RegistryNames.password);
+            string korisnicko       = login.getKorisnickoIme();
+            string lozinka          = login.getLozinka();
 
-            if(korisnicko == "")
+            if(string.IsNullOrEmpty(korisnicko))
             {
-                loginKey.SetValue(RegistryNames.username, "");
+                login.setKorisnickoIme("");
             }
 
-            if (lozinka == "")
+            if (string.IsNullOrEmpty(lozinka))
             {
-                loginKey.SetValue(RegistryNames.password, "");
+                login.setLozinka("");
             }
-
-            loginKey.Close();
 
             tboxKorisnicko.Text = korisnicko;
             tboxLozinka.Text    = lozinka;
@@ -43,27 +42,25 @@ namespace INFOS_NXChecker_configurator
 
         private void btnOk_Click(object sender, EventArgs e)
         {
-            if(ValidateKorisnicko() && ValidateLozinka())
+            if (ValidateKorisnicko() && ValidateLozinka())
             {
                 try
                 {
-                    RegistryKey loginKey    = Registry.CurrentUser.OpenSubKey("SOFTWARE\\C#\\NXServisAuth");
+                    LoginInfo login     = new LoginInfo();
 
-                    string korisnicko       = (string) loginKey.GetValue(RegistryNames.username);
-                    string lozinka          = (string) loginKey.GetValue(RegistryNames.password);
+                    string korisnicko   = login.getKorisnickoIme();
+                    string lozinka      = login.getLozinka();
 
-                    loginKey.Close();
-
-                    if(korisnicko == tboxKorisnicko.Text && lozinka == tboxLozinka.Text)
+                    if (korisnicko == tboxKorisnicko.Text && lozinka == tboxLozinka.Text)
                     {
-                        this.DialogResult   = DialogResult.OK;
+                        this.DialogResult = DialogResult.OK;
                     }
                     else
                     {
-                        MessageBox          .Show("Netočni podaci");
+                        MessageBox.Show("Netočni podaci");
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     MessageBox.Show("Problem kod dobavljanja podataka iz registra. " + ex.Message);
                 }

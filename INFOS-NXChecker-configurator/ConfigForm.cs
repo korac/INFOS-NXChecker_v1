@@ -8,6 +8,7 @@ using System.Linq;
 using System.ServiceProcess;
 using System.Text;
 using System.Windows.Forms;
+using INFOS_NXChecker_regInfo;
 
 namespace INFOS_NXChecker_configurator
 {
@@ -21,15 +22,14 @@ namespace INFOS_NXChecker_configurator
 
         private void ConfigForm_Load(object sender, EventArgs e)
         {
-            RegistryKey serviceKey  = Registry.LocalMachine;
-            serviceKey              = serviceKey.CreateSubKey("SYSTEM\\CurrentControlSet\\Services\\INFOS-NXChecker");
+            ServiceInfo service = new ServiceInfo();
 
-            string period   = (string) serviceKey.GetValue(RegistryNames.period);
-            string path     = (string) serviceKey.GetValue(RegistryNames.path);
+            string period   = service.getPeriod();
+            string path     = service.getPath();
             
-            if (period == null)
+            if (string.IsNullOrEmpty(period))
             {
-                serviceKey.SetValue(RegistryNames.period, "");
+                service.setPeriod("");
             }
             else
             {
@@ -44,12 +44,10 @@ namespace INFOS_NXChecker_configurator
                 
             }
 
-            if(path == null)
+            if(string.IsNullOrEmpty(path))
             {
-                serviceKey.SetValue(RegistryNames.path, "");
+                service.setPath("");
             }
-
-            serviceKey.Close();
 
             numSati.Value       = timeInterval.Hours;
             numMinute.Value     = timeInterval.Minutes;
@@ -97,14 +95,13 @@ namespace INFOS_NXChecker_configurator
         {
             timeInterval = new TimeSpan((int) numSati.Value, (int) numMinute.Value, (int) numSekunde.Value);
             Console.WriteLine(tboxPath.Text);
-            Console.WriteLine(timeInterval.TotalSeconds);
+            Console.WriteLine(timeInterval.TotalMilliseconds);
 
             try
             {
-                RegistryKey serviceKey  = Registry.LocalMachine.OpenSubKey("SYSTEM\\CurrentControlSet\\Services\\INFOS-NXChecker", true);
-                serviceKey              .SetValue(RegistryNames.period, timeInterval.TotalSeconds);
-                serviceKey              .SetValue(RegistryNames.path, tboxPath.Text);
-                serviceKey              .Close();
+                ServiceInfo service     = new ServiceInfo();
+                service.setPeriod(timeInterval.TotalSeconds.ToString());
+                service.setPath(tboxPath.Text);
                 MessageBox              .Show("Podaci spremljeni u registar.");
             }
             catch (Exception ex)

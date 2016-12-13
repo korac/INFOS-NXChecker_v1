@@ -153,6 +153,7 @@
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "NX Checker Servis Login";
+            this.Load += new System.EventHandler(this.LoginForm_Load);
             this.gboxLogin.ResumeLayout(false);
             this.gboxLogin.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errProviderLozinka)).EndInit();
