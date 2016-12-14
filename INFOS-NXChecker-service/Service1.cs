@@ -15,6 +15,7 @@ namespace INFOS_NXChecker_service
 {
     public partial class NXCheckerService : ServiceBase
     {
+
         private String period;
         private String path;
         Timer tmr = new Timer();
@@ -27,10 +28,8 @@ namespace INFOS_NXChecker_service
         {
             try
             {
-                ServiceInfo serviceInfo = new ServiceInfo();
-
-                period   = serviceInfo.getPeriod();
-                path     = serviceInfo.getPath();
+                period   = HelperMethods.GetSubKey(RegistryNames.period, false);
+                path     = HelperMethods.GetSubKey(RegistryNames.path, false);
 
                 string logPath  = path + @"\NXChecker_service_" + DateTime.Now.ToString("dd_MM_yyy__HH_mm_ss") + ".nxch";
                 string text     = "Dobro je sve! Period servisa je: " + period;
@@ -49,11 +48,18 @@ namespace INFOS_NXChecker_service
 
         private void Tmr_Elapsed(object sender, ElapsedEventArgs e)
         {
-            string logPath  = path + @"\NXChecker_service_" + DateTime.Now.ToString("dd_MM_yyy__HH_mm_ss") + ".nxch";
-            string text     = "Isteklo vrijeme " + period;
-            System.IO.File.WriteAllText(@logPath, text);
+            try
+            {
+                string logPath  = path + @"\NXChecker_service_" + DateTime.Now.ToString("dd_MM_yyy__HH_mm_ss") + ".nxch";
+                string text     = "Isteklo vrijeme " + period;
+                System.IO.File  .WriteAllText(@logPath, text);
 
-            tmr.Start();
+                tmr.Start();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("GREŠKA: " + ex.Message);
+            }
         }
 
         protected override void OnStop()

@@ -14,27 +14,20 @@ namespace INFOS_NXChecker_configurator
 {
     public partial class LoginForm : Form
     {
+        #region Variables
+        private string korisnicko;
+        private string lozinka;
+        #endregion
+
         public LoginForm()
         {
             InitializeComponent();
         }
 
         private void LoginForm_Load(object sender, EventArgs e)
-        {
-            LoginInfo login         = new LoginInfo();
-
-            string korisnicko       = login.getKorisnickoIme();
-            string lozinka          = login.getLozinka();
-
-            if(string.IsNullOrEmpty(korisnicko))
-            {
-                login.setKorisnickoIme("");
-            }
-
-            if (string.IsNullOrEmpty(lozinka))
-            {
-                login.setLozinka("");
-            }
+        {            
+            korisnicko   = HelperMethods.GetSubKey(RegistryNames.username, true);
+            lozinka      = HelperMethods.GetSubKey(RegistryNames.password, true);
 
             tboxKorisnicko.Text = korisnicko;
             tboxLozinka.Text    = lozinka;
@@ -46,10 +39,10 @@ namespace INFOS_NXChecker_configurator
             {
                 try
                 {
-                    LoginInfo login     = new LoginInfo();
+                    //LoginInfo login     = new LoginInfo();
 
-                    string korisnicko   = login.getKorisnickoIme();
-                    string lozinka      = login.getLozinka();
+                    //string korisnicko   = login.getKorisnickoIme();
+                    //string lozinka      = login.getLozinka();
 
                     if (korisnicko == tboxKorisnicko.Text && lozinka == tboxLozinka.Text)
                     {
@@ -62,7 +55,7 @@ namespace INFOS_NXChecker_configurator
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Problem kod dobavljanja podataka iz registra. " + ex.Message, "Greška", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Problem kod dobavljanja podataka. " + ex.Message, "Greška", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             else

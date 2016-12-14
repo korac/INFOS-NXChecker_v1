@@ -12,52 +12,35 @@ using INFOS_NXChecker_regInfo;
 
 namespace INFOS_NXChecker_configurator
 {
-
-    
     public partial class ConfigForm : Form
     {
-
-
         #region Varibles
         private TimeSpan timeInterval;
-        private int previousMinute = 0;
-        private int previousSecond = 0;
         #endregion
-
-
+        
         public ConfigForm()
         {
             InitializeComponent();
-
         }
 
         private void ConfigForm_Load(object sender, EventArgs e)
         {
-            ServiceInfo service = new ServiceInfo();
+            //ServiceInfo service = new ServiceInfo();
 
-            string period   = service.getPeriod();
-            string path     = service.getPath();
+            //string period   = service.getPeriod();
+            //string path     = service.getPath();
+
+            string period   = HelperMethods.GetSubKey(RegistryNames.period, false);
+            string path     = HelperMethods.GetSubKey(RegistryNames.path, false);
             
-            if (string.IsNullOrEmpty(period))
+            
+            try
             {
-                service.setPeriod("");
+                timeInterval = new TimeSpan(0, 0, Convert.ToInt32(period) / 1000);
             }
-            else
+            catch (Exception ex)
             {
-                try
-                {
-                    timeInterval = new TimeSpan(0, 0, Convert.ToInt32(period) / 1000);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Period nije integer tipa. \n" + ex.Message, "Greška", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-                
-            }
-
-            if(string.IsNullOrEmpty(path))
-            {
-                service.setPath("");
+                MessageBox.Show(ex.Message, "Greška", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
             numSati.Value       = timeInterval.Hours;
@@ -108,14 +91,13 @@ namespace INFOS_NXChecker_configurator
 
             try
             {
-                ServiceInfo service     = new ServiceInfo();
-                service                 .setPeriod(timeInterval.TotalMilliseconds.ToString());
-                service                 .setPath(tboxPath.Text);
-                MessageBox              .Show("Podaci spremljeni u registar.","Podaci", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                HelperMethods   .SetSubKey(RegistryNames.period, timeInterval.TotalMilliseconds.ToString(), false);
+                HelperMethods   .SetSubKey(RegistryNames.path, tboxPath.Text, false);
+                MessageBox      .Show("Podaci ažurirani.","Podaci", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Problem kod spremanja podataka u registar. " + ex.Message, "Greška", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox      .Show("Problem kod ažuriranja podataka. " + ex.Message, "Greška", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -157,7 +139,6 @@ namespace INFOS_NXChecker_configurator
 
         private void numSekunde_ValueChanged(object sender, EventArgs e)
         {
-            Console.WriteLine(numSekunde.Value);
             if(numSekunde.Value == 60)
             {
                 numSekunde.Value = 0;
