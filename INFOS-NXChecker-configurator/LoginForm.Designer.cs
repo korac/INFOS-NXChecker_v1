@@ -88,6 +88,7 @@
             // 
             // tboxKorisnicko
             // 
+            this.tboxKorisnicko.ForeColor = System.Drawing.Color.DimGray;
             this.tboxKorisnicko.Location = new System.Drawing.Point(143, 37);
             this.tboxKorisnicko.MaxLength = 100;
             this.tboxKorisnicko.Name = "tboxKorisnicko";
@@ -119,6 +120,7 @@
             // 
             // tboxLozinka
             // 
+            this.tboxLozinka.ForeColor = System.Drawing.Color.DimGray;
             this.tboxLozinka.Location = new System.Drawing.Point(143, 63);
             this.tboxLozinka.MaxLength = 100;
             this.tboxLozinka.Name = "tboxLozinka";

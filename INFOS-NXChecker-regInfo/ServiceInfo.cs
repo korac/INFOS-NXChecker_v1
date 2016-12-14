@@ -28,7 +28,7 @@ namespace INFOS_NXChecker_regInfo
             }
             catch (Exception ex)
             {
-                throw ex;
+                Console.WriteLine(ex.Message);
             }
         }
 

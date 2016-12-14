@@ -57,17 +57,17 @@ namespace INFOS_NXChecker_configurator
                     }
                     else
                     {
-                        MessageBox.Show("Netočni podaci");
+                        MessageBox.Show("Netočni podaci", "Podaci", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Problem kod dobavljanja podataka iz registra. " + ex.Message);
+                    MessageBox.Show("Problem kod dobavljanja podataka iz registra. " + ex.Message, "Greška", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             else
             {
-                MessageBox.Show("Unesite potrebne podatke.");
+                MessageBox.Show("Unesite potrebne podatke.", "Podaci", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 

@@ -43,7 +43,7 @@ namespace INFOS_NXChecker_service
             }
             catch (Exception ex)
             {
-                throw ex;
+                Console.WriteLine("GREŠKA: " + ex.Message);
             }
         }
 

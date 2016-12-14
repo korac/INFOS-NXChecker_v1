@@ -12,12 +12,23 @@ using INFOS_NXChecker_regInfo;
 
 namespace INFOS_NXChecker_configurator
 {
+
+    
     public partial class ConfigForm : Form
     {
+
+
+        #region Varibles
         private TimeSpan timeInterval;
+        private int previousMinute = 0;
+        private int previousSecond = 0;
+        #endregion
+
+
         public ConfigForm()
         {
             InitializeComponent();
+
         }
 
         private void ConfigForm_Load(object sender, EventArgs e)
@@ -35,11 +46,11 @@ namespace INFOS_NXChecker_configurator
             {
                 try
                 {
-                    timeInterval = new TimeSpan(0, 0, Convert.ToInt16(period));
+                    timeInterval = new TimeSpan(0, 0, Convert.ToInt32(period) / 1000);
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Period nije integer tipa. \n" + ex.Message);
+                    MessageBox.Show("Period nije integer tipa. \n" + ex.Message, "Greška", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 
             }
@@ -61,24 +72,24 @@ namespace INFOS_NXChecker_configurator
                 if(nxService.Status.ToString() == "Running")
                 {
                     lblServiceStatus.Text       = "RUNNING";                    
-                    lblServiceStatus.ForeColor  = SystemColors.Highlight;
+                    lblServiceStatus.ForeColor  = Color.Chartreuse;
 
                     btnRunStop.Text             = "Zaustavi Servis".ToUpper();
-                    btnRunStop.BackColor        = Color.IndianRed;
+                    btnRunStop.ForeColor        = Color.IndianRed;
                 }
                 else if (nxService.Status.ToString() == "Stopped")
                 {
                     lblServiceStatus.Text       = "STOPPED";
-                    lblServiceStatus.ForeColor  = Color.IndianRed;
+                    lblServiceStatus.ForeColor  = Color.LightSalmon;
 
                     btnRunStop.Text             = "Pokreni servis".ToUpper();
-                    btnRunStop.BackColor        = SystemColors.Highlight;
+                    btnRunStop.ForeColor        = Color.Chartreuse;
                 }
 
             }
             catch (Exception ex)
             {
-                throw ex;
+                MessageBox.Show("Pojavila se greška: " + ex.Message, "Greška", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -94,19 +105,17 @@ namespace INFOS_NXChecker_configurator
         private void btnSpremi_Click(object sender, EventArgs e)
         {
             timeInterval = new TimeSpan((int) numSati.Value, (int) numMinute.Value, (int) numSekunde.Value);
-            Console.WriteLine(tboxPath.Text);
-            Console.WriteLine(timeInterval.TotalMilliseconds);
 
             try
             {
                 ServiceInfo service     = new ServiceInfo();
-                service.setPeriod(timeInterval.TotalSeconds.ToString());
-                service.setPath(tboxPath.Text);
-                MessageBox              .Show("Podaci spremljeni u registar.");
+                service                 .setPeriod(timeInterval.TotalMilliseconds.ToString());
+                service                 .setPath(tboxPath.Text);
+                MessageBox              .Show("Podaci spremljeni u registar.","Podaci", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Problem kod spremanja podataka u registar. " + ex.Message);
+                MessageBox.Show("Problem kod spremanja podataka u registar. " + ex.Message, "Greška", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -124,25 +133,44 @@ namespace INFOS_NXChecker_configurator
                 {
                     nxService.Start();
                     lblServiceStatus.Text       = "RUNNING";                    
-                    lblServiceStatus.ForeColor  = SystemColors.Highlight;
+                    lblServiceStatus.ForeColor  = Color.Chartreuse;
 
                     btnRunStop.Text             = "Zaustavi Servis".ToUpper();
-                    btnRunStop.BackColor        = Color.IndianRed;
+                    btnRunStop.ForeColor        = Color.IndianRed;
                 }
                 else
                 {
                     nxService.Stop();
                     lblServiceStatus.Text       = "STOPPED";                    
-                    lblServiceStatus.ForeColor  = Color.IndianRed;
+                    lblServiceStatus.ForeColor  = Color.LightSalmon;
 
                     btnRunStop.Text             = "Pokreni Servis".ToUpper();
-                    btnRunStop.BackColor        = SystemColors.Highlight;
+                    btnRunStop.ForeColor        = Color.Chartreuse;
                 }
                 
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Problem sa servisom: " + ex.Message);
+                MessageBox.Show("Problem sa servisom: " + ex.Message, "Greška", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void numSekunde_ValueChanged(object sender, EventArgs e)
+        {
+            Console.WriteLine(numSekunde.Value);
+            if(numSekunde.Value == 60)
+            {
+                numSekunde.Value = 0;
+                numMinute.Value++;
+            }
+        }
+
+        private void numMinute_ValueChanged(object sender, EventArgs e)
+        {
+            if(numMinute.Value == 60)
+            {
+                numMinute.Value = 0;
+                numSati.Value++;
             }
         }
     }
