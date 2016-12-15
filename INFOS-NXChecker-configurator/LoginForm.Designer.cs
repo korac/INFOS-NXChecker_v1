@@ -39,18 +39,21 @@
             this.tboxLozinka = new System.Windows.Forms.TextBox();
             this.errProviderLozinka = new System.Windows.Forms.ErrorProvider(this.components);
             this.errProviderKorisnicko = new System.Windows.Forms.ErrorProvider(this.components);
+            this.picBox = new System.Windows.Forms.PictureBox();
             this.gboxLogin.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errProviderLozinka)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errProviderKorisnicko)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picBox)).BeginInit();
             this.SuspendLayout();
             // 
             // btnOk
             // 
+            this.btnOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOk.BackColor = System.Drawing.SystemColors.Highlight;
             this.btnOk.FlatAppearance.BorderSize = 0;
             this.btnOk.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnOk.ForeColor = System.Drawing.Color.White;
-            this.btnOk.Location = new System.Drawing.Point(310, 187);
+            this.btnOk.Location = new System.Drawing.Point(522, 187);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(104, 40);
             this.btnOk.TabIndex = 9;
@@ -60,10 +63,11 @@
             // 
             // btnOdustani
             // 
+            this.btnOdustani.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOdustani.BackColor = System.Drawing.Color.White;
             this.btnOdustani.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnOdustani.ForeColor = System.Drawing.SystemColors.Highlight;
-            this.btnOdustani.Location = new System.Drawing.Point(200, 187);
+            this.btnOdustani.Location = new System.Drawing.Point(412, 187);
             this.btnOdustani.Name = "btnOdustani";
             this.btnOdustani.Size = new System.Drawing.Size(104, 40);
             this.btnOdustani.TabIndex = 8;
@@ -73,13 +77,14 @@
             // 
             // gboxLogin
             // 
+            this.gboxLogin.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.gboxLogin.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.gboxLogin.Controls.Add(this.tboxKorisnicko);
             this.gboxLogin.Controls.Add(this.lblKorisnicko);
             this.gboxLogin.Controls.Add(this.lblLozinka);
             this.gboxLogin.Controls.Add(this.tboxLozinka);
             this.gboxLogin.ForeColor = System.Drawing.SystemColors.Highlight;
-            this.gboxLogin.Location = new System.Drawing.Point(26, 41);
+            this.gboxLogin.Location = new System.Drawing.Point(238, 41);
             this.gboxLogin.Name = "gboxLogin";
             this.gboxLogin.Size = new System.Drawing.Size(388, 114);
             this.gboxLogin.TabIndex = 7;
@@ -139,12 +144,23 @@
             this.errProviderKorisnicko.BlinkStyle = System.Windows.Forms.ErrorBlinkStyle.NeverBlink;
             this.errProviderKorisnicko.ContainerControl = this;
             // 
+            // picBox
+            // 
+            this.picBox.Dock = System.Windows.Forms.DockStyle.Left;
+            this.picBox.Image = global::INFOS_NXChecker_configurator.Properties.Resources.service_icon___Copy;
+            this.picBox.Location = new System.Drawing.Point(0, 0);
+            this.picBox.Name = "picBox";
+            this.picBox.Size = new System.Drawing.Size(232, 239);
+            this.picBox.TabIndex = 10;
+            this.picBox.TabStop = false;
+            // 
             // LoginForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(439, 239);
+            this.ClientSize = new System.Drawing.Size(639, 239);
+            this.Controls.Add(this.picBox);
             this.Controls.Add(this.btnOk);
             this.Controls.Add(this.btnOdustani);
             this.Controls.Add(this.gboxLogin);
@@ -152,6 +168,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "LoginForm";
+            this.ShowIcon = false;
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "NX Checker Servis Login";
@@ -160,6 +177,7 @@
             this.gboxLogin.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errProviderLozinka)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.errProviderKorisnicko)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picBox)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -175,5 +193,6 @@
         private System.Windows.Forms.TextBox tboxLozinka;
         private System.Windows.Forms.ErrorProvider errProviderLozinka;
         private System.Windows.Forms.ErrorProvider errProviderKorisnicko;
+        private System.Windows.Forms.PictureBox picBox;
     }
 }

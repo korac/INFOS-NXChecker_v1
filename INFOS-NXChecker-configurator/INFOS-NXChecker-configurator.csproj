@@ -34,7 +34,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>service_icon.ico</ApplicationIcon>
+    <ApplicationIcon>service-icon_64.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationManifest>app.manifest</ApplicationManifest>
@@ -102,8 +102,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\service-icon.png" />
+    <None Include="Resources\service-icon - Copy.png" />
     <Content Include="Resources\service_icon.ico" />
-    <Content Include="service_icon.ico" />
+    <Content Include="service-icon_64.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
