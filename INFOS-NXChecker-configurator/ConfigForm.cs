@@ -1,5 +1,4 @@
-﻿using Microsoft.Win32;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -16,6 +15,11 @@ namespace INFOS_NXChecker_configurator
     {
         #region Varibles
         TimeSpan timeInterval;
+        string serverIP;
+        string databaseName;
+        string serverUsername;
+        string serverPassword;
+        string serverPort;
         string period;
         string path;
         string deleteDays;
@@ -37,9 +41,19 @@ namespace INFOS_NXChecker_configurator
                 path        = HelperMethods.GetSubKey(RegistryNames.path, false);
                 deleteDays  = HelperMethods.GetSubKey(RegistryNames.deletionDays, false);
 
+                serverIP        = HelperMethods.GetSubKey(RegistryNames.serverIP, false);
+                databaseName    = HelperMethods.GetSubKey(RegistryNames.databaseName, false);
+                serverUsername  = HelperMethods.GetSubKey(RegistryNames.serverUsername, false);
+                serverPassword  = HelperMethods.GetSubKey(RegistryNames.serverPassword, false);
+                serverPort      = HelperMethods.GetSubKey(RegistryNames.serverPort, false);
+
                 tempPath1   = HelperMethods.GetSubKey(RegistryNames.pathTemp1, false);
                 tempPath2   = HelperMethods.GetSubKey(RegistryNames.pathTemp2, false);
                 tempPath3   = HelperMethods.GetSubKey(RegistryNames.pathTemp3, false);
+
+                lblServerIPInfo.Text    = serverIP;
+                lblDatabaseInfo.Text    = databaseName;
+                lblUsernameInfo.Text    = serverUsername;
 
                 timeInterval    = new TimeSpan(0, 0, Convert.ToInt32(period) / 1000);
                 numSati.Value   = timeInterval.Hours;
@@ -207,6 +221,15 @@ namespace INFOS_NXChecker_configurator
             }
 
             return bStatus;
+        }
+
+        private void btnServerInfo_Click(object sender, EventArgs e)
+        {
+            ServerInfoForm infoForm   = new ServerInfoForm();
+            if(infoForm.ShowDialog() == DialogResult.OK)
+            {
+                
+            }
         }
     }
 }

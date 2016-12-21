@@ -49,28 +49,37 @@
             this.btnSpremi = new System.Windows.Forms.Button();
             this.lblTitle = new System.Windows.Forms.Label();
             this.gboxPostavke = new System.Windows.Forms.GroupBox();
+            this.lblStarijeOd2 = new System.Windows.Forms.Label();
+            this.numDani = new System.Windows.Forms.NumericUpDown();
+            this.lblStarijeOd1 = new System.Windows.Forms.Label();
             this.lblPath = new System.Windows.Forms.Label();
             this.btnPath = new System.Windows.Forms.Button();
             this.lblPeriod = new System.Windows.Forms.Label();
             this.numSati = new System.Windows.Forms.NumericUpDown();
             this.tboxPath = new System.Windows.Forms.TextBox();
-            this.lblStarijeOd1 = new System.Windows.Forms.Label();
-            this.numDani = new System.Windows.Forms.NumericUpDown();
-            this.lblStarijeOd2 = new System.Windows.Forms.Label();
             this.errProviderBackup = new System.Windows.Forms.ErrorProvider(this.components);
             this.errProviderTemp1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errProviderTemp2 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errProviderTemp3 = new System.Windows.Forms.ErrorProvider(this.components);
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.lblServerIP = new System.Windows.Forms.Label();
+            this.lblDatabase = new System.Windows.Forms.Label();
+            this.lblUsername = new System.Windows.Forms.Label();
+            this.btnServerInfo = new System.Windows.Forms.Button();
+            this.lblServerIPInfo = new System.Windows.Forms.Label();
+            this.lblUsernameInfo = new System.Windows.Forms.Label();
+            this.lblDatabaseInfo = new System.Windows.Forms.Label();
             this.panelStatus.SuspendLayout();
             this.panelKonf.SuspendLayout();
             this.gboxTemps.SuspendLayout();
             this.gboxPostavke.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numSati)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numDani)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numSati)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errProviderBackup)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errProviderTemp1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errProviderTemp2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errProviderTemp3)).BeginInit();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnRunStop
@@ -127,6 +136,7 @@
             // panelKonf
             // 
             this.panelKonf.BackColor = System.Drawing.Color.White;
+            this.panelKonf.Controls.Add(this.groupBox1);
             this.panelKonf.Controls.Add(this.gboxTemps);
             this.panelKonf.Controls.Add(this.btnZatvori);
             this.panelKonf.Controls.Add(this.btnSpremi);
@@ -135,7 +145,7 @@
             this.panelKonf.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panelKonf.Location = new System.Drawing.Point(0, 68);
             this.panelKonf.Name = "panelKonf";
-            this.panelKonf.Size = new System.Drawing.Size(689, 473);
+            this.panelKonf.Size = new System.Drawing.Size(689, 536);
             this.panelKonf.TabIndex = 3;
             // 
             // gboxTemps
@@ -151,7 +161,7 @@
             this.gboxTemps.Controls.Add(this.lblTemp2);
             this.gboxTemps.Controls.Add(this.lblTemp1);
             this.gboxTemps.ForeColor = System.Drawing.SystemColors.MenuHighlight;
-            this.gboxTemps.Location = new System.Drawing.Point(44, 219);
+            this.gboxTemps.Location = new System.Drawing.Point(44, 338);
             this.gboxTemps.Name = "gboxTemps";
             this.gboxTemps.Size = new System.Drawing.Size(605, 122);
             this.gboxTemps.TabIndex = 17;
@@ -253,7 +263,7 @@
             this.btnZatvori.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnZatvori.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnZatvori.ForeColor = System.Drawing.SystemColors.Highlight;
-            this.btnZatvori.Location = new System.Drawing.Point(435, 415);
+            this.btnZatvori.Location = new System.Drawing.Point(435, 478);
             this.btnZatvori.Name = "btnZatvori";
             this.btnZatvori.Size = new System.Drawing.Size(104, 40);
             this.btnZatvori.TabIndex = 16;
@@ -268,7 +278,7 @@
             this.btnSpremi.FlatAppearance.BorderSize = 0;
             this.btnSpremi.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSpremi.ForeColor = System.Drawing.Color.White;
-            this.btnSpremi.Location = new System.Drawing.Point(545, 415);
+            this.btnSpremi.Location = new System.Drawing.Point(545, 478);
             this.btnSpremi.Name = "btnSpremi";
             this.btnSpremi.Size = new System.Drawing.Size(104, 40);
             this.btnSpremi.TabIndex = 14;
@@ -299,12 +309,63 @@
             this.gboxPostavke.Controls.Add(this.numSati);
             this.gboxPostavke.Controls.Add(this.tboxPath);
             this.gboxPostavke.ForeColor = System.Drawing.SystemColors.MenuHighlight;
-            this.gboxPostavke.Location = new System.Drawing.Point(44, 61);
+            this.gboxPostavke.Location = new System.Drawing.Point(44, 180);
             this.gboxPostavke.Name = "gboxPostavke";
             this.gboxPostavke.Size = new System.Drawing.Size(605, 152);
             this.gboxPostavke.TabIndex = 15;
             this.gboxPostavke.TabStop = false;
             this.gboxPostavke.Text = "Postavke";
+            // 
+            // lblStarijeOd2
+            // 
+            this.lblStarijeOd2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblStarijeOd2.AutoSize = true;
+            this.lblStarijeOd2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lblStarijeOd2.ForeColor = System.Drawing.Color.DimGray;
+            this.lblStarijeOd2.Location = new System.Drawing.Point(180, 107);
+            this.lblStarijeOd2.Name = "lblStarijeOd2";
+            this.lblStarijeOd2.Size = new System.Drawing.Size(128, 13);
+            this.lblStarijeOd2.TabIndex = 15;
+            this.lblStarijeOd2.Text = "dana će biti izbrisane";
+            // 
+            // numDani
+            // 
+            this.numDani.ForeColor = System.Drawing.SystemColors.WindowFrame;
+            this.numDani.Location = new System.Drawing.Point(141, 105);
+            this.numDani.Maximum = new decimal(new int[] {
+            99,
+            0,
+            0,
+            0});
+            this.numDani.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numDani.Name = "numDani";
+            this.numDani.Size = new System.Drawing.Size(33, 20);
+            this.numDani.TabIndex = 14;
+            this.numDani.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // lblStarijeOd1
+            // 
+            this.lblStarijeOd1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblStarijeOd1.AutoSize = true;
+            this.lblStarijeOd1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lblStarijeOd1.ForeColor = System.Drawing.Color.DimGray;
+            this.lblStarijeOd1.Location = new System.Drawing.Point(20, 107);
+            this.lblStarijeOd1.Name = "lblStarijeOd1";
+            this.lblStarijeOd1.Size = new System.Drawing.Size(115, 13);
+            this.lblStarijeOd1.TabIndex = 13;
+            this.lblStarijeOd1.Text = "Datoteke starije od";
             // 
             // lblPath
             // 
@@ -379,57 +440,6 @@
             this.tboxPath.TabIndex = 3;
             this.tboxPath.Validating += new System.ComponentModel.CancelEventHandler(this.tboxPath_Validating);
             // 
-            // lblStarijeOd1
-            // 
-            this.lblStarijeOd1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblStarijeOd1.AutoSize = true;
-            this.lblStarijeOd1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.lblStarijeOd1.ForeColor = System.Drawing.Color.DimGray;
-            this.lblStarijeOd1.Location = new System.Drawing.Point(20, 107);
-            this.lblStarijeOd1.Name = "lblStarijeOd1";
-            this.lblStarijeOd1.Size = new System.Drawing.Size(115, 13);
-            this.lblStarijeOd1.TabIndex = 13;
-            this.lblStarijeOd1.Text = "Datoteke starije od";
-            // 
-            // numDani
-            // 
-            this.numDani.ForeColor = System.Drawing.SystemColors.WindowFrame;
-            this.numDani.Location = new System.Drawing.Point(141, 105);
-            this.numDani.Maximum = new decimal(new int[] {
-            99,
-            0,
-            0,
-            0});
-            this.numDani.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numDani.Name = "numDani";
-            this.numDani.Size = new System.Drawing.Size(33, 20);
-            this.numDani.TabIndex = 14;
-            this.numDani.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            // 
-            // lblStarijeOd2
-            // 
-            this.lblStarijeOd2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblStarijeOd2.AutoSize = true;
-            this.lblStarijeOd2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.lblStarijeOd2.ForeColor = System.Drawing.Color.DimGray;
-            this.lblStarijeOd2.Location = new System.Drawing.Point(180, 107);
-            this.lblStarijeOd2.Name = "lblStarijeOd2";
-            this.lblStarijeOd2.Size = new System.Drawing.Size(128, 13);
-            this.lblStarijeOd2.TabIndex = 15;
-            this.lblStarijeOd2.Text = "dana će biti izbrisane";
-            // 
             // errProviderBackup
             // 
             this.errProviderBackup.BlinkStyle = System.Windows.Forms.ErrorBlinkStyle.NeverBlink;
@@ -450,11 +460,110 @@
             this.errProviderTemp3.BlinkStyle = System.Windows.Forms.ErrorBlinkStyle.NeverBlink;
             this.errProviderTemp3.ContainerControl = this;
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.lblDatabaseInfo);
+            this.groupBox1.Controls.Add(this.lblUsernameInfo);
+            this.groupBox1.Controls.Add(this.lblServerIPInfo);
+            this.groupBox1.Controls.Add(this.btnServerInfo);
+            this.groupBox1.Controls.Add(this.lblUsername);
+            this.groupBox1.Controls.Add(this.lblDatabase);
+            this.groupBox1.Controls.Add(this.lblServerIP);
+            this.groupBox1.ForeColor = System.Drawing.SystemColors.MenuHighlight;
+            this.groupBox1.Location = new System.Drawing.Point(44, 70);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(605, 104);
+            this.groupBox1.TabIndex = 18;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Server Info";
+            // 
+            // lblServerIP
+            // 
+            this.lblServerIP.AutoSize = true;
+            this.lblServerIP.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lblServerIP.ForeColor = System.Drawing.Color.DimGray;
+            this.lblServerIP.Location = new System.Drawing.Point(32, 23);
+            this.lblServerIP.Name = "lblServerIP";
+            this.lblServerIP.Size = new System.Drawing.Size(77, 13);
+            this.lblServerIP.TabIndex = 0;
+            this.lblServerIP.Text = "SERVER IP:";
+            // 
+            // lblDatabase
+            // 
+            this.lblDatabase.AutoSize = true;
+            this.lblDatabase.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lblDatabase.ForeColor = System.Drawing.Color.DimGray;
+            this.lblDatabase.Location = new System.Drawing.Point(66, 51);
+            this.lblDatabase.Name = "lblDatabase";
+            this.lblDatabase.Size = new System.Drawing.Size(43, 13);
+            this.lblDatabase.TabIndex = 1;
+            this.lblDatabase.Text = "BAZA:";
+            // 
+            // lblUsername
+            // 
+            this.lblUsername.AutoSize = true;
+            this.lblUsername.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lblUsername.ForeColor = System.Drawing.Color.DimGray;
+            this.lblUsername.Location = new System.Drawing.Point(29, 78);
+            this.lblUsername.Name = "lblUsername";
+            this.lblUsername.Size = new System.Drawing.Size(80, 13);
+            this.lblUsername.TabIndex = 3;
+            this.lblUsername.Text = "USERNAME:";
+            // 
+            // btnServerInfo
+            // 
+            this.btnServerInfo.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.btnServerInfo.BackColor = System.Drawing.SystemColors.Highlight;
+            this.btnServerInfo.FlatAppearance.BorderSize = 0;
+            this.btnServerInfo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnServerInfo.ForeColor = System.Drawing.Color.White;
+            this.btnServerInfo.Location = new System.Drawing.Point(501, 23);
+            this.btnServerInfo.Name = "btnServerInfo";
+            this.btnServerInfo.Size = new System.Drawing.Size(89, 68);
+            this.btnServerInfo.TabIndex = 19;
+            this.btnServerInfo.Text = "IZMIJENI";
+            this.btnServerInfo.UseVisualStyleBackColor = false;
+            this.btnServerInfo.Click += new System.EventHandler(this.btnServerInfo_Click);
+            // 
+            // lblServerIPInfo
+            // 
+            this.lblServerIPInfo.AutoSize = true;
+            this.lblServerIPInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lblServerIPInfo.ForeColor = System.Drawing.Color.DimGray;
+            this.lblServerIPInfo.Location = new System.Drawing.Point(124, 23);
+            this.lblServerIPInfo.Name = "lblServerIPInfo";
+            this.lblServerIPInfo.Size = new System.Drawing.Size(100, 13);
+            this.lblServerIPInfo.TabIndex = 20;
+            this.lblServerIPInfo.Text = "Server ip adresa";
+            // 
+            // lblUsernameInfo
+            // 
+            this.lblUsernameInfo.AutoSize = true;
+            this.lblUsernameInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lblUsernameInfo.ForeColor = System.Drawing.Color.DimGray;
+            this.lblUsernameInfo.Location = new System.Drawing.Point(124, 78);
+            this.lblUsernameInfo.Name = "lblUsernameInfo";
+            this.lblUsernameInfo.Size = new System.Drawing.Size(89, 13);
+            this.lblUsernameInfo.TabIndex = 21;
+            this.lblUsernameInfo.Text = "Username Info";
+            // 
+            // lblDatabaseInfo
+            // 
+            this.lblDatabaseInfo.AutoSize = true;
+            this.lblDatabaseInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lblDatabaseInfo.ForeColor = System.Drawing.Color.DimGray;
+            this.lblDatabaseInfo.Location = new System.Drawing.Point(124, 51);
+            this.lblDatabaseInfo.Name = "lblDatabaseInfo";
+            this.lblDatabaseInfo.Size = new System.Drawing.Size(35, 13);
+            this.lblDatabaseInfo.TabIndex = 22;
+            this.lblDatabaseInfo.Text = "Baza";
+            // 
             // ConfigForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(689, 541);
+            this.ClientSize = new System.Drawing.Size(689, 604);
             this.Controls.Add(this.panelKonf);
             this.Controls.Add(this.panelStatus);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -472,12 +581,14 @@
             this.gboxTemps.PerformLayout();
             this.gboxPostavke.ResumeLayout(false);
             this.gboxPostavke.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numSati)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numDani)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numSati)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.errProviderBackup)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.errProviderTemp1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.errProviderTemp2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.errProviderTemp3)).EndInit();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -515,5 +626,13 @@
         private System.Windows.Forms.ErrorProvider errProviderTemp1;
         private System.Windows.Forms.ErrorProvider errProviderTemp2;
         private System.Windows.Forms.ErrorProvider errProviderTemp3;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Label lblDatabaseInfo;
+        private System.Windows.Forms.Label lblUsernameInfo;
+        private System.Windows.Forms.Label lblServerIPInfo;
+        private System.Windows.Forms.Button btnServerInfo;
+        private System.Windows.Forms.Label lblUsername;
+        private System.Windows.Forms.Label lblDatabase;
+        private System.Windows.Forms.Label lblServerIP;
     }
 }
