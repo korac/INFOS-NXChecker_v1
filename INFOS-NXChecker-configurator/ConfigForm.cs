@@ -18,6 +18,7 @@ namespace INFOS_NXChecker_configurator
         TimeSpan timeInterval;
         string period;
         string path;
+        string deleteDays;
         string tempPath1;
         string tempPath2;
         string tempPath3;
@@ -34,6 +35,7 @@ namespace INFOS_NXChecker_configurator
             {
                 period      = HelperMethods.GetSubKey(RegistryNames.period, false);
                 path        = HelperMethods.GetSubKey(RegistryNames.path, false);
+                deleteDays  = HelperMethods.GetSubKey(RegistryNames.deletionDays, false);
 
                 tempPath1   = HelperMethods.GetSubKey(RegistryNames.pathTemp1, false);
                 tempPath2   = HelperMethods.GetSubKey(RegistryNames.pathTemp2, false);
@@ -41,6 +43,7 @@ namespace INFOS_NXChecker_configurator
 
                 timeInterval    = new TimeSpan(0, 0, Convert.ToInt32(period) / 1000);
                 numSati.Value   = timeInterval.Hours;
+                numDani.Value   = Convert.ToInt32(deleteDays);
 
                 tboxPath.Text   = path;
                 tboxTemp1.Text  = tempPath1;
@@ -78,20 +81,29 @@ namespace INFOS_NXChecker_configurator
 
         private void btnSpremi_Click(object sender, EventArgs e)
         {
-            timeInterval        = new TimeSpan((int) numSati.Value, 0, 0);
-            try
+            if(ValidatePath(tboxPath) && ValidatePath(tboxTemp1) && ValidatePath(tboxTemp2) && ValidatePath(tboxTemp3))
             {
-                HelperMethods   .SetSubKey(RegistryNames.period, timeInterval.TotalMilliseconds.ToString(), false);
-                HelperMethods   .SetSubKey(RegistryNames.path, tboxPath.Text, false);
-                HelperMethods   .SetSubKey(RegistryNames.pathTemp1, tboxTemp1.Text, false);
-                HelperMethods   .SetSubKey(RegistryNames.pathTemp2, tboxTemp2.Text, false);
-                HelperMethods   .SetSubKey(RegistryNames.pathTemp3, tboxTemp3.Text, false);
-                MessageBox      .Show("Podaci ažurirani.","Podaci", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                timeInterval = new TimeSpan((int)numSati.Value, 0, 0);
+                try
+                {
+                    HelperMethods   .SetSubKey(RegistryNames.period, timeInterval.TotalMilliseconds.ToString(), false);
+                    HelperMethods   .SetSubKey(RegistryNames.path, tboxPath.Text, false);
+                    HelperMethods   .SetSubKey(RegistryNames.deletionDays, numDani.Value.ToString(), false);
+                    HelperMethods   .SetSubKey(RegistryNames.pathTemp1, tboxTemp1.Text, false);
+                    HelperMethods   .SetSubKey(RegistryNames.pathTemp2, tboxTemp2.Text, false);
+                    HelperMethods   .SetSubKey(RegistryNames.pathTemp3, tboxTemp3.Text, false);
+
+                    MessageBox      .Show("Podaci ažurirani.", "Podaci", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Problem kod ažuriranja podataka. " + ex.Message, "Greška", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
-            catch (Exception ex)
+            else
             {
-                MessageBox      .Show("Problem kod ažuriranja podataka. " + ex.Message, "Greška", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+                MessageBox.Show("Unesite sve potrebne podatke");
+            }            
         }
 
         private void btnZatvori_Click(object sender, EventArgs e)
@@ -159,6 +171,42 @@ namespace INFOS_NXChecker_configurator
             {
                 MessageBox.Show(ex.Message, "Greška", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void tboxPath_Validating(object sender, CancelEventArgs e)
+        {
+            ValidatePath(tboxPath);
+        }
+
+        private void tboxTemp1_Validating(object sender, CancelEventArgs e)
+        {
+            ValidatePath(tboxTemp1);
+        }
+
+        private void tboxTemp2_Validating(object sender, CancelEventArgs e)
+        {
+            ValidatePath(tboxTemp2);
+        }
+
+        private void tboxTemp3_Validating(object sender, CancelEventArgs e)
+        {
+            ValidatePath(tboxTemp3);
+        }
+
+        private bool ValidatePath(TextBox box)
+        {
+            bool bStatus    = true;
+            if(String.IsNullOrWhiteSpace(box.Text) || String.IsNullOrEmpty(box.Text))
+            {
+                errProviderBackup   .SetError(box, "Unesite lokaciju za direktorij");
+                bStatus             = false;
+            }
+            else
+            {
+                errProviderBackup   .SetError(box, "");
+            }
+
+            return bStatus;
         }
     }
 }

@@ -37,8 +37,8 @@ namespace INFOS_NXChecker_regInfo
 
             try
             {
-                serviceKey = serviceKey.CreateSubKey(location);
-                string returnVal = (string)serviceKey.GetValue(key);
+                serviceKey          = serviceKey.CreateSubKey(location);
+                string returnVal    = (string) serviceKey.GetValue(key);
 
                 if (string.IsNullOrEmpty(returnVal))
                 {
@@ -66,19 +66,19 @@ namespace INFOS_NXChecker_regInfo
             string location;
             if (isAuth)
             {
-                location = authLocation;
-                serviceKey = Registry.CurrentUser;
+                location    = authLocation;
+                serviceKey  = Registry.CurrentUser;
             }
             else
             {
-                location = confLocation;
-                serviceKey = Registry.LocalMachine;
+                location    = confLocation;
+                serviceKey  = Registry.LocalMachine;
             }
 
             try
             {
-                serviceKey = serviceKey.CreateSubKey(location);
-                serviceKey.SetValue(key, val);
+                serviceKey  = serviceKey.CreateSubKey(location);
+                serviceKey  .SetValue(key, val);
             }
             catch
             {

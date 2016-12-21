@@ -12,6 +12,7 @@ using System.Timers;
 using INFOS_NXChecker_regInfo;
 using System.IO;
 using Ionic.Zip;
+using System.Management;
 
 namespace INFOS_NXChecker_service
 {
@@ -20,6 +21,7 @@ namespace INFOS_NXChecker_service
         #region Variables
         string period;
         string path;
+        string deletionDays;
         string tempPath1;
         string tempPath2;
         string tempPath3;
@@ -35,8 +37,9 @@ namespace INFOS_NXChecker_service
         {
             try
             {
-                period   = HelperMethods.GetSubKey(RegistryNames.period, false);
-                path     = HelperMethods.GetSubKey(RegistryNames.path, false);
+                period          = HelperMethods.GetSubKey(RegistryNames.period, false);
+                path            = HelperMethods.GetSubKey(RegistryNames.path, false);
+                deletionDays    = HelperMethods.GetSubKey(RegistryNames.deletionDays, false);
                 
                 tempPath1   = HelperMethods.GetSubKey(RegistryNames.pathTemp1, false);
                 tempPath2   = HelperMethods.GetSubKey(RegistryNames.pathTemp2, false);
@@ -55,48 +58,25 @@ namespace INFOS_NXChecker_service
         private void Tmr_Elapsed(object sender, ElapsedEventArgs e)
         {
             try
-            {
-                DirectoryInfo backupDir     = new DirectoryInfo(path);
-                DirectoryInfo tempOneDir    = new DirectoryInfo(tempPath1);
-                DirectoryInfo tempTwoDir    = new DirectoryInfo(tempPath2);
-                DirectoryInfo tempThreeDir  = new DirectoryInfo(tempPath3);
+            {                
+                //Checking the latest zip file if corrupted
+                ZipFileCheck(path);
 
-                FileInfo[] zipFiles         = backupDir.GetFiles("*.zip");
-                FileInfo[] tempOneFiles     = tempOneDir.GetFiles();
-                FileInfo[] tempTwoFiles     = tempOneDir.GetFiles();
-                FileInfo[] tempThreeFiles   = tempOneDir.GetFiles();
-
-                zipFiles            = zipFiles.OrderByDescending(file => file.CreationTime).ToArray();
-                FileInfo latestZip  = zipFiles[0];
-
-                string text = "";
-                text        += "LATEST ZIP FILE IS: " + latestZip.Name + "; \n";
-                text        += "ZIP File status: ";
-
-                if (ZipFile.CheckZip(path + "\\" + latestZip.Name))
-                {
-                    text += "VALID!";
-                }
-                else
-                {
-                    text += "INVALID!";
-                }
-
-                //foreach (FileInfo file in zipFiles)
-                //{
-                //    text += file.Name;
-                //    text += " - ";
-                //    text += file.LastWriteTime;
-                //    text += "; \n";
-                //}
+                //Checking the free space on a backup disc
+                BackupSpaceCheck(path);
 
                 //Deleting files from TEMP locations
                 DeleteTempFiles(tempPath1);
                 DeleteTempFiles(tempPath2);
                 DeleteTempFiles(tempPath3);
 
-                DeleteOldBackupFiles(path);
+                //Deleting files from a Backup older than 'deletionDays' days
+                DeleteOldBackupFiles(path, Convert.ToInt16(deletionDays));
 
+                //Checking the disk SMART status
+                SmartStatusCheck();
+
+                string text = "Sve je dobro";
                 string logPath = path + @"\NXChecker_service_" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".nxch";
                 File.WriteAllText(@logPath, text);
 
@@ -104,7 +84,31 @@ namespace INFOS_NXChecker_service
             }
             catch (Exception ex)
             {
-                File.WriteAllText(@"C:\Users\Kristijan\Desktop\greska_log-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "Dogodila se GREŠKA: " + ex.Message);
+                File.WriteAllText(@"C:\Users\Kristijan\Desktop\greska_log-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "Dogodila se GREŠKA: " + ex.Message + ";" + ex.TargetSite + "; " + ex.StackTrace);
+            }
+        }
+
+        private void ZipFileCheck(string backupPath)
+        {
+            if (Directory.Exists(backupPath))
+            {
+                DirectoryInfo backupDir = new DirectoryInfo(backupPath);
+                                
+                try
+                {
+                    FileInfo[] zipFiles     = backupDir.GetFiles("*.zip");
+                    zipFiles                = zipFiles.OrderByDescending(file => file.CreationTime).ToArray();
+                    FileInfo latestZip      = zipFiles[0];
+
+                    if (ZipFile.CheckZip(backupPath + "\\" + latestZip.Name))
+                    {
+                        Console.WriteLine("Zip file is valid");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    File.WriteAllText(@"C:\Users\Kristijan\Desktop\greska_log-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "Greška kod provjere ispravnosti zadnjeg ZIP filea: " + ex.Message);
+                }
             }
         }
 
@@ -120,23 +124,22 @@ namespace INFOS_NXChecker_service
                     }
                     catch (Exception ex)
                     {
-                        File.WriteAllText(@"C:\Users\Kristijan\Desktop\deleteFile-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "Dogodila se GREŠKA: " + ex.Message);
+                        File.WriteAllText(@"C:\Users\Kristijan\Desktop\deleteFile-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "Greška kod brisanja temp datoteke: " + ex.Message);
                     }
                 }
             }     
         }
 
-        private void DeleteOldBackupFiles(string backupPath)
+        private void DeleteOldBackupFiles(string backupPath, int deletionDays)
         {
             try
             {
                 if (Directory.Exists(backupPath))
                 {
-                    FileInfo[] zipFiles = new DirectoryInfo(@backupPath).GetFiles("*.zip");
-                    File.WriteAllText(@"C:\Users\Kristijan\Desktop\zips-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "zips su tu: " + zipFiles.ToString());
+                    FileInfo[] zipFiles = new DirectoryInfo(backupPath).GetFiles("*.zip");
                     foreach (FileInfo file in zipFiles)
                     {
-                        if (DateTime.UtcNow - file.CreationTimeUtc > TimeSpan.FromDays(3))
+                        if (DateTime.UtcNow - file.CreationTimeUtc > TimeSpan.FromDays(deletionDays))
                         {
                             File.Delete(file.FullName);
                         }
@@ -146,6 +149,51 @@ namespace INFOS_NXChecker_service
             catch (Exception ex)
             {
                 File.WriteAllText(@"C:\Users\Kristijan\Desktop\deleteFile-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "Greška kod brisanja Backup file-ova: " + ex.Message);
+            }
+        }
+
+        private void BackupSpaceCheck(string backupPath)
+        {
+            try
+            {
+                DirectoryInfo backupDir = new DirectoryInfo(backupPath);
+                DriveInfo backupDrive   = new DriveInfo(Path.GetPathRoot(backupDir.FullName));
+
+                double totalSpace       = backupDrive.TotalSize / (Math.Pow(1024, 3));
+                double freeSpace        = backupDrive.AvailableFreeSpace / (Math.Pow(1024, 3));
+
+                double postotak         = freeSpace / totalSpace; 
+
+                File.WriteAllText(@"C:\Users\Kristijan\Desktop\discCheck-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "ZNACI, AVAILABLE SPACE: " + freeSpace.ToString("n2") + "; TOTAL SPACE: " + totalSpace.ToString("n2") + "; U postocima: " + postotak.ToString("n2"));
+            }
+            catch (Exception ex)
+            {
+                File.WriteAllText(@"C:\Users\Kristijan\Desktop\errorFile-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "Greska kod provjere slobodnog prostora na disku: " + ex.Message);
+            }
+        }
+
+        private void SmartStatusCheck()
+        {
+            try
+            {
+                //Get all disk drives
+                ManagementObjectSearcher mosDisks   = new ManagementObjectSearcher("SELECT * FROM Win32_DiskDrive");
+
+                string text = "";
+                // Loop through each object (disk) retrieved by WMI
+                foreach(ManagementObject moDisk in mosDisks.Get())
+                {
+                    text += "S.M.A.R.T: " + moDisk["Status"].ToString() + Environment.NewLine;
+                    text += "Type: " + moDisk["MediaType"].ToString() + Environment.NewLine;
+                    text += "Model: " + moDisk["Model"].ToString() + Environment.NewLine;
+                    text += "------------------------------------" + Environment.NewLine;
+                }
+
+                File.WriteAllText(@"C:\Users\Kristijan\Desktop\DISK_DRIVES-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", text);
+            }
+            catch (Exception ex)
+            {
+                File.WriteAllText(@"C:\Users\Kristijan\Desktop\errorFile-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "Greska kod SMART provjere: " + ex.Message);
             }
         }
 

@@ -28,6 +28,12 @@ namespace INFOS_NXChecker_regInfo
         public const String path            = "01vEllQ";
 
         /// <summary>
+        /// Registry key string za broj dana deletionDays;
+        /// Datoteke starije će biti obrisane od strane servisa
+        /// </summary>
+        public const String deletionDays    = "o32medm";
+
+        /// <summary>
         /// Registry key string za path Temp1 datoteke
         /// </summary>
         public const String pathTemp1       = "4kvuwn2";

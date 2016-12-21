@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ConfigForm));
             this.btnRunStop = new System.Windows.Forms.Button();
             this.lblServiceStatus = new System.Windows.Forms.Label();
@@ -48,17 +49,28 @@
             this.btnSpremi = new System.Windows.Forms.Button();
             this.lblTitle = new System.Windows.Forms.Label();
             this.gboxPostavke = new System.Windows.Forms.GroupBox();
-            this.lblSati = new System.Windows.Forms.Label();
             this.lblPath = new System.Windows.Forms.Label();
             this.btnPath = new System.Windows.Forms.Button();
             this.lblPeriod = new System.Windows.Forms.Label();
             this.numSati = new System.Windows.Forms.NumericUpDown();
             this.tboxPath = new System.Windows.Forms.TextBox();
+            this.lblStarijeOd1 = new System.Windows.Forms.Label();
+            this.numDani = new System.Windows.Forms.NumericUpDown();
+            this.lblStarijeOd2 = new System.Windows.Forms.Label();
+            this.errProviderBackup = new System.Windows.Forms.ErrorProvider(this.components);
+            this.errProviderTemp1 = new System.Windows.Forms.ErrorProvider(this.components);
+            this.errProviderTemp2 = new System.Windows.Forms.ErrorProvider(this.components);
+            this.errProviderTemp3 = new System.Windows.Forms.ErrorProvider(this.components);
             this.panelStatus.SuspendLayout();
             this.panelKonf.SuspendLayout();
             this.gboxTemps.SuspendLayout();
             this.gboxPostavke.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numSati)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numDani)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.errProviderBackup)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.errProviderTemp1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.errProviderTemp2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.errProviderTemp3)).BeginInit();
             this.SuspendLayout();
             // 
             // btnRunStop
@@ -123,7 +135,7 @@
             this.panelKonf.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panelKonf.Location = new System.Drawing.Point(0, 68);
             this.panelKonf.Name = "panelKonf";
-            this.panelKonf.Size = new System.Drawing.Size(689, 445);
+            this.panelKonf.Size = new System.Drawing.Size(689, 473);
             this.panelKonf.TabIndex = 3;
             // 
             // gboxTemps
@@ -139,12 +151,12 @@
             this.gboxTemps.Controls.Add(this.lblTemp2);
             this.gboxTemps.Controls.Add(this.lblTemp1);
             this.gboxTemps.ForeColor = System.Drawing.SystemColors.MenuHighlight;
-            this.gboxTemps.Location = new System.Drawing.Point(44, 249);
+            this.gboxTemps.Location = new System.Drawing.Point(44, 219);
             this.gboxTemps.Name = "gboxTemps";
-            this.gboxTemps.Size = new System.Drawing.Size(587, 122);
+            this.gboxTemps.Size = new System.Drawing.Size(605, 122);
             this.gboxTemps.TabIndex = 17;
             this.gboxTemps.TabStop = false;
-            this.gboxTemps.Text = "Temp paths";
+            this.gboxTemps.Text = "Temp lokacije";
             // 
             // btnTemp3
             // 
@@ -183,6 +195,7 @@
             this.tboxTemp3.Name = "tboxTemp3";
             this.tboxTemp3.Size = new System.Drawing.Size(466, 20);
             this.tboxTemp3.TabIndex = 18;
+            this.tboxTemp3.Validating += new System.ComponentModel.CancelEventHandler(this.tboxTemp3_Validating);
             // 
             // tboxTemp2
             // 
@@ -191,6 +204,7 @@
             this.tboxTemp2.Name = "tboxTemp2";
             this.tboxTemp2.Size = new System.Drawing.Size(466, 20);
             this.tboxTemp2.TabIndex = 17;
+            this.tboxTemp2.Validating += new System.ComponentModel.CancelEventHandler(this.tboxTemp2_Validating);
             // 
             // tboxTemp1
             // 
@@ -199,6 +213,7 @@
             this.tboxTemp1.Name = "tboxTemp1";
             this.tboxTemp1.Size = new System.Drawing.Size(466, 20);
             this.tboxTemp1.TabIndex = 16;
+            this.tboxTemp1.Validating += new System.ComponentModel.CancelEventHandler(this.tboxTemp1_Validating);
             // 
             // lblTemp3
             // 
@@ -238,7 +253,7 @@
             this.btnZatvori.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnZatvori.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnZatvori.ForeColor = System.Drawing.SystemColors.Highlight;
-            this.btnZatvori.Location = new System.Drawing.Point(435, 387);
+            this.btnZatvori.Location = new System.Drawing.Point(435, 415);
             this.btnZatvori.Name = "btnZatvori";
             this.btnZatvori.Size = new System.Drawing.Size(104, 40);
             this.btnZatvori.TabIndex = 16;
@@ -253,7 +268,7 @@
             this.btnSpremi.FlatAppearance.BorderSize = 0;
             this.btnSpremi.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSpremi.ForeColor = System.Drawing.Color.White;
-            this.btnSpremi.Location = new System.Drawing.Point(545, 387);
+            this.btnSpremi.Location = new System.Drawing.Point(545, 415);
             this.btnSpremi.Name = "btnSpremi";
             this.btnSpremi.Size = new System.Drawing.Size(104, 40);
             this.btnSpremi.TabIndex = 14;
@@ -275,32 +290,21 @@
             // gboxPostavke
             // 
             this.gboxPostavke.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.gboxPostavke.Controls.Add(this.lblSati);
+            this.gboxPostavke.Controls.Add(this.lblStarijeOd2);
+            this.gboxPostavke.Controls.Add(this.numDani);
+            this.gboxPostavke.Controls.Add(this.lblStarijeOd1);
             this.gboxPostavke.Controls.Add(this.lblPath);
             this.gboxPostavke.Controls.Add(this.btnPath);
             this.gboxPostavke.Controls.Add(this.lblPeriod);
             this.gboxPostavke.Controls.Add(this.numSati);
             this.gboxPostavke.Controls.Add(this.tboxPath);
             this.gboxPostavke.ForeColor = System.Drawing.SystemColors.MenuHighlight;
-            this.gboxPostavke.Location = new System.Drawing.Point(44, 69);
+            this.gboxPostavke.Location = new System.Drawing.Point(44, 61);
             this.gboxPostavke.Name = "gboxPostavke";
-            this.gboxPostavke.Size = new System.Drawing.Size(587, 174);
+            this.gboxPostavke.Size = new System.Drawing.Size(605, 152);
             this.gboxPostavke.TabIndex = 15;
             this.gboxPostavke.TabStop = false;
             this.gboxPostavke.Text = "Postavke";
-            // 
-            // lblSati
-            // 
-            this.lblSati.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblSati.AutoSize = true;
-            this.lblSati.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.lblSati.Location = new System.Drawing.Point(202, 32);
-            this.lblSati.Name = "lblSati";
-            this.lblSati.Size = new System.Drawing.Size(27, 17);
-            this.lblSati.TabIndex = 12;
-            this.lblSati.Text = "sat";
             // 
             // lblPath
             // 
@@ -310,7 +314,7 @@
             this.lblPath.AutoSize = true;
             this.lblPath.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.lblPath.ForeColor = System.Drawing.Color.DimGray;
-            this.lblPath.Location = new System.Drawing.Point(35, 69);
+            this.lblPath.Location = new System.Drawing.Point(13, 72);
             this.lblPath.Name = "lblPath";
             this.lblPath.Size = new System.Drawing.Size(122, 13);
             this.lblPath.TabIndex = 5;
@@ -318,7 +322,7 @@
             // 
             // btnPath
             // 
-            this.btnPath.Location = new System.Drawing.Point(163, 65);
+            this.btnPath.Location = new System.Drawing.Point(141, 68);
             this.btnPath.Name = "btnPath";
             this.btnPath.Size = new System.Drawing.Size(29, 21);
             this.btnPath.TabIndex = 6;
@@ -334,16 +338,21 @@
             this.lblPeriod.AutoSize = true;
             this.lblPeriod.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.lblPeriod.ForeColor = System.Drawing.Color.DimGray;
-            this.lblPeriod.Location = new System.Drawing.Point(99, 35);
+            this.lblPeriod.Location = new System.Drawing.Point(17, 35);
             this.lblPeriod.Name = "lblPeriod";
-            this.lblPeriod.Size = new System.Drawing.Size(58, 13);
+            this.lblPeriod.Size = new System.Drawing.Size(118, 13);
             this.lblPeriod.TabIndex = 4;
-            this.lblPeriod.Text = "PERIOD:";
+            this.lblPeriod.Text = "PERIOD (Br. SATI):";
             // 
             // numSati
             // 
             this.numSati.ForeColor = System.Drawing.SystemColors.WindowFrame;
-            this.numSati.Location = new System.Drawing.Point(163, 32);
+            this.numSati.Location = new System.Drawing.Point(141, 32);
+            this.numSati.Maximum = new decimal(new int[] {
+            99,
+            0,
+            0,
+            0});
             this.numSati.Minimum = new decimal(new int[] {
             1,
             0,
@@ -360,23 +369,92 @@
             // 
             // tboxPath
             // 
-            this.tboxPath.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.tboxPath.BackColor = System.Drawing.Color.White;
             this.tboxPath.ForeColor = System.Drawing.SystemColors.WindowFrame;
-            this.tboxPath.Location = new System.Drawing.Point(163, 92);
+            this.tboxPath.Location = new System.Drawing.Point(176, 69);
             this.tboxPath.Multiline = true;
             this.tboxPath.Name = "tboxPath";
             this.tboxPath.ReadOnly = true;
-            this.tboxPath.Size = new System.Drawing.Size(288, 58);
+            this.tboxPath.Size = new System.Drawing.Size(405, 20);
             this.tboxPath.TabIndex = 3;
+            this.tboxPath.Validating += new System.ComponentModel.CancelEventHandler(this.tboxPath_Validating);
+            // 
+            // lblStarijeOd1
+            // 
+            this.lblStarijeOd1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblStarijeOd1.AutoSize = true;
+            this.lblStarijeOd1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lblStarijeOd1.ForeColor = System.Drawing.Color.DimGray;
+            this.lblStarijeOd1.Location = new System.Drawing.Point(20, 107);
+            this.lblStarijeOd1.Name = "lblStarijeOd1";
+            this.lblStarijeOd1.Size = new System.Drawing.Size(115, 13);
+            this.lblStarijeOd1.TabIndex = 13;
+            this.lblStarijeOd1.Text = "Datoteke starije od";
+            // 
+            // numDani
+            // 
+            this.numDani.ForeColor = System.Drawing.SystemColors.WindowFrame;
+            this.numDani.Location = new System.Drawing.Point(141, 105);
+            this.numDani.Maximum = new decimal(new int[] {
+            99,
+            0,
+            0,
+            0});
+            this.numDani.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numDani.Name = "numDani";
+            this.numDani.Size = new System.Drawing.Size(33, 20);
+            this.numDani.TabIndex = 14;
+            this.numDani.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // lblStarijeOd2
+            // 
+            this.lblStarijeOd2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblStarijeOd2.AutoSize = true;
+            this.lblStarijeOd2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lblStarijeOd2.ForeColor = System.Drawing.Color.DimGray;
+            this.lblStarijeOd2.Location = new System.Drawing.Point(180, 107);
+            this.lblStarijeOd2.Name = "lblStarijeOd2";
+            this.lblStarijeOd2.Size = new System.Drawing.Size(128, 13);
+            this.lblStarijeOd2.TabIndex = 15;
+            this.lblStarijeOd2.Text = "dana će biti izbrisane";
+            // 
+            // errProviderBackup
+            // 
+            this.errProviderBackup.BlinkStyle = System.Windows.Forms.ErrorBlinkStyle.NeverBlink;
+            this.errProviderBackup.ContainerControl = this;
+            // 
+            // errProviderTemp1
+            // 
+            this.errProviderTemp1.BlinkStyle = System.Windows.Forms.ErrorBlinkStyle.NeverBlink;
+            this.errProviderTemp1.ContainerControl = this;
+            // 
+            // errProviderTemp2
+            // 
+            this.errProviderTemp2.BlinkStyle = System.Windows.Forms.ErrorBlinkStyle.NeverBlink;
+            this.errProviderTemp2.ContainerControl = this;
+            // 
+            // errProviderTemp3
+            // 
+            this.errProviderTemp3.BlinkStyle = System.Windows.Forms.ErrorBlinkStyle.NeverBlink;
+            this.errProviderTemp3.ContainerControl = this;
             // 
             // ConfigForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(689, 513);
+            this.ClientSize = new System.Drawing.Size(689, 541);
             this.Controls.Add(this.panelKonf);
             this.Controls.Add(this.panelStatus);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -395,6 +473,11 @@
             this.gboxPostavke.ResumeLayout(false);
             this.gboxPostavke.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numSati)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numDani)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.errProviderBackup)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.errProviderTemp1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.errProviderTemp2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.errProviderTemp3)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -410,7 +493,6 @@
         private System.Windows.Forms.Button btnSpremi;
         private System.Windows.Forms.Label lblTitle;
         private System.Windows.Forms.GroupBox gboxPostavke;
-        private System.Windows.Forms.Label lblSati;
         private System.Windows.Forms.Label lblPath;
         private System.Windows.Forms.Button btnPath;
         private System.Windows.Forms.Label lblPeriod;
@@ -426,5 +508,12 @@
         private System.Windows.Forms.Button btnTemp3;
         private System.Windows.Forms.Button btnTemp2;
         private System.Windows.Forms.Button btnTemp1;
+        private System.Windows.Forms.Label lblStarijeOd2;
+        private System.Windows.Forms.NumericUpDown numDani;
+        private System.Windows.Forms.Label lblStarijeOd1;
+        private System.Windows.Forms.ErrorProvider errProviderBackup;
+        private System.Windows.Forms.ErrorProvider errProviderTemp1;
+        private System.Windows.Forms.ErrorProvider errProviderTemp2;
+        private System.Windows.Forms.ErrorProvider errProviderTemp3;
     }
 }
