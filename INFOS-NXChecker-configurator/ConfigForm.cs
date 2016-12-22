@@ -18,8 +18,8 @@ namespace INFOS_NXChecker_configurator
         string serverIP;
         string databaseName;
         string serverUsername;
-        string serverPassword;
-        string serverPort;
+        //string serverPassword;
+        //string serverPort;
         string period;
         string path;
         string deleteDays;
@@ -44,8 +44,8 @@ namespace INFOS_NXChecker_configurator
                 serverIP        = HelperMethods.GetSubKey(RegistryNames.serverIP, false);
                 databaseName    = HelperMethods.GetSubKey(RegistryNames.databaseName, false);
                 serverUsername  = HelperMethods.GetSubKey(RegistryNames.serverUsername, false);
-                serverPassword  = HelperMethods.GetSubKey(RegistryNames.serverPassword, false);
-                serverPort      = HelperMethods.GetSubKey(RegistryNames.serverPort, false);
+                //serverPassword  = HelperMethods.GetSubKey(RegistryNames.serverPassword, false);
+                //serverPort      = HelperMethods.GetSubKey(RegistryNames.serverPort, false);
 
                 tempPath1   = HelperMethods.GetSubKey(RegistryNames.pathTemp1, false);
                 tempPath2   = HelperMethods.GetSubKey(RegistryNames.pathTemp2, false);
@@ -116,7 +116,7 @@ namespace INFOS_NXChecker_configurator
             }
             else
             {
-                MessageBox.Show("Unesite sve potrebne podatke");
+                MessageBox.Show("Unesite sve potrebne podatke", "Podaci", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }            
         }
 
