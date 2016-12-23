@@ -35,6 +35,14 @@
             this.lblServiceDesc = new System.Windows.Forms.Label();
             this.panelStatus = new System.Windows.Forms.Panel();
             this.panelKonf = new System.Windows.Forms.Panel();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.lblDatabaseInfo = new System.Windows.Forms.Label();
+            this.lblUsernameInfo = new System.Windows.Forms.Label();
+            this.lblServerIPInfo = new System.Windows.Forms.Label();
+            this.btnServerInfo = new System.Windows.Forms.Button();
+            this.lblUsername = new System.Windows.Forms.Label();
+            this.lblDatabase = new System.Windows.Forms.Label();
+            this.lblServerIP = new System.Windows.Forms.Label();
             this.gboxTemps = new System.Windows.Forms.GroupBox();
             this.btnTemp3 = new System.Windows.Forms.Button();
             this.btnTemp2 = new System.Windows.Forms.Button();
@@ -61,16 +69,14 @@
             this.errProviderTemp1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errProviderTemp2 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errProviderTemp3 = new System.Windows.Forms.ErrorProvider(this.components);
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.lblServerIP = new System.Windows.Forms.Label();
-            this.lblDatabase = new System.Windows.Forms.Label();
-            this.lblUsername = new System.Windows.Forms.Label();
-            this.btnServerInfo = new System.Windows.Forms.Button();
-            this.lblServerIPInfo = new System.Windows.Forms.Label();
-            this.lblUsernameInfo = new System.Windows.Forms.Label();
-            this.lblDatabaseInfo = new System.Windows.Forms.Label();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.lblOIB = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
+            this.lblLocation = new System.Windows.Forms.Label();
+            this.lblDevice = new System.Windows.Forms.Label();
             this.panelStatus.SuspendLayout();
             this.panelKonf.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.gboxTemps.SuspendLayout();
             this.gboxPostavke.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numDani)).BeginInit();
@@ -79,7 +85,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.errProviderTemp1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errProviderTemp2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errProviderTemp3)).BeginInit();
-            this.groupBox1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnRunStop
@@ -136,6 +142,7 @@
             // panelKonf
             // 
             this.panelKonf.BackColor = System.Drawing.Color.White;
+            this.panelKonf.Controls.Add(this.groupBox2);
             this.panelKonf.Controls.Add(this.groupBox1);
             this.panelKonf.Controls.Add(this.gboxTemps);
             this.panelKonf.Controls.Add(this.btnZatvori);
@@ -147,6 +154,105 @@
             this.panelKonf.Name = "panelKonf";
             this.panelKonf.Size = new System.Drawing.Size(689, 536);
             this.panelKonf.TabIndex = 3;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.lblDatabaseInfo);
+            this.groupBox1.Controls.Add(this.lblUsernameInfo);
+            this.groupBox1.Controls.Add(this.lblServerIPInfo);
+            this.groupBox1.Controls.Add(this.btnServerInfo);
+            this.groupBox1.Controls.Add(this.lblUsername);
+            this.groupBox1.Controls.Add(this.lblDatabase);
+            this.groupBox1.Controls.Add(this.lblServerIP);
+            this.groupBox1.ForeColor = System.Drawing.SystemColors.MenuHighlight;
+            this.groupBox1.Location = new System.Drawing.Point(44, 70);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(365, 104);
+            this.groupBox1.TabIndex = 18;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Server Info";
+            // 
+            // lblDatabaseInfo
+            // 
+            this.lblDatabaseInfo.AutoSize = true;
+            this.lblDatabaseInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lblDatabaseInfo.ForeColor = System.Drawing.Color.DimGray;
+            this.lblDatabaseInfo.Location = new System.Drawing.Point(124, 51);
+            this.lblDatabaseInfo.Name = "lblDatabaseInfo";
+            this.lblDatabaseInfo.Size = new System.Drawing.Size(35, 13);
+            this.lblDatabaseInfo.TabIndex = 22;
+            this.lblDatabaseInfo.Text = "Baza";
+            // 
+            // lblUsernameInfo
+            // 
+            this.lblUsernameInfo.AutoSize = true;
+            this.lblUsernameInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lblUsernameInfo.ForeColor = System.Drawing.Color.DimGray;
+            this.lblUsernameInfo.Location = new System.Drawing.Point(124, 78);
+            this.lblUsernameInfo.Name = "lblUsernameInfo";
+            this.lblUsernameInfo.Size = new System.Drawing.Size(89, 13);
+            this.lblUsernameInfo.TabIndex = 21;
+            this.lblUsernameInfo.Text = "Username Info";
+            // 
+            // lblServerIPInfo
+            // 
+            this.lblServerIPInfo.AutoSize = true;
+            this.lblServerIPInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lblServerIPInfo.ForeColor = System.Drawing.Color.DimGray;
+            this.lblServerIPInfo.Location = new System.Drawing.Point(124, 23);
+            this.lblServerIPInfo.Name = "lblServerIPInfo";
+            this.lblServerIPInfo.Size = new System.Drawing.Size(100, 13);
+            this.lblServerIPInfo.TabIndex = 20;
+            this.lblServerIPInfo.Text = "Server ip adresa";
+            // 
+            // btnServerInfo
+            // 
+            this.btnServerInfo.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.btnServerInfo.BackColor = System.Drawing.SystemColors.Highlight;
+            this.btnServerInfo.FlatAppearance.BorderSize = 0;
+            this.btnServerInfo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnServerInfo.ForeColor = System.Drawing.Color.White;
+            this.btnServerInfo.Location = new System.Drawing.Point(278, 23);
+            this.btnServerInfo.Name = "btnServerInfo";
+            this.btnServerInfo.Size = new System.Drawing.Size(72, 68);
+            this.btnServerInfo.TabIndex = 19;
+            this.btnServerInfo.Text = "IZMIJENI";
+            this.btnServerInfo.UseVisualStyleBackColor = false;
+            this.btnServerInfo.Click += new System.EventHandler(this.btnServerInfo_Click);
+            // 
+            // lblUsername
+            // 
+            this.lblUsername.AutoSize = true;
+            this.lblUsername.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lblUsername.ForeColor = System.Drawing.Color.DimGray;
+            this.lblUsername.Location = new System.Drawing.Point(29, 78);
+            this.lblUsername.Name = "lblUsername";
+            this.lblUsername.Size = new System.Drawing.Size(80, 13);
+            this.lblUsername.TabIndex = 3;
+            this.lblUsername.Text = "USERNAME:";
+            // 
+            // lblDatabase
+            // 
+            this.lblDatabase.AutoSize = true;
+            this.lblDatabase.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lblDatabase.ForeColor = System.Drawing.Color.DimGray;
+            this.lblDatabase.Location = new System.Drawing.Point(66, 51);
+            this.lblDatabase.Name = "lblDatabase";
+            this.lblDatabase.Size = new System.Drawing.Size(43, 13);
+            this.lblDatabase.TabIndex = 1;
+            this.lblDatabase.Text = "BAZA:";
+            // 
+            // lblServerIP
+            // 
+            this.lblServerIP.AutoSize = true;
+            this.lblServerIP.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lblServerIP.ForeColor = System.Drawing.Color.DimGray;
+            this.lblServerIP.Location = new System.Drawing.Point(32, 23);
+            this.lblServerIP.Name = "lblServerIP";
+            this.lblServerIP.Size = new System.Drawing.Size(77, 13);
+            this.lblServerIP.TabIndex = 0;
+            this.lblServerIP.Text = "SERVER IP:";
             // 
             // gboxTemps
             // 
@@ -460,104 +566,67 @@
             this.errProviderTemp3.BlinkStyle = System.Windows.Forms.ErrorBlinkStyle.NeverBlink;
             this.errProviderTemp3.ContainerControl = this;
             // 
-            // groupBox1
+            // groupBox2
             // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox1.Controls.Add(this.lblDatabaseInfo);
-            this.groupBox1.Controls.Add(this.lblUsernameInfo);
-            this.groupBox1.Controls.Add(this.lblServerIPInfo);
-            this.groupBox1.Controls.Add(this.btnServerInfo);
-            this.groupBox1.Controls.Add(this.lblUsername);
-            this.groupBox1.Controls.Add(this.lblDatabase);
-            this.groupBox1.Controls.Add(this.lblServerIP);
-            this.groupBox1.ForeColor = System.Drawing.SystemColors.MenuHighlight;
-            this.groupBox1.Location = new System.Drawing.Point(44, 70);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(605, 104);
-            this.groupBox1.TabIndex = 18;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Server Info";
+            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox2.Controls.Add(this.lblLocation);
+            this.groupBox2.Controls.Add(this.lblDevice);
+            this.groupBox2.Controls.Add(this.button1);
+            this.groupBox2.Controls.Add(this.lblOIB);
+            this.groupBox2.ForeColor = System.Drawing.SystemColors.MenuHighlight;
+            this.groupBox2.Location = new System.Drawing.Point(415, 70);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(234, 104);
+            this.groupBox2.TabIndex = 19;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Partner podaci";
             // 
-            // lblServerIP
+            // lblOIB
             // 
-            this.lblServerIP.AutoSize = true;
-            this.lblServerIP.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.lblServerIP.ForeColor = System.Drawing.Color.DimGray;
-            this.lblServerIP.Location = new System.Drawing.Point(32, 23);
-            this.lblServerIP.Name = "lblServerIP";
-            this.lblServerIP.Size = new System.Drawing.Size(77, 13);
-            this.lblServerIP.TabIndex = 0;
-            this.lblServerIP.Text = "SERVER IP:";
+            this.lblOIB.AutoSize = true;
+            this.lblOIB.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lblOIB.ForeColor = System.Drawing.Color.DimGray;
+            this.lblOIB.Location = new System.Drawing.Point(55, 23);
+            this.lblOIB.Name = "lblOIB";
+            this.lblOIB.Size = new System.Drawing.Size(28, 13);
+            this.lblOIB.TabIndex = 23;
+            this.lblOIB.Text = "OIB";
             // 
-            // lblDatabase
+            // button1
             // 
-            this.lblDatabase.AutoSize = true;
-            this.lblDatabase.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.lblDatabase.ForeColor = System.Drawing.Color.DimGray;
-            this.lblDatabase.Location = new System.Drawing.Point(66, 51);
-            this.lblDatabase.Name = "lblDatabase";
-            this.lblDatabase.Size = new System.Drawing.Size(43, 13);
-            this.lblDatabase.TabIndex = 1;
-            this.lblDatabase.Text = "BAZA:";
+            this.button1.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.button1.BackColor = System.Drawing.SystemColors.Highlight;
+            this.button1.FlatAppearance.BorderSize = 0;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.ForeColor = System.Drawing.Color.White;
+            this.button1.Location = new System.Drawing.Point(156, 23);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(72, 68);
+            this.button1.TabIndex = 23;
+            this.button1.Text = "IZMIJENI";
+            this.button1.UseVisualStyleBackColor = false;
             // 
-            // lblUsername
+            // lblLocation
             // 
-            this.lblUsername.AutoSize = true;
-            this.lblUsername.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.lblUsername.ForeColor = System.Drawing.Color.DimGray;
-            this.lblUsername.Location = new System.Drawing.Point(29, 78);
-            this.lblUsername.Name = "lblUsername";
-            this.lblUsername.Size = new System.Drawing.Size(80, 13);
-            this.lblUsername.TabIndex = 3;
-            this.lblUsername.Text = "USERNAME:";
+            this.lblLocation.AutoSize = true;
+            this.lblLocation.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lblLocation.ForeColor = System.Drawing.Color.DimGray;
+            this.lblLocation.Location = new System.Drawing.Point(28, 51);
+            this.lblLocation.Name = "lblLocation";
+            this.lblLocation.Size = new System.Drawing.Size(55, 13);
+            this.lblLocation.TabIndex = 23;
+            this.lblLocation.Text = "Lokacija";
             // 
-            // btnServerInfo
+            // lblDevice
             // 
-            this.btnServerInfo.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.btnServerInfo.BackColor = System.Drawing.SystemColors.Highlight;
-            this.btnServerInfo.FlatAppearance.BorderSize = 0;
-            this.btnServerInfo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnServerInfo.ForeColor = System.Drawing.Color.White;
-            this.btnServerInfo.Location = new System.Drawing.Point(501, 23);
-            this.btnServerInfo.Name = "btnServerInfo";
-            this.btnServerInfo.Size = new System.Drawing.Size(89, 68);
-            this.btnServerInfo.TabIndex = 19;
-            this.btnServerInfo.Text = "IZMIJENI";
-            this.btnServerInfo.UseVisualStyleBackColor = false;
-            this.btnServerInfo.Click += new System.EventHandler(this.btnServerInfo_Click);
-            // 
-            // lblServerIPInfo
-            // 
-            this.lblServerIPInfo.AutoSize = true;
-            this.lblServerIPInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.lblServerIPInfo.ForeColor = System.Drawing.Color.DimGray;
-            this.lblServerIPInfo.Location = new System.Drawing.Point(124, 23);
-            this.lblServerIPInfo.Name = "lblServerIPInfo";
-            this.lblServerIPInfo.Size = new System.Drawing.Size(100, 13);
-            this.lblServerIPInfo.TabIndex = 20;
-            this.lblServerIPInfo.Text = "Server ip adresa";
-            // 
-            // lblUsernameInfo
-            // 
-            this.lblUsernameInfo.AutoSize = true;
-            this.lblUsernameInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.lblUsernameInfo.ForeColor = System.Drawing.Color.DimGray;
-            this.lblUsernameInfo.Location = new System.Drawing.Point(124, 78);
-            this.lblUsernameInfo.Name = "lblUsernameInfo";
-            this.lblUsernameInfo.Size = new System.Drawing.Size(89, 13);
-            this.lblUsernameInfo.TabIndex = 21;
-            this.lblUsernameInfo.Text = "Username Info";
-            // 
-            // lblDatabaseInfo
-            // 
-            this.lblDatabaseInfo.AutoSize = true;
-            this.lblDatabaseInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.lblDatabaseInfo.ForeColor = System.Drawing.Color.DimGray;
-            this.lblDatabaseInfo.Location = new System.Drawing.Point(124, 51);
-            this.lblDatabaseInfo.Name = "lblDatabaseInfo";
-            this.lblDatabaseInfo.Size = new System.Drawing.Size(35, 13);
-            this.lblDatabaseInfo.TabIndex = 22;
-            this.lblDatabaseInfo.Text = "Baza";
+            this.lblDevice.AutoSize = true;
+            this.lblDevice.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lblDevice.ForeColor = System.Drawing.Color.DimGray;
+            this.lblDevice.Location = new System.Drawing.Point(38, 78);
+            this.lblDevice.Name = "lblDevice";
+            this.lblDevice.Size = new System.Drawing.Size(45, 13);
+            this.lblDevice.TabIndex = 24;
+            this.lblDevice.Text = "Uređaj";
             // 
             // ConfigForm
             // 
@@ -577,6 +646,8 @@
             this.panelStatus.PerformLayout();
             this.panelKonf.ResumeLayout(false);
             this.panelKonf.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.gboxTemps.ResumeLayout(false);
             this.gboxTemps.PerformLayout();
             this.gboxPostavke.ResumeLayout(false);
@@ -587,8 +658,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.errProviderTemp1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.errProviderTemp2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.errProviderTemp3)).EndInit();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -634,5 +705,10 @@
         private System.Windows.Forms.Label lblUsername;
         private System.Windows.Forms.Label lblDatabase;
         private System.Windows.Forms.Label lblServerIP;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Label lblOIB;
+        private System.Windows.Forms.Label lblLocation;
+        private System.Windows.Forms.Label lblDevice;
     }
 }

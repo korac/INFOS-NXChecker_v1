@@ -38,6 +38,7 @@
             this.tboxImeBaze = new System.Windows.Forms.TextBox();
             this.gboxServer = new System.Windows.Forms.GroupBox();
             this.gboxPristupni = new System.Windows.Forms.GroupBox();
+            this.cBoxLozinka = new System.Windows.Forms.CheckBox();
             this.tboxPassword = new System.Windows.Forms.TextBox();
             this.tboxUsername = new System.Windows.Forms.TextBox();
             this.lblPassword = new System.Windows.Forms.Label();
@@ -45,7 +46,7 @@
             this.btnZatvori = new System.Windows.Forms.Button();
             this.btnSpremi = new System.Windows.Forms.Button();
             this.errProviderInput = new System.Windows.Forms.ErrorProvider(this.components);
-            this.cBoxLozinka = new System.Windows.Forms.CheckBox();
+            this.btnTestirajKonekciju = new System.Windows.Forms.Button();
             this.gboxServer.SuspendLayout();
             this.gboxPristupni.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errProviderInput)).BeginInit();
@@ -139,6 +140,17 @@
             this.gboxPristupni.TabStop = false;
             this.gboxPristupni.Text = "Pristupni podaci";
             // 
+            // cBoxLozinka
+            // 
+            this.cBoxLozinka.AutoSize = true;
+            this.cBoxLozinka.Location = new System.Drawing.Point(142, 88);
+            this.cBoxLozinka.Name = "cBoxLozinka";
+            this.cBoxLozinka.Size = new System.Drawing.Size(94, 17);
+            this.cBoxLozinka.TabIndex = 15;
+            this.cBoxLozinka.Text = "Pokaži lozinku";
+            this.cBoxLozinka.UseVisualStyleBackColor = true;
+            this.cBoxLozinka.CheckedChanged += new System.EventHandler(this.cBoxLozinka_CheckedChanged);
+            // 
             // tboxPassword
             // 
             this.tboxPassword.Location = new System.Drawing.Point(142, 62);
@@ -211,22 +223,27 @@
             this.errProviderInput.BlinkStyle = System.Windows.Forms.ErrorBlinkStyle.NeverBlink;
             this.errProviderInput.ContainerControl = this;
             // 
-            // cBoxLozinka
+            // btnTestirajKonekciju
             // 
-            this.cBoxLozinka.AutoSize = true;
-            this.cBoxLozinka.Location = new System.Drawing.Point(142, 88);
-            this.cBoxLozinka.Name = "cBoxLozinka";
-            this.cBoxLozinka.Size = new System.Drawing.Size(94, 17);
-            this.cBoxLozinka.TabIndex = 15;
-            this.cBoxLozinka.Text = "Pokaži lozinku";
-            this.cBoxLozinka.UseVisualStyleBackColor = true;
-            this.cBoxLozinka.CheckedChanged += new System.EventHandler(this.cBoxLozinka_CheckedChanged);
+            this.btnTestirajKonekciju.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnTestirajKonekciju.BackColor = System.Drawing.SystemColors.Highlight;
+            this.btnTestirajKonekciju.FlatAppearance.BorderSize = 0;
+            this.btnTestirajKonekciju.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnTestirajKonekciju.ForeColor = System.Drawing.Color.White;
+            this.btnTestirajKonekciju.Location = new System.Drawing.Point(21, 181);
+            this.btnTestirajKonekciju.Name = "btnTestirajKonekciju";
+            this.btnTestirajKonekciju.Size = new System.Drawing.Size(144, 40);
+            this.btnTestirajKonekciju.TabIndex = 21;
+            this.btnTestirajKonekciju.Text = "TESTIRAJ KONEKCIJU";
+            this.btnTestirajKonekciju.UseVisualStyleBackColor = false;
+            this.btnTestirajKonekciju.Click += new System.EventHandler(this.btnTestirajKonekciju_Click);
             // 
             // ServerInfoForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(717, 233);
+            this.Controls.Add(this.btnTestirajKonekciju);
             this.Controls.Add(this.btnZatvori);
             this.Controls.Add(this.btnSpremi);
             this.Controls.Add(this.gboxPristupni);
@@ -265,5 +282,6 @@
         private System.Windows.Forms.Button btnSpremi;
         private System.Windows.Forms.ErrorProvider errProviderInput;
         private System.Windows.Forms.CheckBox cBoxLozinka;
+        private System.Windows.Forms.Button btnTestirajKonekciju;
     }
 }

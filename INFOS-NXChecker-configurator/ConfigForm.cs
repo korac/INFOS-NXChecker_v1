@@ -228,7 +228,9 @@ namespace INFOS_NXChecker_configurator
             ServerInfoForm infoForm   = new ServerInfoForm();
             if(infoForm.ShowDialog() == DialogResult.OK)
             {
-                
+                lblServerIPInfo.Text = infoForm.serverIP;
+                lblDatabaseInfo.Text = infoForm.databaseName;
+                lblUsernameInfo.Text = infoForm.serverUsername;
             }
         }
     }

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -12,9 +13,9 @@ namespace INFOS_NXChecker_configurator
 {
     public partial class ServerInfoForm : Form
     {
-        string serverIP;
-        string databaseName;
-        string serverUsername;
+        public string serverIP;
+        public string databaseName;
+        public string serverUsername;
         string serverPassword;
         string serverPort;
         public ServerInfoForm()
@@ -41,7 +42,7 @@ namespace INFOS_NXChecker_configurator
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Greška kod pristupa podacima");
+                MessageBox.Show("Greška kod pristupa podacima: " + ex.Message);
             }
         }
 
@@ -57,8 +58,12 @@ namespace INFOS_NXChecker_configurator
                     HelperMethods   .SetSubKey(RegistryNames.serverUsername, tboxUsername.Text, false);
                     HelperMethods   .SetSubKey(RegistryNames.serverPassword, tboxPassword.Text, false);
 
+                    serverIP        = tboxServerIP.Text;
+                    databaseName    = tboxImeBaze.Text;
+                    serverUsername  = tboxUsername.Text;
+
                     MessageBox      .Show("Podaci ažurirani.", "Podaci", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    this            .Close();
+                    this            .DialogResult = DialogResult.OK;
                 }
                 catch (Exception ex)
                 {
@@ -127,6 +132,32 @@ namespace INFOS_NXChecker_configurator
             {
                 tboxPassword.PasswordChar = Convert.ToChar("*");
             }
+        }
+
+        private void btnTestirajKonekciju_Click(object sender, EventArgs e)
+        {
+            serverIP        = tboxServerIP.Text;
+            databaseName    = tboxImeBaze.Text;
+            serverUsername  = tboxUsername.Text;
+            serverPassword  = tboxPassword.Text;
+            
+            string connectionString = "Data Source=" + serverIP +";Initial Catalog=" + databaseName + ";User ID=" + serverUsername + ";Password=" + serverPassword;
+
+            SqlConnection sqlCon = new SqlConnection(connectionString);
+
+            try
+            {
+                this.Cursor = Cursors.WaitCursor;
+                sqlCon.Open();
+                this.Cursor = Cursors.Default;
+                MessageBox.Show("Konekcija uspješna!", "Konekcija", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch
+            {
+                this.Cursor = Cursors.Default;
+                MessageBox.Show("Greška pri konekciji", "Konekcija", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
         }
     }
 }
