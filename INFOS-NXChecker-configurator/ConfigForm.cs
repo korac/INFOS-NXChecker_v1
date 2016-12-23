@@ -233,5 +233,16 @@ namespace INFOS_NXChecker_configurator
                 lblUsernameInfo.Text = infoForm.serverUsername;
             }
         }
+
+        private void btnPartnerPodaci_Click(object sender, EventArgs e)
+        {
+            PartnerPodaciForm partnerForm   = new PartnerPodaciForm();
+            if(partnerForm.ShowDialog() == DialogResult.OK)
+            {
+                lblOIB.Text         = partnerForm.OIB;
+                lblLocation.Text    = partnerForm.location;
+                lblDevice.Text      = partnerForm.device;
+            }
+        }
     }
 }

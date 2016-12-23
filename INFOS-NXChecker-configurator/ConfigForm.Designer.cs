@@ -35,6 +35,11 @@
             this.lblServiceDesc = new System.Windows.Forms.Label();
             this.panelStatus = new System.Windows.Forms.Panel();
             this.panelKonf = new System.Windows.Forms.Panel();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.lblLocation = new System.Windows.Forms.Label();
+            this.lblDevice = new System.Windows.Forms.Label();
+            this.btnPartnerPodaci = new System.Windows.Forms.Button();
+            this.lblOIB = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.lblDatabaseInfo = new System.Windows.Forms.Label();
             this.lblUsernameInfo = new System.Windows.Forms.Label();
@@ -69,13 +74,9 @@
             this.errProviderTemp1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errProviderTemp2 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errProviderTemp3 = new System.Windows.Forms.ErrorProvider(this.components);
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.lblOIB = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.lblLocation = new System.Windows.Forms.Label();
-            this.lblDevice = new System.Windows.Forms.Label();
             this.panelStatus.SuspendLayout();
             this.panelKonf.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.gboxTemps.SuspendLayout();
             this.gboxPostavke.SuspendLayout();
@@ -85,7 +86,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.errProviderTemp1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errProviderTemp2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errProviderTemp3)).BeginInit();
-            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnRunStop
@@ -154,6 +154,69 @@
             this.panelKonf.Name = "panelKonf";
             this.panelKonf.Size = new System.Drawing.Size(689, 536);
             this.panelKonf.TabIndex = 3;
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox2.Controls.Add(this.lblLocation);
+            this.groupBox2.Controls.Add(this.lblDevice);
+            this.groupBox2.Controls.Add(this.btnPartnerPodaci);
+            this.groupBox2.Controls.Add(this.lblOIB);
+            this.groupBox2.ForeColor = System.Drawing.SystemColors.MenuHighlight;
+            this.groupBox2.Location = new System.Drawing.Point(415, 70);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(234, 104);
+            this.groupBox2.TabIndex = 19;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Partner podaci";
+            // 
+            // lblLocation
+            // 
+            this.lblLocation.AutoSize = true;
+            this.lblLocation.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lblLocation.ForeColor = System.Drawing.Color.DimGray;
+            this.lblLocation.Location = new System.Drawing.Point(28, 51);
+            this.lblLocation.Name = "lblLocation";
+            this.lblLocation.Size = new System.Drawing.Size(55, 13);
+            this.lblLocation.TabIndex = 23;
+            this.lblLocation.Text = "Lokacija";
+            // 
+            // lblDevice
+            // 
+            this.lblDevice.AutoSize = true;
+            this.lblDevice.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lblDevice.ForeColor = System.Drawing.Color.DimGray;
+            this.lblDevice.Location = new System.Drawing.Point(38, 78);
+            this.lblDevice.Name = "lblDevice";
+            this.lblDevice.Size = new System.Drawing.Size(45, 13);
+            this.lblDevice.TabIndex = 24;
+            this.lblDevice.Text = "Uređaj";
+            // 
+            // btnPartnerPodaci
+            // 
+            this.btnPartnerPodaci.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.btnPartnerPodaci.BackColor = System.Drawing.SystemColors.Highlight;
+            this.btnPartnerPodaci.FlatAppearance.BorderSize = 0;
+            this.btnPartnerPodaci.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnPartnerPodaci.ForeColor = System.Drawing.Color.White;
+            this.btnPartnerPodaci.Location = new System.Drawing.Point(156, 23);
+            this.btnPartnerPodaci.Name = "btnPartnerPodaci";
+            this.btnPartnerPodaci.Size = new System.Drawing.Size(72, 68);
+            this.btnPartnerPodaci.TabIndex = 23;
+            this.btnPartnerPodaci.Text = "IZMIJENI";
+            this.btnPartnerPodaci.UseVisualStyleBackColor = false;
+            this.btnPartnerPodaci.Click += new System.EventHandler(this.btnPartnerPodaci_Click);
+            // 
+            // lblOIB
+            // 
+            this.lblOIB.AutoSize = true;
+            this.lblOIB.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lblOIB.ForeColor = System.Drawing.Color.DimGray;
+            this.lblOIB.Location = new System.Drawing.Point(55, 23);
+            this.lblOIB.Name = "lblOIB";
+            this.lblOIB.Size = new System.Drawing.Size(28, 13);
+            this.lblOIB.TabIndex = 23;
+            this.lblOIB.Text = "OIB";
             // 
             // groupBox1
             // 
@@ -566,68 +629,6 @@
             this.errProviderTemp3.BlinkStyle = System.Windows.Forms.ErrorBlinkStyle.NeverBlink;
             this.errProviderTemp3.ContainerControl = this;
             // 
-            // groupBox2
-            // 
-            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox2.Controls.Add(this.lblLocation);
-            this.groupBox2.Controls.Add(this.lblDevice);
-            this.groupBox2.Controls.Add(this.button1);
-            this.groupBox2.Controls.Add(this.lblOIB);
-            this.groupBox2.ForeColor = System.Drawing.SystemColors.MenuHighlight;
-            this.groupBox2.Location = new System.Drawing.Point(415, 70);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(234, 104);
-            this.groupBox2.TabIndex = 19;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Partner podaci";
-            // 
-            // lblOIB
-            // 
-            this.lblOIB.AutoSize = true;
-            this.lblOIB.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.lblOIB.ForeColor = System.Drawing.Color.DimGray;
-            this.lblOIB.Location = new System.Drawing.Point(55, 23);
-            this.lblOIB.Name = "lblOIB";
-            this.lblOIB.Size = new System.Drawing.Size(28, 13);
-            this.lblOIB.TabIndex = 23;
-            this.lblOIB.Text = "OIB";
-            // 
-            // button1
-            // 
-            this.button1.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.button1.BackColor = System.Drawing.SystemColors.Highlight;
-            this.button1.FlatAppearance.BorderSize = 0;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.ForeColor = System.Drawing.Color.White;
-            this.button1.Location = new System.Drawing.Point(156, 23);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(72, 68);
-            this.button1.TabIndex = 23;
-            this.button1.Text = "IZMIJENI";
-            this.button1.UseVisualStyleBackColor = false;
-            // 
-            // lblLocation
-            // 
-            this.lblLocation.AutoSize = true;
-            this.lblLocation.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.lblLocation.ForeColor = System.Drawing.Color.DimGray;
-            this.lblLocation.Location = new System.Drawing.Point(28, 51);
-            this.lblLocation.Name = "lblLocation";
-            this.lblLocation.Size = new System.Drawing.Size(55, 13);
-            this.lblLocation.TabIndex = 23;
-            this.lblLocation.Text = "Lokacija";
-            // 
-            // lblDevice
-            // 
-            this.lblDevice.AutoSize = true;
-            this.lblDevice.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.lblDevice.ForeColor = System.Drawing.Color.DimGray;
-            this.lblDevice.Location = new System.Drawing.Point(38, 78);
-            this.lblDevice.Name = "lblDevice";
-            this.lblDevice.Size = new System.Drawing.Size(45, 13);
-            this.lblDevice.TabIndex = 24;
-            this.lblDevice.Text = "Uređaj";
-            // 
             // ConfigForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -646,6 +647,8 @@
             this.panelStatus.PerformLayout();
             this.panelKonf.ResumeLayout(false);
             this.panelKonf.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.gboxTemps.ResumeLayout(false);
@@ -658,8 +661,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.errProviderTemp1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.errProviderTemp2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.errProviderTemp3)).EndInit();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -706,7 +707,7 @@
         private System.Windows.Forms.Label lblDatabase;
         private System.Windows.Forms.Label lblServerIP;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnPartnerPodaci;
         private System.Windows.Forms.Label lblOIB;
         private System.Windows.Forms.Label lblLocation;
         private System.Windows.Forms.Label lblDevice;

@@ -42,7 +42,7 @@ namespace INFOS_NXChecker_configurator
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Greška kod pristupa podacima: " + ex.Message);
+                MessageBox.Show("Greška kod pristupa podacima: " + ex.Message, "Greška", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

@@ -69,6 +69,12 @@
     <Compile Include="LoginForm.Designer.cs">
       <DependentUpon>LoginForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="PartnerPodaciForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PartnerPodaciForm.Designer.cs">
+      <DependentUpon>PartnerPodaciForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServerInfoForm.cs">
@@ -82,6 +88,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="LoginForm.resx">
       <DependentUpon>LoginForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PartnerPodaciForm.resx">
+      <DependentUpon>PartnerPodaciForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

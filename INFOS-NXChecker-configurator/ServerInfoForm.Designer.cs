@@ -88,6 +88,7 @@
             // tboxServerIP
             // 
             this.tboxServerIP.Location = new System.Drawing.Point(110, 33);
+            this.tboxServerIP.MaxLength = 100;
             this.tboxServerIP.Name = "tboxServerIP";
             this.tboxServerIP.Size = new System.Drawing.Size(180, 20);
             this.tboxServerIP.TabIndex = 6;
@@ -96,6 +97,7 @@
             // tboxPort
             // 
             this.tboxPort.Location = new System.Drawing.Point(110, 85);
+            this.tboxPort.MaxLength = 10;
             this.tboxPort.Name = "tboxPort";
             this.tboxPort.Size = new System.Drawing.Size(180, 20);
             this.tboxPort.TabIndex = 7;
@@ -104,6 +106,7 @@
             // tboxImeBaze
             // 
             this.tboxImeBaze.Location = new System.Drawing.Point(110, 59);
+            this.tboxImeBaze.MaxLength = 40;
             this.tboxImeBaze.Name = "tboxImeBaze";
             this.tboxImeBaze.Size = new System.Drawing.Size(180, 20);
             this.tboxImeBaze.TabIndex = 8;
@@ -154,6 +157,7 @@
             // tboxPassword
             // 
             this.tboxPassword.Location = new System.Drawing.Point(142, 62);
+            this.tboxPassword.MaxLength = 30;
             this.tboxPassword.Name = "tboxPassword";
             this.tboxPassword.PasswordChar = '*';
             this.tboxPassword.Size = new System.Drawing.Size(180, 20);
@@ -163,6 +167,7 @@
             // tboxUsername
             // 
             this.tboxUsername.Location = new System.Drawing.Point(142, 36);
+            this.tboxUsername.MaxLength = 50;
             this.tboxUsername.Name = "tboxUsername";
             this.tboxUsername.Size = new System.Drawing.Size(180, 20);
             this.tboxUsername.TabIndex = 13;
@@ -242,6 +247,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.WhiteSmoke;
             this.ClientSize = new System.Drawing.Size(717, 233);
             this.Controls.Add(this.btnTestirajKonekciju);
             this.Controls.Add(this.btnZatvori);

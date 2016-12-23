@@ -72,5 +72,20 @@ namespace INFOS_NXChecker_regInfo
         /// Registry key string za path Temp3 datoteke
         /// </summary>
         public const String pathTemp3       = "28rnvj";
+
+        /// <summary>
+        /// Registry key za OIB partnera
+        /// </summary>
+        public const String partnersOIB     = "u4fnw3DD";
+
+        /// <summary>
+        /// Registry key za lokaciju partnera
+        /// </summary>
+        public const String partnersLocation = "23nwdNKL";
+
+        /// <summary>
+        /// Registry key za uređaj partnera
+        /// </summary>
+        public const String partnersDevice  = "4s4MAWw3";
     }
 }
