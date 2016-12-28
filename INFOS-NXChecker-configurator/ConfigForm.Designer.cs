@@ -175,22 +175,22 @@
             this.lblLocation.AutoSize = true;
             this.lblLocation.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.lblLocation.ForeColor = System.Drawing.Color.DimGray;
-            this.lblLocation.Location = new System.Drawing.Point(28, 51);
+            this.lblLocation.Location = new System.Drawing.Point(17, 51);
             this.lblLocation.Name = "lblLocation";
-            this.lblLocation.Size = new System.Drawing.Size(55, 13);
+            this.lblLocation.Size = new System.Drawing.Size(98, 13);
             this.lblLocation.TabIndex = 23;
-            this.lblLocation.Text = "Lokacija";
+            this.lblLocation.Text = "Unesite lokaciju";
             // 
             // lblDevice
             // 
             this.lblDevice.AutoSize = true;
             this.lblDevice.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.lblDevice.ForeColor = System.Drawing.Color.DimGray;
-            this.lblDevice.Location = new System.Drawing.Point(38, 78);
+            this.lblDevice.Location = new System.Drawing.Point(17, 78);
             this.lblDevice.Name = "lblDevice";
-            this.lblDevice.Size = new System.Drawing.Size(45, 13);
+            this.lblDevice.Size = new System.Drawing.Size(90, 13);
             this.lblDevice.TabIndex = 24;
-            this.lblDevice.Text = "Uređaj";
+            this.lblDevice.Text = "Unesite uređaj";
             // 
             // btnPartnerPodaci
             // 
@@ -212,11 +212,11 @@
             this.lblOIB.AutoSize = true;
             this.lblOIB.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.lblOIB.ForeColor = System.Drawing.Color.DimGray;
-            this.lblOIB.Location = new System.Drawing.Point(55, 23);
+            this.lblOIB.Location = new System.Drawing.Point(17, 23);
             this.lblOIB.Name = "lblOIB";
-            this.lblOIB.Size = new System.Drawing.Size(28, 13);
+            this.lblOIB.Size = new System.Drawing.Size(75, 13);
             this.lblOIB.TabIndex = 23;
-            this.lblOIB.Text = "OIB";
+            this.lblOIB.Text = "Unesite OIB";
             // 
             // groupBox1
             // 

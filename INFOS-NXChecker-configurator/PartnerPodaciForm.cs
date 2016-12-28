@@ -43,23 +43,31 @@ namespace INFOS_NXChecker_configurator
 
         private void btnSpremi_Click(object sender, EventArgs e)
         {
-            try
+            if (ValidateInput(tboxOIB) && ValidateInput(tboxLocation) && ValidateInput(tboxDevice))
             {
-                HelperMethods   .SetSubKey(RegistryNames.partnersOIB, tboxOIB.Text);
-                HelperMethods   .SetSubKey(RegistryNames.partnersLocation, tboxLocation.Text);
-                HelperMethods   .SetSubKey(RegistryNames.partnersDevice, tboxDevice.Text);
+                try
+                {
+                    HelperMethods   .SetSubKey(RegistryNames.partnersOIB, tboxOIB.Text);
+                    HelperMethods   .SetSubKey(RegistryNames.partnersLocation, tboxLocation.Text);
+                    HelperMethods   .SetSubKey(RegistryNames.partnersDevice, tboxDevice.Text);
 
-                OIB         = tboxOIB.Text;
-                location    = tboxLocation.Text;
-                device      = tboxDevice.Text;
+                    OIB         = tboxOIB.Text;
+                    location    = tboxLocation.Text;
+                    device      = tboxDevice.Text;
 
-                MessageBox  .Show("Podaci ažurirani.", "Podaci", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                this        .DialogResult   = DialogResult.OK;
+                    MessageBox  .Show("Podaci ažurirani.", "Podaci", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    this        .DialogResult   = DialogResult.OK;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Problem kod ažuriranja podataka. " + ex.Message, "Greška", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
-            catch (Exception ex)
+            else
             {
-                MessageBox.Show("Problem kod ažuriranja podataka. " + ex.Message, "Greška", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Unesite sve potrebne podatke", "Podaci", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            
         }
 
         private void btnZatvori_Click(object sender, EventArgs e)
@@ -67,5 +75,35 @@ namespace INFOS_NXChecker_configurator
             this.Close();
         }
 
+        private void tboxOIB_Validating(object sender, CancelEventArgs e)
+        {
+            ValidateInput(tboxOIB);
+        }
+
+        private void tboxLocation_Validating(object sender, CancelEventArgs e)
+        {
+            ValidateInput(tboxLocation);
+        }
+
+        private void tboxDevice_Validating(object sender, CancelEventArgs e)
+        {
+            ValidateInput(tboxDevice);
+        }
+
+        private bool ValidateInput(TextBox box)
+        {
+            bool bStatus    = true;
+            if(String.IsNullOrWhiteSpace(box.Text) || String.IsNullOrEmpty(box.Text))
+            {
+                errProviderInput    .SetError(box, "Unesite podatke");
+                bStatus             = false;
+            }
+            else
+            {
+                errProviderInput    .SetError(box, "");
+            }
+
+            return bStatus;
+        }
     }
 }

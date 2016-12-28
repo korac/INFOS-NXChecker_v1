@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PartnerPodaciForm));
             this.lblOIB = new System.Windows.Forms.Label();
             this.lblDevice = new System.Windows.Forms.Label();
@@ -37,6 +38,8 @@
             this.tboxOIB = new System.Windows.Forms.TextBox();
             this.btnZatvori = new System.Windows.Forms.Button();
             this.btnSpremi = new System.Windows.Forms.Button();
+            this.errProviderInput = new System.Windows.Forms.ErrorProvider(this.components);
+            ((System.ComponentModel.ISupportInitialize)(this.errProviderInput)).BeginInit();
             this.SuspendLayout();
             // 
             // lblOIB
@@ -68,6 +71,7 @@
             this.tboxLocation.Name = "tboxLocation";
             this.tboxLocation.Size = new System.Drawing.Size(214, 20);
             this.tboxLocation.TabIndex = 14;
+            this.tboxLocation.Validating += new System.ComponentModel.CancelEventHandler(this.tboxLocation_Validating);
             // 
             // lblLocation
             // 
@@ -87,6 +91,7 @@
             this.tboxDevice.Name = "tboxDevice";
             this.tboxDevice.Size = new System.Drawing.Size(214, 20);
             this.tboxDevice.TabIndex = 13;
+            this.tboxDevice.Validating += new System.ComponentModel.CancelEventHandler(this.tboxDevice_Validating);
             // 
             // tboxOIB
             // 
@@ -95,6 +100,7 @@
             this.tboxOIB.Name = "tboxOIB";
             this.tboxOIB.Size = new System.Drawing.Size(214, 20);
             this.tboxOIB.TabIndex = 12;
+            this.tboxOIB.Validating += new System.ComponentModel.CancelEventHandler(this.tboxOIB_Validating);
             // 
             // btnZatvori
             // 
@@ -124,6 +130,11 @@
             this.btnSpremi.UseVisualStyleBackColor = false;
             this.btnSpremi.Click += new System.EventHandler(this.btnSpremi_Click);
             // 
+            // errProviderInput
+            // 
+            this.errProviderInput.BlinkStyle = System.Windows.Forms.ErrorBlinkStyle.NeverBlink;
+            this.errProviderInput.ContainerControl = this;
+            // 
             // PartnerPodaciForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -142,8 +153,10 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "PartnerPodaciForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Podaci o Partneru";
             this.Load += new System.EventHandler(this.PartnerPodaciForm_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.errProviderInput)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -159,5 +172,6 @@
         private System.Windows.Forms.TextBox tboxOIB;
         private System.Windows.Forms.Button btnZatvori;
         private System.Windows.Forms.Button btnSpremi;
+        private System.Windows.Forms.ErrorProvider errProviderInput;
     }
 }

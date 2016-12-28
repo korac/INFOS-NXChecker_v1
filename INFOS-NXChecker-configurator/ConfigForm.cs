@@ -20,8 +20,11 @@ namespace INFOS_NXChecker_configurator
         string serverUsername;
         //string serverPassword;
         //string serverPort;
+        string OIB;
+        string location;
+        string device;
         string period;
-        string path;
+        string backupPath;
         string deleteDays;
         string tempPath1;
         string tempPath2;
@@ -38,14 +41,18 @@ namespace INFOS_NXChecker_configurator
             try
             {
                 period      = HelperMethods.GetSubKey(RegistryNames.period);
-                path        = HelperMethods.GetSubKey(RegistryNames.path);
+                backupPath  = HelperMethods.GetSubKey(RegistryNames.path);
                 deleteDays  = HelperMethods.GetSubKey(RegistryNames.deletionDays);
 
                 serverIP        = HelperMethods.GetSubKey(RegistryNames.serverIP);
                 databaseName    = HelperMethods.GetSubKey(RegistryNames.databaseName);
                 serverUsername  = HelperMethods.GetSubKey(RegistryNames.serverUsername);
-                //serverPassword  = HelperMethods.GetSubKey(RegistryNames.serverPassword, false);
-                //serverPort      = HelperMethods.GetSubKey(RegistryNames.serverPort, false);
+                //serverPassword  = HelperMethods.GetSubKey(RegistryNames.serverPassword);
+                //serverPort      = HelperMethods.GetSubKey(RegistryNames.serverPort);
+
+                OIB         = HelperMethods.GetSubKey(RegistryNames.partnersOIB);
+                location    = HelperMethods.GetSubKey(RegistryNames.partnersLocation);
+                device      = HelperMethods.GetSubKey(RegistryNames.partnersDevice);
 
                 tempPath1   = HelperMethods.GetSubKey(RegistryNames.pathTemp1);
                 tempPath2   = HelperMethods.GetSubKey(RegistryNames.pathTemp2);
@@ -59,10 +66,14 @@ namespace INFOS_NXChecker_configurator
                 numSati.Value   = timeInterval.Hours;
                 numDani.Value   = Convert.ToInt32(deleteDays);
 
-                tboxPath.Text   = path;
+                tboxPath.Text   = backupPath;
                 tboxTemp1.Text  = tempPath1;
                 tboxTemp2.Text  = tempPath2;
                 tboxTemp3.Text  = tempPath3;
+
+                CheckPartnerPodaci(lblOIB, OIB, "OIB");
+                CheckPartnerPodaci(lblLocation, location, "lokaciju");
+                CheckPartnerPodaci(lblDevice, device, "uređaj");
 
                 ServiceController nxService = new ServiceController("NXCheckerService");
                 if(nxService.Status.ToString() == "Running")
@@ -242,6 +253,24 @@ namespace INFOS_NXChecker_configurator
                 lblOIB.Text         = partnerForm.OIB;
                 lblLocation.Text    = partnerForm.location;
                 lblDevice.Text      = partnerForm.device;
+
+                lblOIB.ForeColor        = Color.DimGray;
+                lblLocation.ForeColor   = Color.DimGray;
+                lblDevice.ForeColor     = Color.DimGray;
+            }
+        }
+
+        private void CheckPartnerPodaci(Label lbl, string val, string valName)
+        {
+            if (String.IsNullOrWhiteSpace(val))
+            {
+                lbl.Text        = "Unesite " + valName;
+                lbl.ForeColor   = Color.IndianRed;
+            }
+            else
+            {
+                lbl.Text        = val;
+                lbl.ForeColor   = Color.DimGray;
             }
         }
     }
