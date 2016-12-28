@@ -8,12 +8,12 @@ namespace INFOS_NXChecker_regInfo
     public class RegistryNames
     {
         /// <summary>
-        /// Registry key string za username
+        /// Registry key string za username authentication
         /// </summary>
         public const String username        = "2eTyUm4";
 
         /// <summary>
-        /// Registry key string za password
+        /// Registry key string za password authentication
         /// </summary>
         public const String password        = "kvVx9T0";
 

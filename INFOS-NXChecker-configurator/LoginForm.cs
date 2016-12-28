@@ -25,12 +25,25 @@ namespace INFOS_NXChecker_configurator
         }
 
         private void LoginForm_Load(object sender, EventArgs e)
-        {            
-            korisnicko   = HelperMethods.GetSubKey(RegistryNames.username, true);
-            lozinka      = HelperMethods.GetSubKey(RegistryNames.password, true);
+        {
+            try
+            {
+                korisnicko   = HelperMethods.GetSubKey(RegistryNames.username);
+                lozinka      = HelperMethods.GetSubKey(RegistryNames.password);
 
-            tboxKorisnicko.Text = korisnicko;
-            tboxLozinka.Text    = lozinka;
+                tboxKorisnicko.Text = korisnicko;
+                tboxLozinka.Text    = lozinka;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Greška kod pristupa login informacijama: " + ex.Message, "Greška", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                tboxKorisnicko.Text = "";
+                tboxLozinka.Text    = "";
+            }
+            
+
+            
         }
 
         private void btnOk_Click(object sender, EventArgs e)
@@ -39,11 +52,6 @@ namespace INFOS_NXChecker_configurator
             {
                 try
                 {
-                    //LoginInfo login     = new LoginInfo();
-
-                    //string korisnicko   = login.getKorisnickoIme();
-                    //string lozinka      = login.getLozinka();
-
                     if (korisnicko == tboxKorisnicko.Text && lozinka == tboxLozinka.Text)
                     {
                         this.DialogResult = DialogResult.OK;

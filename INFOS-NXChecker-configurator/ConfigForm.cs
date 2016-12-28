@@ -37,19 +37,19 @@ namespace INFOS_NXChecker_configurator
         {            
             try
             {
-                period      = HelperMethods.GetSubKey(RegistryNames.period, false);
-                path        = HelperMethods.GetSubKey(RegistryNames.path, false);
-                deleteDays  = HelperMethods.GetSubKey(RegistryNames.deletionDays, false);
+                period      = HelperMethods.GetSubKey(RegistryNames.period);
+                path        = HelperMethods.GetSubKey(RegistryNames.path);
+                deleteDays  = HelperMethods.GetSubKey(RegistryNames.deletionDays);
 
-                serverIP        = HelperMethods.GetSubKey(RegistryNames.serverIP, false);
-                databaseName    = HelperMethods.GetSubKey(RegistryNames.databaseName, false);
-                serverUsername  = HelperMethods.GetSubKey(RegistryNames.serverUsername, false);
+                serverIP        = HelperMethods.GetSubKey(RegistryNames.serverIP);
+                databaseName    = HelperMethods.GetSubKey(RegistryNames.databaseName);
+                serverUsername  = HelperMethods.GetSubKey(RegistryNames.serverUsername);
                 //serverPassword  = HelperMethods.GetSubKey(RegistryNames.serverPassword, false);
                 //serverPort      = HelperMethods.GetSubKey(RegistryNames.serverPort, false);
 
-                tempPath1   = HelperMethods.GetSubKey(RegistryNames.pathTemp1, false);
-                tempPath2   = HelperMethods.GetSubKey(RegistryNames.pathTemp2, false);
-                tempPath3   = HelperMethods.GetSubKey(RegistryNames.pathTemp3, false);
+                tempPath1   = HelperMethods.GetSubKey(RegistryNames.pathTemp1);
+                tempPath2   = HelperMethods.GetSubKey(RegistryNames.pathTemp2);
+                tempPath3   = HelperMethods.GetSubKey(RegistryNames.pathTemp3);
 
                 lblServerIPInfo.Text    = serverIP;
                 lblDatabaseInfo.Text    = databaseName;
@@ -100,12 +100,12 @@ namespace INFOS_NXChecker_configurator
                 timeInterval = new TimeSpan((int)numSati.Value, 0, 0);
                 try
                 {
-                    HelperMethods   .SetSubKey(RegistryNames.period, timeInterval.TotalMilliseconds.ToString(), false);
-                    HelperMethods   .SetSubKey(RegistryNames.path, tboxPath.Text, false);
-                    HelperMethods   .SetSubKey(RegistryNames.deletionDays, numDani.Value.ToString(), false);
-                    HelperMethods   .SetSubKey(RegistryNames.pathTemp1, tboxTemp1.Text, false);
-                    HelperMethods   .SetSubKey(RegistryNames.pathTemp2, tboxTemp2.Text, false);
-                    HelperMethods   .SetSubKey(RegistryNames.pathTemp3, tboxTemp3.Text, false);
+                    HelperMethods   .SetSubKey(RegistryNames.period, timeInterval.TotalMilliseconds.ToString());
+                    HelperMethods   .SetSubKey(RegistryNames.path, tboxPath.Text);
+                    HelperMethods   .SetSubKey(RegistryNames.deletionDays, numDani.Value.ToString());
+                    HelperMethods   .SetSubKey(RegistryNames.pathTemp1, tboxTemp1.Text);
+                    HelperMethods   .SetSubKey(RegistryNames.pathTemp2, tboxTemp2.Text);
+                    HelperMethods   .SetSubKey(RegistryNames.pathTemp3, tboxTemp3.Text);
 
                     MessageBox      .Show("Podaci ažurirani.", "Podaci", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }

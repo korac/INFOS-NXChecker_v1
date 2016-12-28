@@ -11,7 +11,6 @@ namespace INFOS_NXChecker_regInfo
         #region Variables
         private static RegistryKey serviceKey;
         private const String confLocation   = "SYSTEM\\CurrentControlSet\\Services\\INFOS-NXChecker";
-        private const String authLocation   = "SOFTWARE\\C#\\NXServisAuth";
         #endregion
 
         /// <summary>
@@ -21,19 +20,11 @@ namespace INFOS_NXChecker_regInfo
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
-        public static string GetSubKey(string key, bool isAuth)
+        public static string GetSubKey(string key)
         {
             string location;
-            if (isAuth)
-            {
-                location    = authLocation;
-                serviceKey  = Registry.CurrentUser;
-            }
-            else
-            {
-                location    = confLocation;
-                serviceKey  = Registry.LocalMachine;
-            }
+            location    = confLocation;
+            serviceKey  = Registry.LocalMachine;
 
             try
             {
@@ -42,7 +33,7 @@ namespace INFOS_NXChecker_regInfo
 
                 if (string.IsNullOrEmpty(returnVal))
                 {
-                    SetSubKey(key, "", isAuth);
+                    SetSubKey(key, "");
                     return "";
                 }
 
@@ -61,19 +52,11 @@ namespace INFOS_NXChecker_regInfo
         /// </summary>
         /// <param name="key"></param>
         /// <param name="val"></param>
-        public static void SetSubKey(string key, string val, bool isAuth)
+        public static void SetSubKey(string key, string val)
         {
             string location;
-            if (isAuth)
-            {
-                location    = authLocation;
-                serviceKey  = Registry.CurrentUser;
-            }
-            else
-            {
-                location    = confLocation;
-                serviceKey  = Registry.LocalMachine;
-            }
+            location    = confLocation;
+            serviceKey  = Registry.LocalMachine;
 
             try
             {

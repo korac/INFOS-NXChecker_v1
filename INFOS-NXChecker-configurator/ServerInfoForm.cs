@@ -27,11 +27,11 @@ namespace INFOS_NXChecker_configurator
         {
             try
             {
-                serverIP        = HelperMethods.GetSubKey(RegistryNames.serverIP, false);
-                databaseName    = HelperMethods.GetSubKey(RegistryNames.databaseName, false);
-                serverUsername  = HelperMethods.GetSubKey(RegistryNames.serverUsername, false);
-                serverPassword  = HelperMethods.GetSubKey(RegistryNames.serverPassword, false);
-                serverPort      = HelperMethods.GetSubKey(RegistryNames.serverPort, false);
+                serverIP        = HelperMethods.GetSubKey(RegistryNames.serverIP);
+                databaseName    = HelperMethods.GetSubKey(RegistryNames.databaseName);
+                serverUsername  = HelperMethods.GetSubKey(RegistryNames.serverUsername);
+                serverPassword  = HelperMethods.GetSubKey(RegistryNames.serverPassword);
+                serverPort      = HelperMethods.GetSubKey(RegistryNames.serverPort);
 
                 tboxServerIP.Text   = serverIP;
                 tboxImeBaze.Text    = databaseName;
@@ -52,11 +52,11 @@ namespace INFOS_NXChecker_configurator
             {
                 try
                 {
-                    HelperMethods   .SetSubKey(RegistryNames.serverIP, tboxServerIP.Text, false);
-                    HelperMethods   .SetSubKey(RegistryNames.databaseName, tboxImeBaze.Text, false);
-                    HelperMethods   .SetSubKey(RegistryNames.serverPort, tboxPort.Text, false);
-                    HelperMethods   .SetSubKey(RegistryNames.serverUsername, tboxUsername.Text, false);
-                    HelperMethods   .SetSubKey(RegistryNames.serverPassword, tboxPassword.Text, false);
+                    HelperMethods   .SetSubKey(RegistryNames.serverIP, tboxServerIP.Text);
+                    HelperMethods   .SetSubKey(RegistryNames.databaseName, tboxImeBaze.Text);
+                    HelperMethods   .SetSubKey(RegistryNames.serverPort, tboxPort.Text);
+                    HelperMethods   .SetSubKey(RegistryNames.serverUsername, tboxUsername.Text);
+                    HelperMethods   .SetSubKey(RegistryNames.serverPassword, tboxPassword.Text);
 
                     serverIP        = tboxServerIP.Text;
                     databaseName    = tboxImeBaze.Text;

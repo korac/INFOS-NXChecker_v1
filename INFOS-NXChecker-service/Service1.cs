@@ -13,12 +13,18 @@ using INFOS_NXChecker_regInfo;
 using System.IO;
 using Ionic.Zip;
 using System.Management;
+using System.Data.SqlClient;
 
 namespace INFOS_NXChecker_service
 {
     public partial class NXCheckerService : ServiceBase
     {
         #region Variables
+        string serverIP;
+        string databaseName;
+        string serverUsername;
+        string serverPassword;
+        string serverPort;
         string period;
         string path;
         string deletionDays;
@@ -37,13 +43,19 @@ namespace INFOS_NXChecker_service
         {
             try
             {
-                period          = HelperMethods.GetSubKey(RegistryNames.period, false);
-                path            = HelperMethods.GetSubKey(RegistryNames.path, false);
-                deletionDays    = HelperMethods.GetSubKey(RegistryNames.deletionDays, false);
+                serverIP        = HelperMethods.GetSubKey(RegistryNames.serverIP);
+                databaseName    = HelperMethods.GetSubKey(RegistryNames.databaseName);
+                serverUsername  = HelperMethods.GetSubKey(RegistryNames.serverUsername);
+                serverPassword  = HelperMethods.GetSubKey(RegistryNames.serverPassword);
+                serverPort      = HelperMethods.GetSubKey(RegistryNames.serverPort);
+
+                period          = HelperMethods.GetSubKey(RegistryNames.period);
+                path            = HelperMethods.GetSubKey(RegistryNames.path);
+                deletionDays    = HelperMethods.GetSubKey(RegistryNames.deletionDays);
                 
-                tempPath1   = HelperMethods.GetSubKey(RegistryNames.pathTemp1, false);
-                tempPath2   = HelperMethods.GetSubKey(RegistryNames.pathTemp2, false);
-                tempPath3   = HelperMethods.GetSubKey(RegistryNames.pathTemp3, false);
+                tempPath1   = HelperMethods.GetSubKey(RegistryNames.pathTemp1);
+                tempPath2   = HelperMethods.GetSubKey(RegistryNames.pathTemp2);
+                tempPath3   = HelperMethods.GetSubKey(RegistryNames.pathTemp3);
 
                 tmr.Interval    = Convert.ToInt32(period);
                 tmr.Elapsed     += Tmr_Elapsed;
@@ -86,6 +98,18 @@ namespace INFOS_NXChecker_service
             {
                 File.WriteAllText(@"C:\Users\Kristijan\Desktop\greska_log-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "Dogodila se GREŠKA: " + ex.Message + ";" + ex.TargetSite + "; " + ex.StackTrace);
             }
+        }
+
+        private void CheckUser()
+        {
+            SqlConnection sqlCon    = new SqlConnection();
+            string connectionString = "Data Source=" + serverIP + ";Initial Catalog=" + databaseName + ";User ID=" + serverUsername + ";Password=" + serverPassword;
+            string query = "SELECT * FROM Partners";
+
+            SqlCommand cmd = new SqlCommand(query, sqlCon);
+            
+
+            //In progress....
         }
 
         private void ZipFileCheck(string backupPath)
@@ -160,11 +184,11 @@ namespace INFOS_NXChecker_service
                 DriveInfo backupDrive   = new DriveInfo(Path.GetPathRoot(backupDir.FullName));
 
                 double totalSpace       = backupDrive.TotalSize / (Math.Pow(1024, 3));
-                double freeSpace        = backupDrive.AvailableFreeSpace / (Math.Pow(1024, 3));
+                double freeSpace        = backupDrive.TotalFreeSpace / (Math.Pow(1024, 3));
 
-                double postotak         = freeSpace / totalSpace; 
+                double postotak         = (freeSpace / totalSpace) * 100; 
 
-                File.WriteAllText(@"C:\Users\Kristijan\Desktop\discCheck-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "ZNACI, AVAILABLE SPACE: " + freeSpace.ToString("n2") + "; TOTAL SPACE: " + totalSpace.ToString("n2") + "; U postocima: " + postotak.ToString("n2"));
+                File.WriteAllText(@"C:\Users\Kristijan\Desktop\discCheck-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "ZNACI, AVAILABLE SPACE: " + freeSpace.ToString("0.0") + "; TOTAL SPACE: " + totalSpace.ToString("0.0") + "; U postocima: " + postotak.ToString("0.0") + "%");
             }
             catch (Exception ex)
             {

@@ -27,9 +27,9 @@ namespace INFOS_NXChecker_configurator
         {
             try
             {
-                OIB         = HelperMethods.GetSubKey(RegistryNames.partnersOIB, false);
-                location    = HelperMethods.GetSubKey(RegistryNames.partnersLocation, false);
-                device      = HelperMethods.GetSubKey(RegistryNames.partnersDevice, false);
+                OIB         = HelperMethods.GetSubKey(RegistryNames.partnersOIB);
+                location    = HelperMethods.GetSubKey(RegistryNames.partnersLocation);
+                device      = HelperMethods.GetSubKey(RegistryNames.partnersDevice);
 
                 tboxOIB.Text        = OIB;
                 tboxLocation.Text   = location;
@@ -45,9 +45,9 @@ namespace INFOS_NXChecker_configurator
         {
             try
             {
-                HelperMethods   .SetSubKey(RegistryNames.partnersOIB, tboxOIB.Text, false);
-                HelperMethods   .SetSubKey(RegistryNames.partnersLocation, tboxLocation.Text, false);
-                HelperMethods   .SetSubKey(RegistryNames.partnersDevice, tboxDevice.Text, false);
+                HelperMethods   .SetSubKey(RegistryNames.partnersOIB, tboxOIB.Text);
+                HelperMethods   .SetSubKey(RegistryNames.partnersLocation, tboxLocation.Text);
+                HelperMethods   .SetSubKey(RegistryNames.partnersDevice, tboxDevice.Text);
 
                 OIB         = tboxOIB.Text;
                 location    = tboxLocation.Text;
