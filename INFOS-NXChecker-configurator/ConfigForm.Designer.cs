@@ -35,12 +35,12 @@
             this.lblServiceDesc = new System.Windows.Forms.Label();
             this.panelStatus = new System.Windows.Forms.Panel();
             this.panelKonf = new System.Windows.Forms.Panel();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.gboxPartnerPodaci = new System.Windows.Forms.GroupBox();
             this.lblLocation = new System.Windows.Forms.Label();
             this.lblDevice = new System.Windows.Forms.Label();
             this.btnPartnerPodaci = new System.Windows.Forms.Button();
             this.lblOIB = new System.Windows.Forms.Label();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.gboxServerInfo = new System.Windows.Forms.GroupBox();
             this.lblDatabaseInfo = new System.Windows.Forms.Label();
             this.lblUsernameInfo = new System.Windows.Forms.Label();
             this.lblServerIPInfo = new System.Windows.Forms.Label();
@@ -76,8 +76,8 @@
             this.errProviderTemp3 = new System.Windows.Forms.ErrorProvider(this.components);
             this.panelStatus.SuspendLayout();
             this.panelKonf.SuspendLayout();
-            this.groupBox2.SuspendLayout();
-            this.groupBox1.SuspendLayout();
+            this.gboxPartnerPodaci.SuspendLayout();
+            this.gboxServerInfo.SuspendLayout();
             this.gboxTemps.SuspendLayout();
             this.gboxPostavke.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numDani)).BeginInit();
@@ -142,8 +142,8 @@
             // panelKonf
             // 
             this.panelKonf.BackColor = System.Drawing.Color.White;
-            this.panelKonf.Controls.Add(this.groupBox2);
-            this.panelKonf.Controls.Add(this.groupBox1);
+            this.panelKonf.Controls.Add(this.gboxPartnerPodaci);
+            this.panelKonf.Controls.Add(this.gboxServerInfo);
             this.panelKonf.Controls.Add(this.gboxTemps);
             this.panelKonf.Controls.Add(this.btnZatvori);
             this.panelKonf.Controls.Add(this.btnSpremi);
@@ -155,20 +155,20 @@
             this.panelKonf.Size = new System.Drawing.Size(689, 536);
             this.panelKonf.TabIndex = 3;
             // 
-            // groupBox2
+            // gboxPartnerPodaci
             // 
-            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox2.Controls.Add(this.lblLocation);
-            this.groupBox2.Controls.Add(this.lblDevice);
-            this.groupBox2.Controls.Add(this.btnPartnerPodaci);
-            this.groupBox2.Controls.Add(this.lblOIB);
-            this.groupBox2.ForeColor = System.Drawing.SystemColors.MenuHighlight;
-            this.groupBox2.Location = new System.Drawing.Point(415, 70);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(234, 104);
-            this.groupBox2.TabIndex = 19;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Partner podaci";
+            this.gboxPartnerPodaci.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.gboxPartnerPodaci.Controls.Add(this.lblLocation);
+            this.gboxPartnerPodaci.Controls.Add(this.lblDevice);
+            this.gboxPartnerPodaci.Controls.Add(this.btnPartnerPodaci);
+            this.gboxPartnerPodaci.Controls.Add(this.lblOIB);
+            this.gboxPartnerPodaci.ForeColor = System.Drawing.SystemColors.MenuHighlight;
+            this.gboxPartnerPodaci.Location = new System.Drawing.Point(415, 70);
+            this.gboxPartnerPodaci.Name = "gboxPartnerPodaci";
+            this.gboxPartnerPodaci.Size = new System.Drawing.Size(234, 104);
+            this.gboxPartnerPodaci.TabIndex = 19;
+            this.gboxPartnerPodaci.TabStop = false;
+            this.gboxPartnerPodaci.Text = "Partner podaci";
             // 
             // lblLocation
             // 
@@ -218,23 +218,23 @@
             this.lblOIB.TabIndex = 23;
             this.lblOIB.Text = "Unesite OIB";
             // 
-            // groupBox1
+            // gboxServerInfo
             // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox1.Controls.Add(this.lblDatabaseInfo);
-            this.groupBox1.Controls.Add(this.lblUsernameInfo);
-            this.groupBox1.Controls.Add(this.lblServerIPInfo);
-            this.groupBox1.Controls.Add(this.btnServerInfo);
-            this.groupBox1.Controls.Add(this.lblUsername);
-            this.groupBox1.Controls.Add(this.lblDatabase);
-            this.groupBox1.Controls.Add(this.lblServerIP);
-            this.groupBox1.ForeColor = System.Drawing.SystemColors.MenuHighlight;
-            this.groupBox1.Location = new System.Drawing.Point(44, 70);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(365, 104);
-            this.groupBox1.TabIndex = 18;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Server Info";
+            this.gboxServerInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.gboxServerInfo.Controls.Add(this.lblDatabaseInfo);
+            this.gboxServerInfo.Controls.Add(this.lblUsernameInfo);
+            this.gboxServerInfo.Controls.Add(this.lblServerIPInfo);
+            this.gboxServerInfo.Controls.Add(this.btnServerInfo);
+            this.gboxServerInfo.Controls.Add(this.lblUsername);
+            this.gboxServerInfo.Controls.Add(this.lblDatabase);
+            this.gboxServerInfo.Controls.Add(this.lblServerIP);
+            this.gboxServerInfo.ForeColor = System.Drawing.SystemColors.MenuHighlight;
+            this.gboxServerInfo.Location = new System.Drawing.Point(44, 70);
+            this.gboxServerInfo.Name = "gboxServerInfo";
+            this.gboxServerInfo.Size = new System.Drawing.Size(365, 104);
+            this.gboxServerInfo.TabIndex = 18;
+            this.gboxServerInfo.TabStop = false;
+            this.gboxServerInfo.Text = "Server Info";
             // 
             // lblDatabaseInfo
             // 
@@ -453,6 +453,7 @@
             this.btnSpremi.TabIndex = 14;
             this.btnSpremi.Text = "SPREMI";
             this.btnSpremi.UseVisualStyleBackColor = false;
+            this.btnSpremi.EnabledChanged += new System.EventHandler(this.btnSpremi_EnabledChanged);
             this.btnSpremi.Click += new System.EventHandler(this.btnSpremi_Click);
             // 
             // lblTitle
@@ -647,10 +648,10 @@
             this.panelStatus.PerformLayout();
             this.panelKonf.ResumeLayout(false);
             this.panelKonf.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.gboxPartnerPodaci.ResumeLayout(false);
+            this.gboxPartnerPodaci.PerformLayout();
+            this.gboxServerInfo.ResumeLayout(false);
+            this.gboxServerInfo.PerformLayout();
             this.gboxTemps.ResumeLayout(false);
             this.gboxTemps.PerformLayout();
             this.gboxPostavke.ResumeLayout(false);
@@ -698,7 +699,7 @@
         private System.Windows.Forms.ErrorProvider errProviderTemp1;
         private System.Windows.Forms.ErrorProvider errProviderTemp2;
         private System.Windows.Forms.ErrorProvider errProviderTemp3;
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox gboxServerInfo;
         private System.Windows.Forms.Label lblDatabaseInfo;
         private System.Windows.Forms.Label lblUsernameInfo;
         private System.Windows.Forms.Label lblServerIPInfo;
@@ -706,7 +707,7 @@
         private System.Windows.Forms.Label lblUsername;
         private System.Windows.Forms.Label lblDatabase;
         private System.Windows.Forms.Label lblServerIP;
-        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.GroupBox gboxPartnerPodaci;
         private System.Windows.Forms.Button btnPartnerPodaci;
         private System.Windows.Forms.Label lblOIB;
         private System.Windows.Forms.Label lblLocation;

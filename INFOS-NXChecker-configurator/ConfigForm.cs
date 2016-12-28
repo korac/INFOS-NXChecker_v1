@@ -29,6 +29,8 @@ namespace INFOS_NXChecker_configurator
         string tempPath1;
         string tempPath2;
         string tempPath3;
+        bool isServerInfo = true;
+        bool isPartnerPod = true;
         #endregion
         
         public ConfigForm()
@@ -71,9 +73,15 @@ namespace INFOS_NXChecker_configurator
                 tboxTemp2.Text  = tempPath2;
                 tboxTemp3.Text  = tempPath3;
 
-                CheckPartnerPodaci(lblOIB, OIB, "OIB");
-                CheckPartnerPodaci(lblLocation, location, "lokaciju");
-                CheckPartnerPodaci(lblDevice, device, "uređaj");
+                CheckInfoPodaci(lblServerIPInfo, serverIP, "serverIP", false);
+                CheckInfoPodaci(lblDatabaseInfo, databaseName, "ime baze", false);
+                CheckInfoPodaci(lblUsernameInfo, serverUsername, "korisničko ime", false);
+
+                CheckInfoPodaci(lblOIB, OIB, "OIB", true);
+                CheckInfoPodaci(lblLocation, location, "lokaciju", true);
+                CheckInfoPodaci(lblDevice, device, "uređaj", true);
+
+                EnableConfiguration();
 
                 ServiceController nxService = new ServiceController("NXCheckerService");
                 if(nxService.Status.ToString() == "Running")
@@ -242,6 +250,13 @@ namespace INFOS_NXChecker_configurator
                 lblServerIPInfo.Text = infoForm.serverIP;
                 lblDatabaseInfo.Text = infoForm.databaseName;
                 lblUsernameInfo.Text = infoForm.serverUsername;
+
+                lblServerIPInfo.ForeColor   = Color.DimGray;
+                lblDatabaseInfo.ForeColor   = Color.DimGray;
+                lblUsernameInfo.ForeColor   = Color.DimGray;
+
+                isServerInfo = true;
+                EnableConfiguration();
             }
         }
 
@@ -257,21 +272,63 @@ namespace INFOS_NXChecker_configurator
                 lblOIB.ForeColor        = Color.DimGray;
                 lblLocation.ForeColor   = Color.DimGray;
                 lblDevice.ForeColor     = Color.DimGray;
+
+                isPartnerPod = true;
+                EnableConfiguration();
             }
         }
 
-        private void CheckPartnerPodaci(Label lbl, string val, string valName)
+        private void CheckInfoPodaci(Label lbl, string val, string valName, bool isPartners)
         {
             if (String.IsNullOrWhiteSpace(val))
             {
                 lbl.Text        = "Unesite " + valName;
                 lbl.ForeColor   = Color.IndianRed;
+                if (isPartners)
+                {
+                    isPartnerPod = false;
+                }
+                else
+                {
+                    isServerInfo = false;
+                }                
             }
             else
             {
                 lbl.Text        = val;
                 lbl.ForeColor   = Color.DimGray;
             }
+        }
+
+        private void EnableConfiguration()
+        {
+            if (isPartnerPod && isServerInfo)
+            {
+                gboxPostavke.Enabled    = true;
+                gboxTemps.Enabled       = true;
+                btnSpremi.Enabled       = true;
+            }
+            else
+            {
+                gboxPostavke.Enabled    = false;
+                gboxTemps.Enabled       = false;
+                btnSpremi.Enabled       = false;
+            }
+        }
+
+        private void btnSpremi_EnabledChanged(object sender, EventArgs e)
+        {
+            if(btnSpremi.Enabled == true)
+            {
+                btnSpremi.ForeColor = Color.White;
+                btnSpremi.BackColor = SystemColors.Highlight;
+            }
+            else
+            {
+                btnSpremi.ForeColor = Color.Silver;
+                btnSpremi.BackColor = SystemColors.ButtonShadow;
+            }
+            
         }
     }
 }
