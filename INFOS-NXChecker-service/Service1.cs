@@ -124,9 +124,13 @@ namespace INFOS_NXChecker_service
                     zipFiles                = zipFiles.OrderByDescending(file => file.CreationTime).ToArray();
                     FileInfo latestZip      = zipFiles[0];
 
-                    if (ZipFile.CheckZip(backupPath + "\\" + latestZip.Name))
+                    if (ZipFile.IsZipFile(backupPath + "\\" + latestZip.Name))
                     {
-                        Console.WriteLine("Zip file is valid");
+                        File.WriteAllText(@"C:\Users\Kristijan\Desktop\validZIP_log-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "ZIP FILE " + latestZip.Name + " JE VALID!!");
+                    }
+                    else
+                    {
+                        File.WriteAllText(@"C:\Users\Kristijan\Desktop\invalidZIP_log-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "ZIP FILE " + latestZip.Name + " JE CORRUPTED!!");
                     }
                 }
                 catch (Exception ex)
@@ -180,15 +184,25 @@ namespace INFOS_NXChecker_service
         {
             try
             {
-                DirectoryInfo backupDir = new DirectoryInfo(backupPath);
-                DriveInfo backupDrive   = new DriveInfo(Path.GetPathRoot(backupDir.FullName));
+                string text = "";
+                double freeSpace;
+                double totalSize;
+                double postotak;
+                ManagementObjectSearcher mosDisks    = new ManagementObjectSearcher("SELECT * FROM Win32_LogicalDisk WHERE DeviceID='C:'");
+                
+                foreach(ManagementObject moDisk in mosDisks.Get())
+                {
+                    freeSpace = Convert.ToDouble(moDisk["FreeSpace"]);
+                    totalSize = Convert.ToDouble(moDisk["Size"]);
+                    postotak  = Math.Round((freeSpace / totalSize), 3) * 100;
 
-                double totalSpace       = backupDrive.TotalSize / (Math.Pow(1024, 3));
-                double freeSpace        = backupDrive.TotalFreeSpace / (Math.Pow(1024, 3));
+                    text += "FREE SPACE: " + moDisk["FreeSpace"].ToString() + ";" + Environment.NewLine;
+                    text += "TOTAL SIZE: " + moDisk["Size"].ToString() + ";" + Environment.NewLine;
+                    text += "Postotak " + postotak.ToString() + "% ;" + Environment.NewLine;
+                }
 
-                double postotak         = (freeSpace / totalSpace) * 100; 
+                File.WriteAllText(@"C:\Users\Kristijan\Desktop\diskCheck-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", text);
 
-                File.WriteAllText(@"C:\Users\Kristijan\Desktop\discCheck-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "ZNACI, AVAILABLE SPACE: " + freeSpace.ToString("0.0") + "; TOTAL SPACE: " + totalSpace.ToString("0.0") + "; U postocima: " + postotak.ToString("0.0") + "%");
             }
             catch (Exception ex)
             {
