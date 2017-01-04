@@ -25,6 +25,11 @@ namespace INFOS_NXChecker_service
         string serverUsername;
         string serverPassword;
         string serverPort;
+        string partnerName;
+        string OIB;
+        string location;
+        int locationID;
+        string device;
         string period;
         string path;
         string deletionDays;
@@ -49,6 +54,11 @@ namespace INFOS_NXChecker_service
                 serverPassword  = HelperMethods.GetSubKey(RegistryNames.serverPassword);
                 serverPort      = HelperMethods.GetSubKey(RegistryNames.serverPort);
 
+                partnerName = HelperMethods.GetSubKey(RegistryNames.partnerName);
+                OIB         = HelperMethods.GetSubKey(RegistryNames.partnerOIB);
+                location    = HelperMethods.GetSubKey(RegistryNames.partnerLocation);
+                device      = HelperMethods.GetSubKey(RegistryNames.partnerDevice);
+
                 period          = HelperMethods.GetSubKey(RegistryNames.period);
                 path            = HelperMethods.GetSubKey(RegistryNames.path);
                 deletionDays    = HelperMethods.GetSubKey(RegistryNames.deletionDays);
@@ -70,7 +80,16 @@ namespace INFOS_NXChecker_service
         private void Tmr_Elapsed(object sender, ElapsedEventArgs e)
         {
             try
-            {                
+            {
+                //Check logged user
+                CheckUser();
+
+                //Check user's location
+                CheckLocation();
+
+                //Check location's device
+                CheckDevice();
+
                 //Checking the latest zip file if corrupted
                 ZipFileCheck(path);
 
@@ -102,24 +121,131 @@ namespace INFOS_NXChecker_service
 
         private void CheckUser()
         {
-            SqlConnection sqlCon    = new SqlConnection();
-            string connectionString = "Data Source=" + serverIP + ";Initial Catalog=" + databaseName + ";User ID=" + serverUsername + ";Password=" + serverPassword;
-            string query = "SELECT * FROM Partners";
+            string connectionString = GetConnectionString();
 
-            SqlCommand cmd = new SqlCommand(query, sqlCon);
-            
+            using (SqlConnection sqlCon = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("SELECT COUNT(*) FROM Partners WHERE OIB=@OIB", sqlCon))
+                {
+                    try
+                    {
+                        sqlCon.Open();
+
+                        cmd.Parameters.AddWithValue("@OIB", OIB);
+
+                        if ((int)cmd.ExecuteScalar() == 0)
+                        {
+                            using (SqlCommand insertPartnerCmd = new SqlCommand("INSERT INTO Partners VALUES (@OIB, @partnerName)", sqlCon))
+                            {
+                                insertPartnerCmd.Parameters .AddWithValue("@OIB", OIB);
+                                insertPartnerCmd.Parameters .AddWithValue("@partnerName", partnerName);
+                                insertPartnerCmd            .ExecuteNonQuery();
+                            }
+                        }
+                        else if ((int)cmd.ExecuteScalar() == 1)
+                        {
+                            File.WriteAllText(@"C:\Users\Kristijan\Desktop\user-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "USER POSTOJI");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        File.WriteAllText(@"C:\Users\Kristijan\Desktop\greska_CheckUser-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "Dogodila se GREŠKA: " + ex.Message + ";" + ex.TargetSite + "; " + ex.StackTrace);
+                    }
+                }                    
+            }               
 
             //In progress....
+        }
+
+        private void CheckLocation()
+        {
+            string connectionString = GetConnectionString();
+
+            using (SqlConnection sqlCon = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("SELECT COUNT(*) FROM Locations WHERE PartnerOIB=@OIB AND LocationName=@location", sqlCon))
+                {
+                    try
+                    {
+                        sqlCon.Open();
+
+                        cmd.Parameters.AddWithValue("@OIB", OIB);
+                        cmd.Parameters.AddWithValue("@location", location);
+
+                        if ((int)cmd.ExecuteScalar() == 0)
+                        {
+                            using (SqlCommand insertLocationCmd = new SqlCommand("INSERT INTO Locations (LocationName, PartnerOIB) VALUES (@location, @OIB); SELECT SCOPE_IDENTITY();", sqlCon))
+                            {
+                                insertLocationCmd.Parameters.AddWithValue("@location", location);
+                                insertLocationCmd.Parameters.AddWithValue("@OIB", OIB);
+                                locationID = Convert.ToInt16(insertLocationCmd.ExecuteScalar());
+                            }
+                        }
+                        else if ((int)cmd.ExecuteScalar() == 1)
+                        {
+                            using (SqlCommand getLocationID = new SqlCommand("SELECT ID FROM Locations WHERE PartnerOIB=@OIB AND LocationName=@location", sqlCon))
+                            {
+                                getLocationID.Parameters.AddWithValue("@OIB", OIB);
+                                getLocationID.Parameters.AddWithValue("@location", location);
+
+                                locationID = (int)getLocationID.ExecuteScalar();
+                            }
+
+                            File.WriteAllText(@"C:\Users\Kristijan\Desktop\location-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "LOCATION POSTOJI");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        File.WriteAllText(@"C:\Users\Kristijan\Desktop\greska_CheckLocation-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "Dogodila se GREŠKA: " + ex.Message + ";" + ex.TargetSite + "; " + ex.StackTrace);
+                    }
+                }
+            }
+        }
+
+        private void CheckDevice()
+        {
+            string connectionString = GetConnectionString();
+
+            using (SqlConnection sqlCon = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("SELECT COUNT(*) FROM Devices WHERE LocationID=@locationID AND DeviceName=@device", sqlCon))
+                {
+                    try
+                    {
+                        sqlCon.Open();
+
+                        cmd.Parameters.AddWithValue("@locationID", locationID);
+                        cmd.Parameters.AddWithValue("@device", device);
+
+                        if ((int)cmd.ExecuteScalar() == 0)
+                        {
+                            using (SqlCommand insertDeviceCmd = new SqlCommand("INSERT INTO Devices (DeviceName, LocationID) VALUES (@device, @locationID)", sqlCon))
+                            {
+                                insertDeviceCmd.Parameters.AddWithValue("@device", device);
+                                insertDeviceCmd.Parameters.AddWithValue("@locationID", locationID);
+                                insertDeviceCmd.ExecuteScalar();
+                            }
+                        }
+                        else if ((int)cmd.ExecuteScalar() == 1)
+                        {
+                            File.WriteAllText(@"C:\Users\Kristijan\Desktop\device-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "DEVICE POSTOJI");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        File.WriteAllText(@"C:\Users\Kristijan\Desktop\greska_CheckDevice-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "Dogodila se GREŠKA: " + ex.Message + ";" + ex.TargetSite + "; " + "************* " + Environment.NewLine + locationID.ToString());
+                    }
+                }                    
+            }
         }
 
         private void ZipFileCheck(string backupPath)
         {
             if (Directory.Exists(backupPath))
-            {
-                DirectoryInfo backupDir = new DirectoryInfo(backupPath);
-                                
+            {                                
                 try
                 {
+                    DirectoryInfo backupDir = new DirectoryInfo(backupPath);
                     FileInfo[] zipFiles     = backupDir.GetFiles("*.zip");
                     zipFiles                = zipFiles.OrderByDescending(file => file.CreationTime).ToArray();
                     FileInfo latestZip      = zipFiles[0];
@@ -233,6 +359,11 @@ namespace INFOS_NXChecker_service
             {
                 File.WriteAllText(@"C:\Users\Kristijan\Desktop\errorFile-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "Greska kod SMART provjere: " + ex.Message);
             }
+        }
+
+        private string GetConnectionString()
+        {
+            return "Data Source=" + serverIP + ";Initial Catalog=" + databaseName + ";User ID=" + serverUsername + ";Password=" + serverPassword;
         }
 
         protected override void OnStop()
