@@ -39,6 +39,8 @@
             this.btnZatvori = new System.Windows.Forms.Button();
             this.btnSpremi = new System.Windows.Forms.Button();
             this.errProviderInput = new System.Windows.Forms.ErrorProvider(this.components);
+            this.lblPartnerName = new System.Windows.Forms.Label();
+            this.tboxPartnerName = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.errProviderInput)).BeginInit();
             this.SuspendLayout();
             // 
@@ -47,7 +49,7 @@
             this.lblOIB.AutoSize = true;
             this.lblOIB.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.lblOIB.ForeColor = System.Drawing.Color.DimGray;
-            this.lblOIB.Location = new System.Drawing.Point(80, 34);
+            this.lblOIB.Location = new System.Drawing.Point(98, 58);
             this.lblOIB.Name = "lblOIB";
             this.lblOIB.Size = new System.Drawing.Size(32, 13);
             this.lblOIB.TabIndex = 9;
@@ -58,7 +60,7 @@
             this.lblDevice.AutoSize = true;
             this.lblDevice.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.lblDevice.ForeColor = System.Drawing.Color.DimGray;
-            this.lblDevice.Location = new System.Drawing.Point(52, 86);
+            this.lblDevice.Location = new System.Drawing.Point(70, 110);
             this.lblDevice.Name = "lblDevice";
             this.lblDevice.Size = new System.Drawing.Size(60, 13);
             this.lblDevice.TabIndex = 10;
@@ -66,7 +68,7 @@
             // 
             // tboxLocation
             // 
-            this.tboxLocation.Location = new System.Drawing.Point(123, 57);
+            this.tboxLocation.Location = new System.Drawing.Point(141, 81);
             this.tboxLocation.MaxLength = 70;
             this.tboxLocation.Name = "tboxLocation";
             this.tboxLocation.Size = new System.Drawing.Size(214, 20);
@@ -78,7 +80,7 @@
             this.lblLocation.AutoSize = true;
             this.lblLocation.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.lblLocation.ForeColor = System.Drawing.Color.DimGray;
-            this.lblLocation.Location = new System.Drawing.Point(43, 60);
+            this.lblLocation.Location = new System.Drawing.Point(61, 84);
             this.lblLocation.Name = "lblLocation";
             this.lblLocation.Size = new System.Drawing.Size(69, 13);
             this.lblLocation.TabIndex = 11;
@@ -86,7 +88,7 @@
             // 
             // tboxDevice
             // 
-            this.tboxDevice.Location = new System.Drawing.Point(123, 83);
+            this.tboxDevice.Location = new System.Drawing.Point(141, 107);
             this.tboxDevice.MaxLength = 30;
             this.tboxDevice.Name = "tboxDevice";
             this.tboxDevice.Size = new System.Drawing.Size(214, 20);
@@ -95,7 +97,7 @@
             // 
             // tboxOIB
             // 
-            this.tboxOIB.Location = new System.Drawing.Point(123, 31);
+            this.tboxOIB.Location = new System.Drawing.Point(141, 55);
             this.tboxOIB.MaxLength = 11;
             this.tboxOIB.Name = "tboxOIB";
             this.tboxOIB.Size = new System.Drawing.Size(214, 20);
@@ -107,7 +109,7 @@
             this.btnZatvori.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnZatvori.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnZatvori.ForeColor = System.Drawing.SystemColors.Highlight;
-            this.btnZatvori.Location = new System.Drawing.Point(167, 125);
+            this.btnZatvori.Location = new System.Drawing.Point(182, 150);
             this.btnZatvori.Name = "btnZatvori";
             this.btnZatvori.Size = new System.Drawing.Size(104, 40);
             this.btnZatvori.TabIndex = 22;
@@ -122,7 +124,7 @@
             this.btnSpremi.FlatAppearance.BorderSize = 0;
             this.btnSpremi.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSpremi.ForeColor = System.Drawing.Color.White;
-            this.btnSpremi.Location = new System.Drawing.Point(277, 125);
+            this.btnSpremi.Location = new System.Drawing.Point(292, 150);
             this.btnSpremi.Name = "btnSpremi";
             this.btnSpremi.Size = new System.Drawing.Size(104, 40);
             this.btnSpremi.TabIndex = 21;
@@ -135,12 +137,34 @@
             this.errProviderInput.BlinkStyle = System.Windows.Forms.ErrorBlinkStyle.NeverBlink;
             this.errProviderInput.ContainerControl = this;
             // 
+            // lblPartnerName
+            // 
+            this.lblPartnerName.AutoSize = true;
+            this.lblPartnerName.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lblPartnerName.ForeColor = System.Drawing.Color.DimGray;
+            this.lblPartnerName.Location = new System.Drawing.Point(26, 32);
+            this.lblPartnerName.Name = "lblPartnerName";
+            this.lblPartnerName.Size = new System.Drawing.Size(104, 13);
+            this.lblPartnerName.TabIndex = 23;
+            this.lblPartnerName.Text = "IME PARTNERA:";
+            // 
+            // tboxPartnerName
+            // 
+            this.tboxPartnerName.Location = new System.Drawing.Point(141, 29);
+            this.tboxPartnerName.MaxLength = 11;
+            this.tboxPartnerName.Name = "tboxPartnerName";
+            this.tboxPartnerName.Size = new System.Drawing.Size(214, 20);
+            this.tboxPartnerName.TabIndex = 24;
+            this.tboxPartnerName.Validating += new System.ComponentModel.CancelEventHandler(this.tboxPartnerName_Validating);
+            // 
             // PartnerPodaciForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.ClientSize = new System.Drawing.Size(393, 177);
+            this.ClientSize = new System.Drawing.Size(408, 202);
+            this.Controls.Add(this.lblPartnerName);
+            this.Controls.Add(this.tboxPartnerName);
             this.Controls.Add(this.btnZatvori);
             this.Controls.Add(this.btnSpremi);
             this.Controls.Add(this.lblOIB);
@@ -173,5 +197,7 @@
         private System.Windows.Forms.Button btnZatvori;
         private System.Windows.Forms.Button btnSpremi;
         private System.Windows.Forms.ErrorProvider errProviderInput;
+        private System.Windows.Forms.Label lblPartnerName;
+        private System.Windows.Forms.TextBox tboxPartnerName;
     }
 }

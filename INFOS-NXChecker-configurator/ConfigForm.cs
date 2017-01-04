@@ -20,6 +20,7 @@ namespace INFOS_NXChecker_configurator
         string serverUsername;
         //string serverPassword;
         //string serverPort;
+        string partnerName;
         string OIB;
         string location;
         string device;
@@ -52,9 +53,10 @@ namespace INFOS_NXChecker_configurator
                 //serverPassword  = HelperMethods.GetSubKey(RegistryNames.serverPassword);
                 //serverPort      = HelperMethods.GetSubKey(RegistryNames.serverPort);
 
-                OIB         = HelperMethods.GetSubKey(RegistryNames.partnersOIB);
-                location    = HelperMethods.GetSubKey(RegistryNames.partnersLocation);
-                device      = HelperMethods.GetSubKey(RegistryNames.partnersDevice);
+                partnerName = HelperMethods.GetSubKey(RegistryNames.partnerName);
+                OIB         = HelperMethods.GetSubKey(RegistryNames.partnerOIB);
+                location    = HelperMethods.GetSubKey(RegistryNames.partnerLocation);
+                device      = HelperMethods.GetSubKey(RegistryNames.partnerDevice);
 
                 tempPath1   = HelperMethods.GetSubKey(RegistryNames.pathTemp1);
                 tempPath2   = HelperMethods.GetSubKey(RegistryNames.pathTemp2);
@@ -77,7 +79,8 @@ namespace INFOS_NXChecker_configurator
                 CheckInfoPodaci(lblDatabaseInfo, databaseName, "ime baze", false);
                 CheckInfoPodaci(lblUsernameInfo, serverUsername, "korisničko ime", false);
 
-                CheckInfoPodaci(lblOIB, OIB, "OIB", true);
+                CheckInfoPodaci(lblPartnerName, partnerName, "ime partnera", true);
+                //CheckInfoPodaci(lblOIB, OIB, "OIB", true);
                 CheckInfoPodaci(lblLocation, location, "lokaciju", true);
                 CheckInfoPodaci(lblDevice, device, "uređaj", true);
 
@@ -265,13 +268,15 @@ namespace INFOS_NXChecker_configurator
             PartnerPodaciForm partnerForm   = new PartnerPodaciForm();
             if(partnerForm.ShowDialog() == DialogResult.OK)
             {
-                lblOIB.Text         = partnerForm.OIB;
-                lblLocation.Text    = partnerForm.location;
-                lblDevice.Text      = partnerForm.device;
+                lblPartnerName.Text = partnerForm.PartnerName;
+                //lblOIB.Text         = partnerForm.OIB;
+                lblLocation.Text    = partnerForm.PartnerLocation;
+                lblDevice.Text      = partnerForm.PartnerDevice;
 
-                lblOIB.ForeColor        = Color.DimGray;
-                lblLocation.ForeColor   = Color.DimGray;
-                lblDevice.ForeColor     = Color.DimGray;
+                lblPartnerName.ForeColor    = Color.DimGray;
+                //lblOIB.ForeColor            = Color.DimGray;
+                lblLocation.ForeColor       = Color.DimGray;
+                lblDevice.ForeColor         = Color.DimGray;
 
                 isPartnerPod = true;
                 EnableConfiguration();

@@ -12,10 +12,11 @@ namespace INFOS_NXChecker_configurator
 {
     public partial class PartnerPodaciForm : Form
     {
-        #region Variables
-        public string OIB;
-        public string location;
-        public string device;
+        #region Properties
+        public string PartnerName { get; set; }
+        public string OIB { get; set; }
+        public string PartnerLocation { get; set; }
+        public string PartnerDevice { get; set; }
         #endregion
 
         public PartnerPodaciForm()
@@ -27,13 +28,15 @@ namespace INFOS_NXChecker_configurator
         {
             try
             {
-                OIB         = HelperMethods.GetSubKey(RegistryNames.partnersOIB);
-                location    = HelperMethods.GetSubKey(RegistryNames.partnersLocation);
-                device      = HelperMethods.GetSubKey(RegistryNames.partnersDevice);
+                PartnerName        = HelperMethods.GetSubKey(RegistryNames.partnerName);
+                OIB                = HelperMethods.GetSubKey(RegistryNames.partnerOIB);
+                PartnerLocation    = HelperMethods.GetSubKey(RegistryNames.partnerLocation);
+                PartnerDevice      = HelperMethods.GetSubKey(RegistryNames.partnerDevice);
 
-                tboxOIB.Text        = OIB;
-                tboxLocation.Text   = location;
-                tboxDevice.Text     = device;
+                tboxPartnerName.Text    = PartnerName;
+                tboxOIB.Text            = OIB;
+                tboxLocation.Text       = PartnerLocation;
+                tboxDevice.Text         = PartnerDevice;
             }
             catch (Exception ex)
             {
@@ -43,17 +46,19 @@ namespace INFOS_NXChecker_configurator
 
         private void btnSpremi_Click(object sender, EventArgs e)
         {
-            if (ValidateInput(tboxOIB) && ValidateInput(tboxLocation) && ValidateInput(tboxDevice))
+            if (ValidateInput(tboxPartnerName) && ValidateInput(tboxOIB) && ValidateInput(tboxLocation) && ValidateInput(tboxDevice))
             {
                 try
                 {
-                    HelperMethods   .SetSubKey(RegistryNames.partnersOIB, tboxOIB.Text);
-                    HelperMethods   .SetSubKey(RegistryNames.partnersLocation, tboxLocation.Text);
-                    HelperMethods   .SetSubKey(RegistryNames.partnersDevice, tboxDevice.Text);
+                    HelperMethods   .SetSubKey(RegistryNames.partnerName, tboxPartnerName.Text);
+                    HelperMethods   .SetSubKey(RegistryNames.partnerOIB, tboxOIB.Text);
+                    HelperMethods   .SetSubKey(RegistryNames.partnerLocation, tboxLocation.Text);
+                    HelperMethods   .SetSubKey(RegistryNames.partnerDevice, tboxDevice.Text);
 
-                    OIB         = tboxOIB.Text;
-                    location    = tboxLocation.Text;
-                    device      = tboxDevice.Text;
+                    PartnerName     = tboxPartnerName.Text;
+                    OIB             = tboxOIB.Text;
+                    PartnerLocation = tboxLocation.Text;
+                    PartnerDevice   = tboxDevice.Text;
 
                     MessageBox  .Show("Podaci ažurirani.", "Podaci", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     this        .DialogResult   = DialogResult.OK;
@@ -73,6 +78,11 @@ namespace INFOS_NXChecker_configurator
         private void btnZatvori_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void tboxPartnerName_Validating(object sender, CancelEventArgs e)
+        {
+            ValidateInput(tboxPartnerName);
         }
 
         private void tboxOIB_Validating(object sender, CancelEventArgs e)
@@ -105,5 +115,6 @@ namespace INFOS_NXChecker_configurator
 
             return bStatus;
         }
+
     }
 }

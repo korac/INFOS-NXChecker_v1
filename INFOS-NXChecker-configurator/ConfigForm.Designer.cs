@@ -36,10 +36,10 @@
             this.panelStatus = new System.Windows.Forms.Panel();
             this.panelKonf = new System.Windows.Forms.Panel();
             this.gboxPartnerPodaci = new System.Windows.Forms.GroupBox();
+            this.lblPartnerName = new System.Windows.Forms.Label();
             this.lblLocation = new System.Windows.Forms.Label();
             this.lblDevice = new System.Windows.Forms.Label();
             this.btnPartnerPodaci = new System.Windows.Forms.Button();
-            this.lblOIB = new System.Windows.Forms.Label();
             this.gboxServerInfo = new System.Windows.Forms.GroupBox();
             this.lblDatabaseInfo = new System.Windows.Forms.Label();
             this.lblUsernameInfo = new System.Windows.Forms.Label();
@@ -158,17 +158,28 @@
             // gboxPartnerPodaci
             // 
             this.gboxPartnerPodaci.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.gboxPartnerPodaci.Controls.Add(this.lblPartnerName);
             this.gboxPartnerPodaci.Controls.Add(this.lblLocation);
             this.gboxPartnerPodaci.Controls.Add(this.lblDevice);
             this.gboxPartnerPodaci.Controls.Add(this.btnPartnerPodaci);
-            this.gboxPartnerPodaci.Controls.Add(this.lblOIB);
             this.gboxPartnerPodaci.ForeColor = System.Drawing.SystemColors.MenuHighlight;
-            this.gboxPartnerPodaci.Location = new System.Drawing.Point(415, 70);
+            this.gboxPartnerPodaci.Location = new System.Drawing.Point(416, 70);
             this.gboxPartnerPodaci.Name = "gboxPartnerPodaci";
-            this.gboxPartnerPodaci.Size = new System.Drawing.Size(234, 104);
+            this.gboxPartnerPodaci.Size = new System.Drawing.Size(233, 104);
             this.gboxPartnerPodaci.TabIndex = 19;
             this.gboxPartnerPodaci.TabStop = false;
             this.gboxPartnerPodaci.Text = "Partner podaci";
+            // 
+            // lblPartnerName
+            // 
+            this.lblPartnerName.AutoSize = true;
+            this.lblPartnerName.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lblPartnerName.ForeColor = System.Drawing.Color.DimGray;
+            this.lblPartnerName.Location = new System.Drawing.Point(17, 23);
+            this.lblPartnerName.Name = "lblPartnerName";
+            this.lblPartnerName.Size = new System.Drawing.Size(73, 13);
+            this.lblPartnerName.TabIndex = 25;
+            this.lblPartnerName.Text = "Unesite ime";
             // 
             // lblLocation
             // 
@@ -199,24 +210,13 @@
             this.btnPartnerPodaci.FlatAppearance.BorderSize = 0;
             this.btnPartnerPodaci.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnPartnerPodaci.ForeColor = System.Drawing.Color.White;
-            this.btnPartnerPodaci.Location = new System.Drawing.Point(156, 23);
+            this.btnPartnerPodaci.Location = new System.Drawing.Point(155, 23);
             this.btnPartnerPodaci.Name = "btnPartnerPodaci";
             this.btnPartnerPodaci.Size = new System.Drawing.Size(72, 68);
             this.btnPartnerPodaci.TabIndex = 23;
             this.btnPartnerPodaci.Text = "IZMIJENI";
             this.btnPartnerPodaci.UseVisualStyleBackColor = false;
             this.btnPartnerPodaci.Click += new System.EventHandler(this.btnPartnerPodaci_Click);
-            // 
-            // lblOIB
-            // 
-            this.lblOIB.AutoSize = true;
-            this.lblOIB.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.lblOIB.ForeColor = System.Drawing.Color.DimGray;
-            this.lblOIB.Location = new System.Drawing.Point(17, 23);
-            this.lblOIB.Name = "lblOIB";
-            this.lblOIB.Size = new System.Drawing.Size(75, 13);
-            this.lblOIB.TabIndex = 23;
-            this.lblOIB.Text = "Unesite OIB";
             // 
             // gboxServerInfo
             // 
@@ -231,7 +231,7 @@
             this.gboxServerInfo.ForeColor = System.Drawing.SystemColors.MenuHighlight;
             this.gboxServerInfo.Location = new System.Drawing.Point(44, 70);
             this.gboxServerInfo.Name = "gboxServerInfo";
-            this.gboxServerInfo.Size = new System.Drawing.Size(365, 104);
+            this.gboxServerInfo.Size = new System.Drawing.Size(366, 104);
             this.gboxServerInfo.TabIndex = 18;
             this.gboxServerInfo.TabStop = false;
             this.gboxServerInfo.Text = "Server Info";
@@ -276,7 +276,7 @@
             this.btnServerInfo.FlatAppearance.BorderSize = 0;
             this.btnServerInfo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnServerInfo.ForeColor = System.Drawing.Color.White;
-            this.btnServerInfo.Location = new System.Drawing.Point(278, 23);
+            this.btnServerInfo.Location = new System.Drawing.Point(279, 23);
             this.btnServerInfo.Name = "btnServerInfo";
             this.btnServerInfo.Size = new System.Drawing.Size(72, 68);
             this.btnServerInfo.TabIndex = 19;
@@ -709,8 +709,8 @@
         private System.Windows.Forms.Label lblServerIP;
         private System.Windows.Forms.GroupBox gboxPartnerPodaci;
         private System.Windows.Forms.Button btnPartnerPodaci;
-        private System.Windows.Forms.Label lblOIB;
         private System.Windows.Forms.Label lblLocation;
         private System.Windows.Forms.Label lblDevice;
+        private System.Windows.Forms.Label lblPartnerName;
     }
 }
