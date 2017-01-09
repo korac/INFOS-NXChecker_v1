@@ -282,14 +282,14 @@ namespace INFOS_NXChecker_service
                     {
                         BackupCheck     = "OK";
                         BackupCheckDate = DateTime.Now;
-                        //DbAgent .InsertLogs(connectionString, "Zip status", "ZIP File " + latestZip.Name + " je VALIDAN", deviceID, DateTime.Now);
+                        DbAgent .InsertLogs(connectionString, "Zip status", "ZIP File " + latestZip.Name + " je VALIDAN", deviceID, DateTime.Now);
                         File    .WriteAllText(@"C:\Users\Kristijan\Desktop\validZIP_log-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "ZIP FILE " + latestZip.Name + " JE VALID!!");
                     }
                     else
                     {
                         BackupCheck     = "NE";
                         BackupCheckDate = DateTime.Now;
-                        //DbAgent .InsertLogs(connectionString, "Zip status", "ZIP File " + latestZip.Name + " je CORRUPTED", deviceID, DateTime.Now);
+                        DbAgent .InsertLogs(connectionString, "Zip status", "ZIP File " + latestZip.Name + " je CORRUPTED", deviceID, DateTime.Now);
                         File    .WriteAllText(@"C:\Users\Kristijan\Desktop\invalidZIP_log-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "ZIP FILE " + latestZip.Name + " JE CORRUPTED!!");
                     }
                 }
@@ -360,11 +360,14 @@ namespace INFOS_NXChecker_service
                     totalSize = Convert.ToDouble(moDisk["Size"]);
                     postotak  = Math.Round((freeSpace / totalSize), 3) * 100;
 
-                    text += "FREE SPACE: " + moDisk["FreeSpace"].ToString() + ";" + Environment.NewLine;
-                    text += "TOTAL SIZE: " + moDisk["Size"].ToString() + ";" + Environment.NewLine;
+                    freeSpace = Math.Round(freeSpace / (1024 * 1024 * 1024), 1);
+                    totalSize = Math.Round(totalSize / (1024 * 1024 * 1024), 1);
+
+                    text += "FREE SPACE: " + freeSpace.ToString() + " GB;" + Environment.NewLine;
+                    text += "TOTAL SIZE: " + totalSize.ToString() + " GB;" + Environment.NewLine;
                     text += "Postotak " + postotak.ToString() + "% ;" + Environment.NewLine;
 
-                    AvailableFreeSpace = postotak.ToString() + "%";
+                    AvailableFreeSpace = freeSpace.ToString() + "/" + totalSize.ToString() + " GB (" + postotak.ToString() + "%)";
                 }
                 
                 File.WriteAllText(@"C:\Users\Kristijan\Desktop\diskCheck-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", text);
