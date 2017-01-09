@@ -29,6 +29,7 @@ namespace INFOS_NXChecker_service
         string OIB;
         string location;
         int locationID;
+        int deviceID;
         string device;
         string period;
         string path;
@@ -37,6 +38,20 @@ namespace INFOS_NXChecker_service
         string tempPath2;
         string tempPath3;
         Timer tmr = new Timer();
+        DbAgent agent;
+        #endregion
+
+        #region StatusVariables
+        string SMARTStatus;
+        string AvailableFreeSpace;
+        string HDDType;
+        string HDDModel;
+        int DevicesID;
+        DateTime StatusDate;
+        string BackupCheck;
+        DateTime BackupCheckDate;
+        DateTime TempDelDate;
+        DateTime BackupCleanupDate;
         #endregion
 
         public NXCheckerService()
@@ -106,6 +121,9 @@ namespace INFOS_NXChecker_service
 
                 //Checking the disk SMART status
                 SmartStatusCheck();
+
+                StatusDate = DateTime.Now;
+                SetStatus();
 
                 string text = "Sve je dobro";
                 string logPath = path + @"\NXChecker_service_" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".nxch";
@@ -178,7 +196,7 @@ namespace INFOS_NXChecker_service
                             {
                                 insertLocationCmd.Parameters.AddWithValue("@location", location);
                                 insertLocationCmd.Parameters.AddWithValue("@OIB", OIB);
-                                locationID = Convert.ToInt16(insertLocationCmd.ExecuteScalar());
+                                locationID = (int) insertLocationCmd.ExecuteScalar();
                             }
                         }
                         else if ((int)cmd.ExecuteScalar() == 1)
@@ -219,15 +237,23 @@ namespace INFOS_NXChecker_service
 
                         if ((int)cmd.ExecuteScalar() == 0)
                         {
-                            using (SqlCommand insertDeviceCmd = new SqlCommand("INSERT INTO Devices (DeviceName, LocationID) VALUES (@device, @locationID)", sqlCon))
+                            using (SqlCommand insertDeviceCmd = new SqlCommand("INSERT INTO Devices (DeviceName, LocationID) VALUES (@device, @locationID); SELECT SCOPE_IDENTITY();", sqlCon))
                             {
                                 insertDeviceCmd.Parameters.AddWithValue("@device", device);
                                 insertDeviceCmd.Parameters.AddWithValue("@locationID", locationID);
-                                insertDeviceCmd.ExecuteScalar();
+                                deviceID = (int) insertDeviceCmd.ExecuteScalar();
                             }
                         }
                         else if ((int)cmd.ExecuteScalar() == 1)
                         {
+                            using (SqlCommand getDeviceID = new SqlCommand("SELECT ID FROM Devices WHERE LocationID=@locationID AND DeviceName=@device", sqlCon))
+                            {
+                                getDeviceID.Parameters.AddWithValue("@locationID", locationID);
+                                getDeviceID.Parameters.AddWithValue("@device", device);
+
+                                deviceID = (int) getDeviceID.ExecuteScalar();
+                            }
+
                             File.WriteAllText(@"C:\Users\Kristijan\Desktop\device-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "DEVICE POSTOJI");
                         }
                     }
@@ -250,13 +276,21 @@ namespace INFOS_NXChecker_service
                     zipFiles                = zipFiles.OrderByDescending(file => file.CreationTime).ToArray();
                     FileInfo latestZip      = zipFiles[0];
 
+                    string connectionString = GetConnectionString();
+
                     if (ZipFile.IsZipFile(backupPath + "\\" + latestZip.Name))
                     {
-                        File.WriteAllText(@"C:\Users\Kristijan\Desktop\validZIP_log-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "ZIP FILE " + latestZip.Name + " JE VALID!!");
+                        BackupCheck     = "OK";
+                        BackupCheckDate = DateTime.Now;
+                        //DbAgent .InsertLogs(connectionString, "Zip status", "ZIP File " + latestZip.Name + " je VALIDAN", deviceID, DateTime.Now);
+                        File    .WriteAllText(@"C:\Users\Kristijan\Desktop\validZIP_log-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "ZIP FILE " + latestZip.Name + " JE VALID!!");
                     }
                     else
                     {
-                        File.WriteAllText(@"C:\Users\Kristijan\Desktop\invalidZIP_log-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "ZIP FILE " + latestZip.Name + " JE CORRUPTED!!");
+                        BackupCheck     = "NE";
+                        BackupCheckDate = DateTime.Now;
+                        //DbAgent .InsertLogs(connectionString, "Zip status", "ZIP File " + latestZip.Name + " je CORRUPTED", deviceID, DateTime.Now);
+                        File    .WriteAllText(@"C:\Users\Kristijan\Desktop\invalidZIP_log-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "ZIP FILE " + latestZip.Name + " JE CORRUPTED!!");
                     }
                 }
                 catch (Exception ex)
@@ -281,6 +315,8 @@ namespace INFOS_NXChecker_service
                         File.WriteAllText(@"C:\Users\Kristijan\Desktop\deleteFile-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "Greška kod brisanja temp datoteke: " + ex.Message);
                     }
                 }
+
+                TempDelDate = DateTime.Now;
             }     
         }
 
@@ -298,6 +334,8 @@ namespace INFOS_NXChecker_service
                             File.Delete(file.FullName);
                         }
                     }
+
+                    BackupCleanupDate = DateTime.Now;
                 }
             }
             catch (Exception ex)
@@ -325,8 +363,10 @@ namespace INFOS_NXChecker_service
                     text += "FREE SPACE: " + moDisk["FreeSpace"].ToString() + ";" + Environment.NewLine;
                     text += "TOTAL SIZE: " + moDisk["Size"].ToString() + ";" + Environment.NewLine;
                     text += "Postotak " + postotak.ToString() + "% ;" + Environment.NewLine;
-                }
 
+                    AvailableFreeSpace = postotak.ToString() + "%";
+                }
+                
                 File.WriteAllText(@"C:\Users\Kristijan\Desktop\diskCheck-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", text);
 
             }
@@ -351,6 +391,10 @@ namespace INFOS_NXChecker_service
                     text += "Type: " + moDisk["MediaType"].ToString() + Environment.NewLine;
                     text += "Model: " + moDisk["Model"].ToString() + Environment.NewLine;
                     text += "------------------------------------" + Environment.NewLine;
+
+                    SMARTStatus = moDisk["Status"].ToString();
+                    HDDType     = moDisk["MediaType"].ToString();
+                    HDDModel    = moDisk["Model"].ToString();
                 }
 
                 File.WriteAllText(@"C:\Users\Kristijan\Desktop\DISK_DRIVES-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", text);
@@ -364,6 +408,25 @@ namespace INFOS_NXChecker_service
         private string GetConnectionString()
         {
             return "Data Source=" + serverIP + ";Initial Catalog=" + databaseName + ";User ID=" + serverUsername + ";Password=" + serverPassword;
+        }
+
+        private void SetStatus()
+        {
+            agent               = new DbAgent();
+            string conString    = GetConnectionString();
+
+            agent.SMARTStatus           = SMARTStatus;
+            agent.AvailableFreeSpace    = AvailableFreeSpace;
+            agent.HDDType               = HDDType;
+            agent.HDDModel              = HDDModel;
+            agent.DevicesID             = deviceID;
+            agent.StatusDate            = StatusDate;
+            agent.BackupCheck           = BackupCheck;
+            agent.BackupCheckDate       = BackupCheckDate;
+            agent.TempDelDate           = TempDelDate;
+            agent.BackupCleanupDate     = BackupCleanupDate;
+
+            agent.InsertStatus(conString);
         }
 
         protected override void OnStop()
