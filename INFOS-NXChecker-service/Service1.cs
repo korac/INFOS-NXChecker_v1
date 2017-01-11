@@ -14,6 +14,7 @@ using System.IO;
 using Ionic.Zip;
 using System.Management;
 using System.Data.SqlClient;
+using Newtonsoft.Json;
 
 namespace INFOS_NXChecker_service
 {
@@ -139,38 +140,52 @@ namespace INFOS_NXChecker_service
 
         private void CheckUser()
         {
-            string connectionString = GetConnectionString();
 
-            using (SqlConnection sqlCon = new SqlConnection(connectionString))
+            string userJson = RestHelpers.GetDataSync("/check_user/" + OIB, 0);
+            dynamic isUser  = JsonConvert.DeserializeObject(userJson);
+
+            if(isUser["COUNT(*)"] == 0)
             {
-                using (SqlCommand cmd = new SqlCommand("SELECT COUNT(*) FROM Partners WHERE OIB=@OIB", sqlCon))
-                {
-                    try
-                    {
-                        sqlCon.Open();
+                //Add this user to the database
+                //REST insert - POST req
+            }
+            else if(isUser["COUNT(*)"] == 1)
+            {
+                //User is in the database
+                //Continue
+            }
+            //string connectionString = GetConnectionString();
 
-                        cmd.Parameters.AddWithValue("@OIB", OIB);
+            //using (SqlConnection sqlCon = new SqlConnection(connectionString))
+            //{
+            //    using (SqlCommand cmd = new SqlCommand("SELECT COUNT(*) FROM Partners WHERE OIB=@OIB", sqlCon))
+            //    {
+            //        try
+            //        {
+            //            sqlCon.Open();
 
-                        if ((int)cmd.ExecuteScalar() == 0)
-                        {
-                            using (SqlCommand insertPartnerCmd = new SqlCommand("INSERT INTO Partners VALUES (@OIB, @partnerName)", sqlCon))
-                            {
-                                insertPartnerCmd.Parameters .AddWithValue("@OIB", OIB);
-                                insertPartnerCmd.Parameters .AddWithValue("@partnerName", partnerName);
-                                insertPartnerCmd            .ExecuteNonQuery();
-                            }
-                        }
-                        else if ((int)cmd.ExecuteScalar() == 1)
-                        {
-                            File.WriteAllText(@"C:\Users\Kristijan\Desktop\user-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "USER POSTOJI");
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        File.WriteAllText(@"C:\Users\Kristijan\Desktop\greska_CheckUser-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "Dogodila se GREŠKA: " + ex.Message + ";" + ex.TargetSite + "; " + ex.StackTrace);
-                    }
-                }                    
-            }               
+            //            cmd.Parameters.AddWithValue("@OIB", OIB);
+
+            //            if ((int)cmd.ExecuteScalar() == 0)
+            //            {
+            //                using (SqlCommand insertPartnerCmd = new SqlCommand("INSERT INTO Partners VALUES (@OIB, @partnerName)", sqlCon))
+            //                {
+            //                    insertPartnerCmd.Parameters .AddWithValue("@OIB", OIB);
+            //                    insertPartnerCmd.Parameters .AddWithValue("@partnerName", partnerName);
+            //                    insertPartnerCmd            .ExecuteNonQuery();
+            //                }
+            //            }
+            //            else if ((int)cmd.ExecuteScalar() == 1)
+            //            {
+            //                File.WriteAllText(@"C:\Users\Kristijan\Desktop\user-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "USER POSTOJI");
+            //            }
+            //        }
+            //        catch (Exception ex)
+            //        {
+            //            File.WriteAllText(@"C:\Users\Kristijan\Desktop\greska_CheckUser-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "Dogodila se GREŠKA: " + ex.Message + ";" + ex.TargetSite + "; " + ex.StackTrace);
+            //        }
+            //    }                    
+            //}               
 
             //In progress....
         }

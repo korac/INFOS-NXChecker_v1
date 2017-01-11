@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
+using System.Threading;
 
 namespace INFOS_NXChecker_service
 {
@@ -13,28 +14,57 @@ namespace INFOS_NXChecker_service
         const string MEDIA_TYPE = "application/json";
         #endregion
 
-        public static string GetData(string endpoint)
+        public static string GetDataSync(string endpoint, int waitFlag)
         {
             string url = ISM_REST_ROOT + endpoint;
 
-            using (HttpClient client = new HttpClient())
-            using (HttpResponseMessage response = client.GetAsync(url).Result)
+            try
             {
-                if (response.IsSuccessStatusCode)
+                using (HttpClient client = new HttpClient())
+                using (HttpResponseMessage response = client.GetAsync(url).Result)
                 {
-                    using (HttpContent content = response.Content)
+                    if (response.IsSuccessStatusCode)
                     {
-                        string data = content.ReadAsStringAsync().Result;
-
-                        if(data != null)
+                        using (HttpContent content = response.Content)
                         {
-                            return data;
+                            string data = content.ReadAsStringAsync().Result;
+
+                            if (data != null)
+                            {
+                                return data;
+                            }
                         }
                     }
-                }
+                    else
+                    {
+                        throw new Exception();
+                    }
 
-                return null;
+                    return null;
+                }
             }
+            catch (Exception ex)
+            {
+                if (waitFlag == 0)
+                {
+                    waitFlag++;
+                    return GetDataSync(endpoint, waitFlag);
+                }
+                else if (waitFlag == 4)
+                {
+                    Thread.Sleep(1000 * 3600 * 24);
+                    return GetDataSync(endpoint, waitFlag);
+                }
+                else
+                {
+                    Thread.Sleep(1000 * 3600 * waitFlag);
+                    waitFlag++;
+                    return GetDataSync(endpoint, waitFlag);
+                }
+            }
+
         }
+
+
     }
 }
