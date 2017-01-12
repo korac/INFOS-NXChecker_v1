@@ -10,11 +10,11 @@ namespace INFOS_NXChecker_service
     class RestHelpers
     {
         #region REST parameters
-        const string ISM_REST_ROOT = "http://192.168.5.200/infos/ism/public";
-        const string MEDIA_TYPE = "application/json";
+        const string ISM_REST_ROOT  = "http://192.168.5.200/infos/ism/public";
+        const string CONTENT_TYPE     = "application/json";
         #endregion
 
-        public static string GetDataSync(string endpoint, int waitFlag)
+        public static string GetDataSync(string endpoint)
         {
             string url = ISM_REST_ROOT + endpoint;
 
@@ -35,34 +35,40 @@ namespace INFOS_NXChecker_service
                             }
                         }
                     }
-                    else
-                    {
-                        throw new Exception();
-                    }
 
-                    return null;
+                    return String.Empty;                    
                 }
             }
             catch (Exception ex)
             {
-                if (waitFlag == 0)
-                {
-                    waitFlag++;
-                    return GetDataSync(endpoint, waitFlag);
-                }
-                else if (waitFlag == 4)
-                {
-                    Thread.Sleep(1000 * 3600 * 24);
-                    return GetDataSync(endpoint, waitFlag);
-                }
-                else
-                {
-                    Thread.Sleep(1000 * 3600 * waitFlag);
-                    waitFlag++;
-                    return GetDataSync(endpoint, waitFlag);
-                }
+                return String.Empty;
             }
 
+        }
+
+        public static bool PostDataSync(string endpoint, string jsonData)
+        {
+            string url = ISM_REST_ROOT + endpoint;
+
+            StringContent postContent = new StringContent(jsonData, Encoding.UTF8, CONTENT_TYPE);
+
+            using (HttpClient client = new HttpClient())
+            using (HttpResponseMessage response = client.PostAsync(url, postContent).Result)
+            using (HttpContent content = response.Content)
+            {
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    return true;
+                }
+
+                return false;
+
+                //string data = await content.ReadAsStringAsync();
+                //if(data != null)
+                //{
+                //    Console.WriteLine("");
+                //}
+            }
         }
 
 

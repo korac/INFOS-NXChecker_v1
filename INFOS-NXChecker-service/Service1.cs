@@ -38,8 +38,11 @@ namespace INFOS_NXChecker_service
         string tempPath1;
         string tempPath2;
         string tempPath3;
-        Timer tmr = new Timer();
+        Timer tmr           = new Timer();
+        Timer safetyTimer   = new Timer();
+        const int SAFETY_PERIOD = 20 * 60 * 1000;
         DbAgent agent;
+        int safetyFlag = 0;
         #endregion
 
         #region StatusVariables
@@ -95,13 +98,58 @@ namespace INFOS_NXChecker_service
 
         private void Tmr_Elapsed(object sender, ElapsedEventArgs e)
         {
+            DoWork();
+        }
+
+        private void Safety()
+        {
+            tmr.Start();
+
+            safetyTimer.Interval = SAFETY_PERIOD;
+            safetyTimer.Elapsed += SafetyTimerElapsed;
+            safetyTimer.Start();
+        }
+
+        private void SafetyTimerElapsed(object sender, ElapsedEventArgs e)
+        {
+            safetyFlag++;
+
+            if (safetyFlag < 4)
+            {
+                if (!DoWork())
+                {
+                    safetyTimer.Start();
+                    return;
+                }
+                else
+                {
+                    safetyFlag = 0;
+                }
+            }
+            else
+            {
+                //Final loggiraj u 'Logs' na lokalnom racunalu
+                //Ili posalji email
+            }            
+        }     
+
+        private bool DoWork()
+        {
             try
             {
                 //Check logged user
-                CheckUser();
+                if (!CheckUser())
+                {
+                    Safety();
+                    return false;
+                }
 
                 //Check user's location
-                CheckLocation();
+                if (CheckLocation())
+                {
+                    Safety();
+                    return false;
+                }
 
                 //Check location's device
                 CheckDevice();
@@ -131,29 +179,46 @@ namespace INFOS_NXChecker_service
                 File.WriteAllText(@logPath, text);
 
                 tmr.Start();
+                return true;
             }
             catch (Exception ex)
             {
                 File.WriteAllText(@"C:\Users\Kristijan\Desktop\greska_log-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "Dogodila se GREŠKA: " + ex.Message + ";" + ex.TargetSite + "; " + ex.StackTrace);
+                return false;
             }
         }
 
-        private void CheckUser()
+        private bool CheckUser()
         {
-
-            string userJson = RestHelpers.GetDataSync("/check_user/" + OIB, 0);
-            dynamic isUser  = JsonConvert.DeserializeObject(userJson);
-
-            if(isUser["COUNT(*)"] == 0)
+            try
             {
-                //Add this user to the database
-                //REST insert - POST req
+                string userJson = RestHelpers.GetDataSync("/check_user/" + OIB);
+                if (String.IsNullOrEmpty(userJson))
+                {
+                    return false;
+                }
+
+                dynamic isUser  = JsonConvert.DeserializeObject(userJson);
+
+                if (isUser["COUNT(*)"] == 0)
+                {
+                    RestHelpers.PostDataSync("/insert_user", JsonConvert.SerializeObject(new { OIB = OIB, PartnerName = partnerName }));
+                }
+                else if (isUser["COUNT(*)"] == 1)
+                {
+                    return true;
+                }
+
+                //Provjeri jos sta ako imamo COUNT > 1;
+                return true;
             }
-            else if(isUser["COUNT(*)"] == 1)
+            catch (Exception ex)
             {
-                //User is in the database
-                //Continue
+                return false;
             }
+            
+
+            
             //string connectionString = GetConnectionString();
 
             //using (SqlConnection sqlCon = new SqlConnection(connectionString))
@@ -190,49 +255,89 @@ namespace INFOS_NXChecker_service
             //In progress....
         }
 
-        private void CheckLocation()
+        private bool CheckLocation()
         {
-            string connectionString = GetConnectionString();
-
-            using (SqlConnection sqlCon = new SqlConnection(connectionString))
+            try
             {
-                using (SqlCommand cmd = new SqlCommand("SELECT COUNT(*) FROM Locations WHERE PartnerOIB=@OIB AND LocationName=@location", sqlCon))
+                string locationJson = RestHelpers.GetDataSync("/check_location/?oib=" + OIB.ToString() + "&location=" + location.ToString());
+                if (String.IsNullOrEmpty(locationJson))
                 {
-                    try
-                    {
-                        sqlCon.Open();
-
-                        cmd.Parameters.AddWithValue("@OIB", OIB);
-                        cmd.Parameters.AddWithValue("@location", location);
-
-                        if ((int)cmd.ExecuteScalar() == 0)
-                        {
-                            using (SqlCommand insertLocationCmd = new SqlCommand("INSERT INTO Locations (LocationName, PartnerOIB) VALUES (@location, @OIB); SELECT SCOPE_IDENTITY();", sqlCon))
-                            {
-                                insertLocationCmd.Parameters.AddWithValue("@location", location);
-                                insertLocationCmd.Parameters.AddWithValue("@OIB", OIB);
-                                locationID = (int) insertLocationCmd.ExecuteScalar();
-                            }
-                        }
-                        else if ((int)cmd.ExecuteScalar() == 1)
-                        {
-                            using (SqlCommand getLocationID = new SqlCommand("SELECT ID FROM Locations WHERE PartnerOIB=@OIB AND LocationName=@location", sqlCon))
-                            {
-                                getLocationID.Parameters.AddWithValue("@OIB", OIB);
-                                getLocationID.Parameters.AddWithValue("@location", location);
-
-                                locationID = (int)getLocationID.ExecuteScalar();
-                            }
-
-                            File.WriteAllText(@"C:\Users\Kristijan\Desktop\location-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "LOCATION POSTOJI");
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        File.WriteAllText(@"C:\Users\Kristijan\Desktop\greska_CheckLocation-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "Dogodila se GREŠKA: " + ex.Message + ";" + ex.TargetSite + "; " + ex.StackTrace);
-                    }
+                    return false;
                 }
+
+                dynamic isLocation = JsonConvert.DeserializeObject(locationJson);
+
+                if (isLocation["COUNT(*)"] == 0)
+                {
+                    RestHelpers.PostDataSync("/insert_location", JsonConvert.SerializeObject(new { LocationName = location, PartnerOIB = OIB }));
+                }
+                else if (isLocation["COUNT(*)"] == 1)
+                {
+                    return true;
+                }
+
+                //Provjeri jos sta ako imamo COUNT > 1;
+                return true;
             }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            //string locationJson = RestHelpers.GetDataSync("/check_location/?oib=" + OIB.ToString() + "&location=" + location.ToString(), 0);
+            //dynamic isLocation  = JsonConvert.DeserializeObject(locationJson);
+
+            //if (isLocation["COUNT(*)"] == 0)
+            //{
+            //    RestHelpers.PostDataSync("/insert_location", JsonConvert.SerializeObject(new { LocationName = location, PartnerOIB = OIB}));
+            //}
+            //else
+            //{
+
+            //}
+
+            ////////////////////////
+
+            //string connectionString = GetConnectionString();
+
+            //using (SqlConnection sqlCon = new SqlConnection(connectionString))
+            //{
+            //    using (SqlCommand cmd = new SqlCommand("SELECT COUNT(*) FROM Locations WHERE PartnerOIB=@OIB AND LocationName=@location", sqlCon))
+            //    {
+            //        try
+            //        {
+            //            sqlCon.Open();
+
+            //            cmd.Parameters.AddWithValue("@OIB", OIB);
+            //            cmd.Parameters.AddWithValue("@location", location);
+
+            //            if ((int)cmd.ExecuteScalar() == 0)
+            //            {
+            //                using (SqlCommand insertLocationCmd = new SqlCommand("INSERT INTO Locations (LocationName, PartnerOIB) VALUES (@location, @OIB); SELECT SCOPE_IDENTITY();", sqlCon))
+            //                {
+            //                    insertLocationCmd.Parameters.AddWithValue("@location", location);
+            //                    insertLocationCmd.Parameters.AddWithValue("@OIB", OIB);
+            //                    locationID = (int) insertLocationCmd.ExecuteScalar();
+            //                }
+            //            }
+            //            else if ((int)cmd.ExecuteScalar() == 1)
+            //            {
+            //                using (SqlCommand getLocationID = new SqlCommand("SELECT ID FROM Locations WHERE PartnerOIB=@OIB AND LocationName=@location", sqlCon))
+            //                {
+            //                    getLocationID.Parameters.AddWithValue("@OIB", OIB);
+            //                    getLocationID.Parameters.AddWithValue("@location", location);
+
+            //                    locationID = (int)getLocationID.ExecuteScalar();
+            //                }
+
+            //                File.WriteAllText(@"C:\Users\Kristijan\Desktop\location-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "LOCATION POSTOJI");
+            //            }
+            //        }
+            //        catch (Exception ex)
+            //        {
+            //            File.WriteAllText(@"C:\Users\Kristijan\Desktop\greska_CheckLocation-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "Dogodila se GREŠKA: " + ex.Message + ";" + ex.TargetSite + "; " + ex.StackTrace);
+            //        }
+            //    }
+            //}
         }
 
         private void CheckDevice()
