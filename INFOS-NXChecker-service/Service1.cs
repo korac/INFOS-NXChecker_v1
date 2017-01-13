@@ -145,14 +145,18 @@ namespace INFOS_NXChecker_service
                 }
 
                 //Check user's location
-                if (CheckLocation())
+                if (!CheckLocation())
                 {
                     Safety();
                     return false;
                 }
 
                 //Check location's device
-                CheckDevice();
+                if (!CheckDevice())
+                {
+                    Safety();
+                    return false;
+                }
 
                 //Checking the latest zip file if corrupted
                 ZipFileCheck(path);
@@ -174,9 +178,9 @@ namespace INFOS_NXChecker_service
                 StatusDate = DateTime.Now;
                 SetStatus();
 
-                string text = "Sve je dobro";
-                string logPath = path + @"\NXChecker_service_" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".nxch";
-                File.WriteAllText(@logPath, text);
+                //string text = "Sve je dobro";
+                //string logPath = path + @"\NXChecker_service_" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".nxch";
+                //File.WriteAllText(@logPath, text);
 
                 tmr.Start();
                 return true;
@@ -202,7 +206,11 @@ namespace INFOS_NXChecker_service
 
                 if (isUser["COUNT(*)"] == 0)
                 {
-                    RestHelpers.PostDataSync("/insert_user", JsonConvert.SerializeObject(new { OIB = OIB, PartnerName = partnerName }));
+                    string isPosted = RestHelpers.PostDataSync("/insert_user", JsonConvert.SerializeObject(new { OIB = OIB, PartnerName = partnerName }));
+                    if (String.IsNullOrEmpty(isPosted))
+                    {
+                        return false;
+                    }
                 }
                 else if (isUser["COUNT(*)"] == 1)
                 {
@@ -216,43 +224,6 @@ namespace INFOS_NXChecker_service
             {
                 return false;
             }
-            
-
-            
-            //string connectionString = GetConnectionString();
-
-            //using (SqlConnection sqlCon = new SqlConnection(connectionString))
-            //{
-            //    using (SqlCommand cmd = new SqlCommand("SELECT COUNT(*) FROM Partners WHERE OIB=@OIB", sqlCon))
-            //    {
-            //        try
-            //        {
-            //            sqlCon.Open();
-
-            //            cmd.Parameters.AddWithValue("@OIB", OIB);
-
-            //            if ((int)cmd.ExecuteScalar() == 0)
-            //            {
-            //                using (SqlCommand insertPartnerCmd = new SqlCommand("INSERT INTO Partners VALUES (@OIB, @partnerName)", sqlCon))
-            //                {
-            //                    insertPartnerCmd.Parameters .AddWithValue("@OIB", OIB);
-            //                    insertPartnerCmd.Parameters .AddWithValue("@partnerName", partnerName);
-            //                    insertPartnerCmd            .ExecuteNonQuery();
-            //                }
-            //            }
-            //            else if ((int)cmd.ExecuteScalar() == 1)
-            //            {
-            //                File.WriteAllText(@"C:\Users\Kristijan\Desktop\user-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "USER POSTOJI");
-            //            }
-            //        }
-            //        catch (Exception ex)
-            //        {
-            //            File.WriteAllText(@"C:\Users\Kristijan\Desktop\greska_CheckUser-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "Dogodila se GREŠKA: " + ex.Message + ";" + ex.TargetSite + "; " + ex.StackTrace);
-            //        }
-            //    }                    
-            //}               
-
-            //In progress....
         }
 
         private bool CheckLocation()
@@ -269,120 +240,74 @@ namespace INFOS_NXChecker_service
 
                 if (isLocation["COUNT(*)"] == 0)
                 {
-                    RestHelpers.PostDataSync("/insert_location", JsonConvert.SerializeObject(new { LocationName = location, PartnerOIB = OIB }));
+                    string isLocId  = RestHelpers.PostDataSync("/insert_location", JsonConvert.SerializeObject(new { LocationName = location, PartnerOIB = OIB }));
+                    if (String.IsNullOrEmpty(isLocId))
+                    {
+                        return false;
+                    }
+
+                    locationID      = (int) JsonConvert.DeserializeObject(isLocId);
                 }
                 else if (isLocation["COUNT(*)"] == 1)
                 {
-                    return true;
+                    string isLocId  = RestHelpers.GetDataSync("/select_location/?oib=" + OIB.ToString() + "&location=" + location.ToString());
+                    if (String.IsNullOrEmpty(isLocId))
+                    {
+                        return false;
+                    }
+
+                    locationID      = (int) JsonConvert.DeserializeObject(isLocId);
                 }
 
                 //Provjeri jos sta ako imamo COUNT > 1;
                 return true;
             }
-            catch (Exception ex)
+            catch
             {
                 return false;
             }
-            //string locationJson = RestHelpers.GetDataSync("/check_location/?oib=" + OIB.ToString() + "&location=" + location.ToString(), 0);
-            //dynamic isLocation  = JsonConvert.DeserializeObject(locationJson);
-
-            //if (isLocation["COUNT(*)"] == 0)
-            //{
-            //    RestHelpers.PostDataSync("/insert_location", JsonConvert.SerializeObject(new { LocationName = location, PartnerOIB = OIB}));
-            //}
-            //else
-            //{
-
-            //}
-
-            ////////////////////////
-
-            //string connectionString = GetConnectionString();
-
-            //using (SqlConnection sqlCon = new SqlConnection(connectionString))
-            //{
-            //    using (SqlCommand cmd = new SqlCommand("SELECT COUNT(*) FROM Locations WHERE PartnerOIB=@OIB AND LocationName=@location", sqlCon))
-            //    {
-            //        try
-            //        {
-            //            sqlCon.Open();
-
-            //            cmd.Parameters.AddWithValue("@OIB", OIB);
-            //            cmd.Parameters.AddWithValue("@location", location);
-
-            //            if ((int)cmd.ExecuteScalar() == 0)
-            //            {
-            //                using (SqlCommand insertLocationCmd = new SqlCommand("INSERT INTO Locations (LocationName, PartnerOIB) VALUES (@location, @OIB); SELECT SCOPE_IDENTITY();", sqlCon))
-            //                {
-            //                    insertLocationCmd.Parameters.AddWithValue("@location", location);
-            //                    insertLocationCmd.Parameters.AddWithValue("@OIB", OIB);
-            //                    locationID = (int) insertLocationCmd.ExecuteScalar();
-            //                }
-            //            }
-            //            else if ((int)cmd.ExecuteScalar() == 1)
-            //            {
-            //                using (SqlCommand getLocationID = new SqlCommand("SELECT ID FROM Locations WHERE PartnerOIB=@OIB AND LocationName=@location", sqlCon))
-            //                {
-            //                    getLocationID.Parameters.AddWithValue("@OIB", OIB);
-            //                    getLocationID.Parameters.AddWithValue("@location", location);
-
-            //                    locationID = (int)getLocationID.ExecuteScalar();
-            //                }
-
-            //                File.WriteAllText(@"C:\Users\Kristijan\Desktop\location-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "LOCATION POSTOJI");
-            //            }
-            //        }
-            //        catch (Exception ex)
-            //        {
-            //            File.WriteAllText(@"C:\Users\Kristijan\Desktop\greska_CheckLocation-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "Dogodila se GREŠKA: " + ex.Message + ";" + ex.TargetSite + "; " + ex.StackTrace);
-            //        }
-            //    }
-            //}
         }
 
-        private void CheckDevice()
+        private bool CheckDevice()
         {
-            string connectionString = GetConnectionString();
-
-            using (SqlConnection sqlCon = new SqlConnection(connectionString))
+            try
             {
-                using (SqlCommand cmd = new SqlCommand("SELECT COUNT(*) FROM Devices WHERE LocationID=@locationID AND DeviceName=@device", sqlCon))
+                string deviceJson = RestHelpers.GetDataSync("/check_device/?locationID=" + locationID.ToString() + "&location=" + device.ToString());
+                if (String.IsNullOrEmpty(deviceJson))
                 {
-                    try
+                    return false;
+                }
+
+                dynamic isDevice = JsonConvert.DeserializeObject(deviceJson);
+
+                if (isDevice["COUNT(*)"] == 0)
+                {
+                    string isDevId  = RestHelpers.PostDataSync("/insert_device", JsonConvert.SerializeObject(new { DeviceName = device, LocationID = locationID}));
+                    if (String.IsNullOrEmpty(isDevId))
                     {
-                        sqlCon.Open();
-
-                        cmd.Parameters.AddWithValue("@locationID", locationID);
-                        cmd.Parameters.AddWithValue("@device", device);
-
-                        if ((int)cmd.ExecuteScalar() == 0)
-                        {
-                            using (SqlCommand insertDeviceCmd = new SqlCommand("INSERT INTO Devices (DeviceName, LocationID) VALUES (@device, @locationID); SELECT SCOPE_IDENTITY();", sqlCon))
-                            {
-                                insertDeviceCmd.Parameters.AddWithValue("@device", device);
-                                insertDeviceCmd.Parameters.AddWithValue("@locationID", locationID);
-                                deviceID = (int) insertDeviceCmd.ExecuteScalar();
-                            }
-                        }
-                        else if ((int)cmd.ExecuteScalar() == 1)
-                        {
-                            using (SqlCommand getDeviceID = new SqlCommand("SELECT ID FROM Devices WHERE LocationID=@locationID AND DeviceName=@device", sqlCon))
-                            {
-                                getDeviceID.Parameters.AddWithValue("@locationID", locationID);
-                                getDeviceID.Parameters.AddWithValue("@device", device);
-
-                                deviceID = (int) getDeviceID.ExecuteScalar();
-                            }
-
-                            File.WriteAllText(@"C:\Users\Kristijan\Desktop\device-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "DEVICE POSTOJI");
-                        }
+                        return false;
                     }
-                    catch (Exception ex)
+
+                    deviceID        = (int) JsonConvert.DeserializeObject(isDevId);
+                }
+                else if (isDevice["COUNT(*)"] == 0)
+                {
+                    string isDevId = RestHelpers.GetDataSync("/select_device/?locationID=" + locationID.ToString() + "&DeviceName=" + device.ToString());
+                    if (String.IsNullOrEmpty(isDevId))
                     {
-                        File.WriteAllText(@"C:\Users\Kristijan\Desktop\greska_CheckDevice-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "Dogodila se GREŠKA: " + ex.Message + ";" + ex.TargetSite + "; " + "************* " + Environment.NewLine + locationID.ToString());
+                        return false;
                     }
-                }                    
+
+                    deviceID        = (int) JsonConvert.DeserializeObject(isDevId);
+                }
+
+                //Provjeri jos sta ako imamo COUNT > 1;
+                return true; 
             }
+            catch
+            {
+                return false;
+            }            
         }
 
         private void ZipFileCheck(string backupPath)
@@ -396,26 +321,27 @@ namespace INFOS_NXChecker_service
                     zipFiles                = zipFiles.OrderByDescending(file => file.CreationTime).ToArray();
                     FileInfo latestZip      = zipFiles[0];
 
-                    string connectionString = GetConnectionString();
-
                     if (ZipFile.IsZipFile(backupPath + "\\" + latestZip.Name))
                     {
                         BackupCheck     = "OK";
                         BackupCheckDate = DateTime.Now;
-                        DbAgent .InsertLogs(connectionString, "Zip status", "ZIP File " + latestZip.Name + " je VALIDAN", deviceID, DateTime.Now);
-                        File    .WriteAllText(@"C:\Users\Kristijan\Desktop\validZIP_log-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "ZIP FILE " + latestZip.Name + " JE VALID!!");
+                        RestHelpers.PostDataSync("/insert_log", JsonConvert.SerializeObject(new { Type = "Zip status", Message = "ZIP File " + latestZip.Name + "je VALID", DevicesID = deviceID, LogDate = DateTime.Now}));
+                        //DbAgent .InsertLogs(connectionString, "Zip status", "ZIP File " + latestZip.Name + " je VALIDAN", deviceID, DateTime.Now);
+                        //File    .WriteAllText(@"C:\Users\Kristijan\Desktop\validZIP_log-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "ZIP FILE " + latestZip.Name + " JE VALID!!");
                     }
                     else
                     {
                         BackupCheck     = "NE";
                         BackupCheckDate = DateTime.Now;
-                        DbAgent .InsertLogs(connectionString, "Zip status", "ZIP File " + latestZip.Name + " je CORRUPTED", deviceID, DateTime.Now);
-                        File    .WriteAllText(@"C:\Users\Kristijan\Desktop\invalidZIP_log-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "ZIP FILE " + latestZip.Name + " JE CORRUPTED!!");
+                        RestHelpers.PostDataSync("/insert_log", JsonConvert.SerializeObject(new { Type = "Zip status", Message = "ZIP File " + latestZip.Name + "je CORRUPTED", DevicesID = deviceID, LogDate = DateTime.Now }));
+                        //DbAgent .InsertLogs(connectionString, "Zip status", "ZIP File " + latestZip.Name + " je CORRUPTED", deviceID, DateTime.Now);
+                        //File    .WriteAllText(@"C:\Users\Kristijan\Desktop\invalidZIP_log-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "ZIP FILE " + latestZip.Name + " JE CORRUPTED!!");
                     }
                 }
                 catch (Exception ex)
                 {
-                    File.WriteAllText(@"C:\Users\Kristijan\Desktop\greska_log-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "Greška kod provjere ispravnosti zadnjeg ZIP filea: " + ex.Message);
+                    RestHelpers.PostDataSync("/insert_log", JsonConvert.SerializeObject(new { Type = "Error - Zip status", Message = "Greška pri provjeri Backup Zip datoteka", DevicesID = deviceID, LogDate = DateTime.Now }));
+                    //File.WriteAllText(@"C:\Users\Kristijan\Desktop\greska_log-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "Greška kod provjere ispravnosti zadnjeg ZIP filea: " + ex.Message);
                 }
             }
         }
@@ -432,7 +358,8 @@ namespace INFOS_NXChecker_service
                     }
                     catch (Exception ex)
                     {
-                        File.WriteAllText(@"C:\Users\Kristijan\Desktop\deleteFile-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "Greška kod brisanja temp datoteke: " + ex.Message);
+                        RestHelpers.PostDataSync("/insert_log", JsonConvert.SerializeObject(new { Type = "Error - Temp datoteke", Message = "Greška pri brisanju Temp datoteka", DevicesID = deviceID, LogDate = DateTime.Now }));
+                        //File.WriteAllText(@"C:\Users\Kristijan\Desktop\deleteFile-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "Greška kod brisanja temp datoteke: " + ex.Message);
                     }
                 }
 
@@ -460,7 +387,8 @@ namespace INFOS_NXChecker_service
             }
             catch (Exception ex)
             {
-                File.WriteAllText(@"C:\Users\Kristijan\Desktop\deleteFile-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "Greška kod brisanja Backup file-ova: " + ex.Message);
+                RestHelpers.PostDataSync("/insert_log", JsonConvert.SerializeObject(new { Type = "Error - Brisanje starih Backupa", Message = "Greška pri brisanju starih Backup datoteka", DevicesID = deviceID, LogDate = DateTime.Now }));
+                //File.WriteAllText(@"C:\Users\Kristijan\Desktop\deleteFile-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "Greška kod brisanja Backup file-ova: " + ex.Message);
             }
         }
 
@@ -495,7 +423,8 @@ namespace INFOS_NXChecker_service
             }
             catch (Exception ex)
             {
-                File.WriteAllText(@"C:\Users\Kristijan\Desktop\errorFile-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "Greska kod provjere slobodnog prostora na disku: " + ex.Message);
+                RestHelpers.PostDataSync("/insert_log", JsonConvert.SerializeObject(new { Type = "Error - Provjera diska", Message = "Greška pri provjeri slobodnog prostora na Backup disku", DevicesID = deviceID, LogDate = DateTime.Now }));
+                //File.WriteAllText(@"C:\Users\Kristijan\Desktop\errorFile-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "Greska kod provjere slobodnog prostora na disku: " + ex.Message);
             }
         }
 
@@ -524,32 +453,42 @@ namespace INFOS_NXChecker_service
             }
             catch (Exception ex)
             {
-                File.WriteAllText(@"C:\Users\Kristijan\Desktop\errorFile-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "Greska kod SMART provjere: " + ex.Message);
+                RestHelpers.PostDataSync("/insert_log", JsonConvert.SerializeObject(new { Type = "Error - SMART Status", Message = "Greška pri provjeri SMART statusa diska (ili drugih svojstava diska)", DevicesID = deviceID, LogDate = DateTime.Now }));
+                //File.WriteAllText(@"C:\Users\Kristijan\Desktop\errorFile-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "Greska kod SMART provjere: " + ex.Message);
             }
-        }
-
-        private string GetConnectionString()
-        {
-            return "Data Source=" + serverIP + ";Initial Catalog=" + databaseName + ";User ID=" + serverUsername + ";Password=" + serverPassword;
         }
 
         private void SetStatus()
         {
-            agent               = new DbAgent();
-            string conString    = GetConnectionString();
+            object statusJsonObj = new {
+                SMARTStatus         = SMARTStatus,
+                AvailableFreeSpace  = AvailableFreeSpace,
+                HDDType             = HDDType,
+                HDDModel            = HDDModel,
+                DevicesID           = deviceID,
+                StatusDate          = StatusDate,
+                BackupCheck         = BackupCheck,
+                BackupCheckDate     = BackupCheckDate,
+                TempDelDate         = TempDelDate,
+                BackupCleanupDate   = BackupCleanupDate
+            };
 
-            agent.SMARTStatus           = SMARTStatus;
-            agent.AvailableFreeSpace    = AvailableFreeSpace;
-            agent.HDDType               = HDDType;
-            agent.HDDModel              = HDDModel;
-            agent.DevicesID             = deviceID;
-            agent.StatusDate            = StatusDate;
-            agent.BackupCheck           = BackupCheck;
-            agent.BackupCheckDate       = BackupCheckDate;
-            agent.TempDelDate           = TempDelDate;
-            agent.BackupCleanupDate     = BackupCleanupDate;
+            RestHelpers.PostDataSync("/insert_status", JsonConvert.SerializeObject(statusJsonObj));
 
-            agent.InsertStatus(conString);
+            //agent               = new DbAgent();
+
+            //agent.SMARTStatus           = SMARTStatus;
+            //agent.AvailableFreeSpace    = AvailableFreeSpace;
+            //agent.HDDType               = HDDType;
+            //agent.HDDModel              = HDDModel;
+            //agent.DevicesID             = deviceID;
+            //agent.StatusDate            = StatusDate;
+            //agent.BackupCheck           = BackupCheck;
+            //agent.BackupCheckDate       = BackupCheckDate;
+            //agent.TempDelDate           = TempDelDate;
+            //agent.BackupCleanupDate     = BackupCleanupDate;
+
+            //agent.InsertStatus(conString);
         }
 
         protected override void OnStop()

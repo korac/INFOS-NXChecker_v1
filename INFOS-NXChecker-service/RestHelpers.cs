@@ -46,28 +46,36 @@ namespace INFOS_NXChecker_service
 
         }
 
-        public static bool PostDataSync(string endpoint, string jsonData)
+        public static string PostDataSync(string endpoint, string jsonData)
         {
             string url = ISM_REST_ROOT + endpoint;
 
             StringContent postContent = new StringContent(jsonData, Encoding.UTF8, CONTENT_TYPE);
 
-            using (HttpClient client = new HttpClient())
-            using (HttpResponseMessage response = client.PostAsync(url, postContent).Result)
-            using (HttpContent content = response.Content)
+            try
             {
-                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                using (HttpClient client = new HttpClient())
+                using (HttpResponseMessage response = client.PostAsync(url, postContent).Result)
                 {
-                    return true;
+                    if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                    {
+                        using (HttpContent content = response.Content)
+                        {
+                            string data = content.ReadAsStringAsync().Result;
+
+                            if (data != null)
+                            {
+                                return data;
+                            }
+                        }
+                    }
+
+                    return String.Empty;
                 }
-
-                return false;
-
-                //string data = await content.ReadAsStringAsync();
-                //if(data != null)
-                //{
-                //    Console.WriteLine("");
-                //}
+            }
+            catch
+            {
+                return String.Empty;
             }
         }
 
