@@ -104,10 +104,11 @@ namespace INFOS_NXChecker_service
         private void Safety()
         {
             tmr.Start();
-            File.WriteAllText(@"C:\Users\Kristijan\Desktop\diskCheck-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "Error kod safety");
-            //safetyTimer.Interval = SAFETY_PERIOD;
-            //safetyTimer.Elapsed += SafetyTimerElapsed;
-            //safetyTimer.Start();
+            File.WriteAllText(@"C:\Users\Kristijan\Desktop\SAFETY-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "Error kod safety");
+
+            safetyTimer.Interval = SAFETY_PERIOD;
+            safetyTimer.Elapsed += SafetyTimerElapsed;
+            safetyTimer.Start();
         }
 
         private void SafetyTimerElapsed(object sender, ElapsedEventArgs e)
@@ -178,16 +179,12 @@ namespace INFOS_NXChecker_service
                 StatusDate = DateTime.Now;
                 SetStatus();
 
-                //string text = "Sve je dobro";
-                //string logPath = path + @"\NXChecker_service_" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".nxch";
-                //File.WriteAllText(@logPath, text);
-
                 tmr.Start();
                 return true;
             }
             catch (Exception ex)
             {
-                File.WriteAllText(@"C:\Users\Kristijan\Desktop\greska_log-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "Dogodila se GREŠKA: " + ex.Message + ";" + ex.TargetSite + "; " + ex.StackTrace);
+                File.WriteAllText(@"C:\Users\Kristijan\Desktop\greska_log-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "Dogodila se GRESKA: " + ex.Message + ";" + ex.TargetSite + "; " + ex.StackTrace);
                 return false;
             }
         }
@@ -325,29 +322,28 @@ namespace INFOS_NXChecker_service
                     DirectoryInfo backupDir = new DirectoryInfo(backupPath);
                     FileInfo[] zipFiles     = backupDir.GetFiles("*.zip");
                     zipFiles                = zipFiles.OrderByDescending(file => file.CreationTime).ToArray();
-                    FileInfo latestZip      = zipFiles[0];
 
-                    if (ZipFile.IsZipFile(backupPath + "\\" + latestZip.Name))
+                    if (zipFiles.Length > 0)
                     {
-                        BackupCheck     = "OK";
-                        BackupCheckDate = DateTime.Now;
-                        RestHelpers.PostDataSync("/insert_log", JsonConvert.SerializeObject(new { Type = "Zip status", Message = "ZIP File " + latestZip.Name + "je VALID", DevicesID = deviceID, LogDate = DateTime.Now}));
-                        //DbAgent .InsertLogs(connectionString, "Zip status", "ZIP File " + latestZip.Name + " je VALIDAN", deviceID, DateTime.Now);
-                        //File    .WriteAllText(@"C:\Users\Kristijan\Desktop\validZIP_log-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "ZIP FILE " + latestZip.Name + " JE VALID!!");
-                    }
-                    else
-                    {
-                        BackupCheck     = "NE";
-                        BackupCheckDate = DateTime.Now;
-                        RestHelpers.PostDataSync("/insert_log", JsonConvert.SerializeObject(new { Type = "Zip status", Message = "ZIP File " + latestZip.Name + "je CORRUPTED", DevicesID = deviceID, LogDate = DateTime.Now }));
-                        //DbAgent .InsertLogs(connectionString, "Zip status", "ZIP File " + latestZip.Name + " je CORRUPTED", deviceID, DateTime.Now);
-                        //File    .WriteAllText(@"C:\Users\Kristijan\Desktop\invalidZIP_log-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "ZIP FILE " + latestZip.Name + " JE CORRUPTED!!");
+                        FileInfo latestZip      = zipFiles[0];
+
+                        if (ZipFile.IsZipFile(backupPath + "\\" + latestZip.Name))
+                        {
+                            BackupCheck     = "OK";
+                            BackupCheckDate = DateTime.Now;
+                            RestHelpers.PostDataSync("/insert_log", JsonConvert.SerializeObject(new { Type = "Zip status", Message = "ZIP File " + latestZip.Name + "- VALID", DevicesID = deviceID, LogDate = DateTime.Now}));
+                        }
+                        else
+                        {
+                            BackupCheck     = "NE";
+                            BackupCheckDate = DateTime.Now;
+                            RestHelpers.PostDataSync("/insert_log", JsonConvert.SerializeObject(new { Type = "Zip status", Message = "ZIP File " + latestZip.Name + "- CORRUPTED", DevicesID = deviceID, LogDate = DateTime.Now }));
+                        }
                     }
                 }
                 catch (Exception ex)
                 {
-                    RestHelpers.PostDataSync("/insert_log", JsonConvert.SerializeObject(new { Type = "Error - Zip status", Message = "Greška pri provjeri Backup Zip datoteka", DevicesID = deviceID, LogDate = DateTime.Now }));
-                    //File.WriteAllText(@"C:\Users\Kristijan\Desktop\greska_log-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "Greška kod provjere ispravnosti zadnjeg ZIP filea: " + ex.Message);
+                    RestHelpers.PostDataSync("/insert_log", JsonConvert.SerializeObject(new { Type = "Error - Zip status", Message = "Greska pri provjeri Backup Zip datoteka", DevicesID = deviceID, LogDate = DateTime.Now }));
                 }
             }
         }
@@ -364,8 +360,7 @@ namespace INFOS_NXChecker_service
                     }
                     catch (Exception ex)
                     {
-                        RestHelpers.PostDataSync("/insert_log", JsonConvert.SerializeObject(new { Type = "Error - Temp datoteke", Message = "Greška pri brisanju Temp datoteka", DevicesID = deviceID, LogDate = DateTime.Now }));
-                        //File.WriteAllText(@"C:\Users\Kristijan\Desktop\deleteFile-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "Greška kod brisanja temp datoteke: " + ex.Message);
+                        RestHelpers.PostDataSync("/insert_log", JsonConvert.SerializeObject(new { Type = "Error - Temp datoteke", Message = "Greska pri brisanju Temp datoteka", DevicesID = deviceID, LogDate = DateTime.Now }));
                     }
                 }
 
@@ -393,8 +388,7 @@ namespace INFOS_NXChecker_service
             }
             catch (Exception ex)
             {
-                RestHelpers.PostDataSync("/insert_log", JsonConvert.SerializeObject(new { Type = "Error - Brisanje starih Backupa", Message = "Greška pri brisanju starih Backup datoteka", DevicesID = deviceID, LogDate = DateTime.Now }));
-                //File.WriteAllText(@"C:\Users\Kristijan\Desktop\deleteFile-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "Greška kod brisanja Backup file-ova: " + ex.Message);
+                RestHelpers.PostDataSync("/insert_log", JsonConvert.SerializeObject(new { Type = "Error - Brisanje starih Backupa", Message = "Greska pri brisanju starih Backup datoteka", DevicesID = deviceID, LogDate = DateTime.Now }));
             }
         }
 
@@ -423,13 +417,11 @@ namespace INFOS_NXChecker_service
 
                     AvailableFreeSpace = freeSpace.ToString() + "/" + totalSize.ToString() + " GB (" + postotak.ToString() + "%)";
                 }
-                
-                File.WriteAllText(@"C:\Users\Kristijan\Desktop\diskCheck-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", text);
 
             }
             catch (Exception ex)
             {
-                RestHelpers.PostDataSync("/insert_log", JsonConvert.SerializeObject(new { Type = "Error - Provjera diska", Message = "Greška pri provjeri slobodnog prostora na Backup disku", DevicesID = deviceID, LogDate = DateTime.Now }));
+                RestHelpers.PostDataSync("/insert_log", JsonConvert.SerializeObject(new { Type = "Error - Provjera diska", Message = "Greska pri provjeri slobodnog prostora na Backup disku", DevicesID = deviceID, LogDate = DateTime.Now }));
                 //File.WriteAllText(@"C:\Users\Kristijan\Desktop\errorFile-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "Greska kod provjere slobodnog prostora na disku: " + ex.Message);
             }
         }
@@ -454,13 +446,10 @@ namespace INFOS_NXChecker_service
                     HDDType     = moDisk["MediaType"].ToString();
                     HDDModel    = moDisk["Model"].ToString();
                 }
-
-                File.WriteAllText(@"C:\Users\Kristijan\Desktop\DISK_DRIVES-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", text);
             }
             catch (Exception ex)
             {
-                RestHelpers.PostDataSync("/insert_log", JsonConvert.SerializeObject(new { Type = "Error - SMART Status", Message = "Greška pri provjeri SMART statusa diska (ili drugih svojstava diska)", DevicesID = deviceID, LogDate = DateTime.Now }));
-                //File.WriteAllText(@"C:\Users\Kristijan\Desktop\errorFile-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "Greska kod SMART provjere: " + ex.Message);
+                RestHelpers.PostDataSync("/insert_log", JsonConvert.SerializeObject(new { Type = "Error - SMART Status", Message = "Greska pri provjeri SMART statusa diska (ili drugih svojstava diska)", DevicesID = deviceID, LogDate = DateTime.Now }));
             }
         }
 
@@ -480,21 +469,6 @@ namespace INFOS_NXChecker_service
             };
 
             RestHelpers.PostDataSync("/insert_status", JsonConvert.SerializeObject(statusJsonObj));
-
-            //agent               = new DbAgent();
-
-            //agent.SMARTStatus           = SMARTStatus;
-            //agent.AvailableFreeSpace    = AvailableFreeSpace;
-            //agent.HDDType               = HDDType;
-            //agent.HDDModel              = HDDModel;
-            //agent.DevicesID             = deviceID;
-            //agent.StatusDate            = StatusDate;
-            //agent.BackupCheck           = BackupCheck;
-            //agent.BackupCheckDate       = BackupCheckDate;
-            //agent.TempDelDate           = TempDelDate;
-            //agent.BackupCleanupDate     = BackupCleanupDate;
-
-            //agent.InsertStatus(conString);
         }
 
         protected override void OnStop()
