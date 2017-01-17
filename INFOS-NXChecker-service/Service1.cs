@@ -41,7 +41,6 @@ namespace INFOS_NXChecker_service
         Timer tmr           = new Timer();
         Timer safetyTimer   = new Timer();
         const int SAFETY_PERIOD = 20 * 60 * 1000;
-        //DbAgent agent;
         int safetyFlag = 0;
         #endregion
 
@@ -131,6 +130,7 @@ namespace INFOS_NXChecker_service
             {
                 //Final loggiraj u 'Logs' na lokalnom racunalu
                 //Ili posalji email
+                File.WriteAllText(@"C:\Users\Kristijan\Desktop\SAFETY-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "Safety je probao ponoviti posao jos 4 puta bezuspjesno. Servis prekinut s radom.");
             }            
         }     
 
