@@ -7,11 +7,11 @@ using System.Threading;
 
 namespace INFOS_NXChecker_service
 {
-    class RestHelpers
+    static class RestHelpers
     {
         #region REST parameters
         const string ISM_REST_ROOT  = "http://192.168.5.200/infos/ism/public";
-        const string CONTENT_TYPE     = "application/json";
+        const string CONTENT_TYPE   = "application/json";
         #endregion
 
         public static string GetDataSync(string endpoint)

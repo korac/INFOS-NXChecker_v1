@@ -41,7 +41,7 @@ namespace INFOS_NXChecker_service
         Timer tmr           = new Timer();
         Timer safetyTimer   = new Timer();
         const int SAFETY_PERIOD = 20 * 60 * 1000;
-        DbAgent agent;
+        //DbAgent agent;
         int safetyFlag = 0;
         #endregion
 
@@ -104,10 +104,10 @@ namespace INFOS_NXChecker_service
         private void Safety()
         {
             tmr.Start();
-
-            safetyTimer.Interval = SAFETY_PERIOD;
-            safetyTimer.Elapsed += SafetyTimerElapsed;
-            safetyTimer.Start();
+            File.WriteAllText(@"C:\Users\Kristijan\Desktop\diskCheck-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "Error kod safety");
+            //safetyTimer.Interval = SAFETY_PERIOD;
+            //safetyTimer.Elapsed += SafetyTimerElapsed;
+            //safetyTimer.Start();
         }
 
         private void SafetyTimerElapsed(object sender, ElapsedEventArgs e)
@@ -202,11 +202,12 @@ namespace INFOS_NXChecker_service
                     return false;
                 }
 
-                dynamic isUser  = JsonConvert.DeserializeObject(userJson);
+                dynamic isUser = JsonConvert.DeserializeObject(userJson);
 
                 if (isUser["COUNT(*)"] == 0)
                 {
                     string isPosted = RestHelpers.PostDataSync("/insert_user", JsonConvert.SerializeObject(new { OIB = OIB, PartnerName = partnerName }));
+
                     if (String.IsNullOrEmpty(isPosted))
                     {
                         return false;
@@ -230,7 +231,8 @@ namespace INFOS_NXChecker_service
         {
             try
             {
-                string locationJson = RestHelpers.GetDataSync("/check_location/?oib=" + OIB.ToString() + "&location=" + location.ToString());
+                string locationJson = RestHelpers.GetDataSync("/check_location/" + OIB.ToString() + "," + location.ToString());
+
                 if (String.IsNullOrEmpty(locationJson))
                 {
                     return false;
@@ -240,29 +242,31 @@ namespace INFOS_NXChecker_service
 
                 if (isLocation["COUNT(*)"] == 0)
                 {
-                    string isLocId  = RestHelpers.PostDataSync("/insert_location", JsonConvert.SerializeObject(new { LocationName = location, PartnerOIB = OIB }));
+                    string isLocId = RestHelpers.PostDataSync("/insert_location", JsonConvert.SerializeObject(new { LocationName = location, PartnerOIB = OIB }));
                     if (String.IsNullOrEmpty(isLocId))
                     {
                         return false;
                     }
 
-                    locationID      = (int) JsonConvert.DeserializeObject(isLocId);
+                    dynamic isLocationId = JsonConvert.DeserializeObject(isLocId);
+                    Int32.TryParse(isLocationId, out locationID);
                 }
                 else if (isLocation["COUNT(*)"] == 1)
                 {
-                    string isLocId  = RestHelpers.GetDataSync("/select_location/?oib=" + OIB.ToString() + "&location=" + location.ToString());
+                    string isLocId = RestHelpers.GetDataSync("/select_location/" + OIB.ToString() + "," + location.ToString());
                     if (String.IsNullOrEmpty(isLocId))
                     {
                         return false;
                     }
 
-                    locationID      = (int) JsonConvert.DeserializeObject(isLocId);
+                    dynamic isLocationId    = JsonConvert.DeserializeObject(isLocId);
+                    locationID              = isLocationId["ID"];
                 }
 
                 //Provjeri jos sta ako imamo COUNT > 1;
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
                 return false;
             }
@@ -272,7 +276,7 @@ namespace INFOS_NXChecker_service
         {
             try
             {
-                string deviceJson = RestHelpers.GetDataSync("/check_device/?locationID=" + locationID.ToString() + "&location=" + device.ToString());
+                string deviceJson = RestHelpers.GetDataSync("/check_device/" + locationID.ToString() + "," + device.ToString());
                 if (String.IsNullOrEmpty(deviceJson))
                 {
                     return false;
@@ -282,32 +286,34 @@ namespace INFOS_NXChecker_service
 
                 if (isDevice["COUNT(*)"] == 0)
                 {
-                    string isDevId  = RestHelpers.PostDataSync("/insert_device", JsonConvert.SerializeObject(new { DeviceName = device, LocationID = locationID}));
+                    string isDevId = RestHelpers.PostDataSync("/insert_device", JsonConvert.SerializeObject(new { DeviceName = device, LocationID = locationID }));
                     if (String.IsNullOrEmpty(isDevId))
                     {
                         return false;
                     }
 
-                    deviceID        = (int) JsonConvert.DeserializeObject(isDevId);
+                    dynamic isDeviceId = JsonConvert.DeserializeObject(isDevId);
+                    Int32.TryParse(isDeviceId, out deviceID);
                 }
-                else if (isDevice["COUNT(*)"] == 0)
+                else if (isDevice["COUNT(*)"] == 1)
                 {
-                    string isDevId = RestHelpers.GetDataSync("/select_device/?locationID=" + locationID.ToString() + "&DeviceName=" + device.ToString());
+                    string isDevId = RestHelpers.GetDataSync("/select_device/" + locationID.ToString() + "," + device.ToString());
                     if (String.IsNullOrEmpty(isDevId))
                     {
                         return false;
                     }
 
-                    deviceID        = (int) JsonConvert.DeserializeObject(isDevId);
+                    dynamic isDeviceId  = JsonConvert.DeserializeObject(isDevId);
+                    deviceID            = isDeviceId["ID"];
                 }
 
                 //Provjeri jos sta ako imamo COUNT > 1;
-                return true; 
+                return true;
             }
             catch
             {
                 return false;
-            }            
+            }
         }
 
         private void ZipFileCheck(string backupPath)
