@@ -38,10 +38,11 @@ namespace INFOS_NXChecker_service
         string tempPath1;
         string tempPath2;
         string tempPath3;
+        string logsPath;
         Timer tmr           = new Timer();
         Timer safetyTimer   = new Timer();
         const int SAFETY_PERIOD = 20 * 60 * 1000;
-        int safetyFlag = 0;
+        int safetyFlag          = 0;
         #endregion
 
         #region StatusVariables
@@ -66,6 +67,8 @@ namespace INFOS_NXChecker_service
         {
             try
             {
+                logsPath    = HelperMethods.GetSubKey(RegistryNames.pathLogs);
+
                 serverIP        = HelperMethods.GetSubKey(RegistryNames.serverIP);
                 databaseName    = HelperMethods.GetSubKey(RegistryNames.databaseName);
                 serverUsername  = HelperMethods.GetSubKey(RegistryNames.serverUsername);
@@ -91,7 +94,10 @@ namespace INFOS_NXChecker_service
             }
             catch (Exception ex)
             {
-                File.WriteAllText(@"C:\Users\Kristijan\Desktop\greska_log-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "ERROR PRI ČITANJU: " + ex.Message);
+                if (Directory.Exists(logsPath))
+                {
+                    File.WriteAllText(logsPath + "\\greska_log-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "ERROR PRI ČITANJU: " + ex.Message);
+                }
             }
         }
 
@@ -103,7 +109,7 @@ namespace INFOS_NXChecker_service
         private void Safety()
         {
             tmr.Start();
-            File.WriteAllText(@"C:\Users\Kristijan\Desktop\SAFETY-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "Error kod safety");
+            File.WriteAllText(logsPath + "\\SAFETY-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "Error kod safety");
 
             safetyTimer.Interval = SAFETY_PERIOD;
             safetyTimer.Elapsed += SafetyTimerElapsed;
@@ -130,7 +136,7 @@ namespace INFOS_NXChecker_service
             {
                 //Final loggiraj u 'Logs' na lokalnom racunalu
                 //Ili posalji email
-                File.WriteAllText(@"C:\Users\Kristijan\Desktop\SAFETY-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "Safety je probao ponoviti posao jos 4 puta bezuspjesno. Servis prekinut s radom.");
+                File.WriteAllText(logsPath + "\\SAFETY_Expired-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "Safety je probao ponoviti zadatke jos 4 puta bezuspješno. Odustajanje od izvršavanja zadataka. Ponovno pokretanje u redovnom intervalu.");
             }            
         }     
 
@@ -184,7 +190,7 @@ namespace INFOS_NXChecker_service
             }
             catch (Exception ex)
             {
-                File.WriteAllText(@"C:\Users\Kristijan\Desktop\greska_log-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "Dogodila se GRESKA: " + ex.Message + ";" + ex.TargetSite + "; " + ex.StackTrace);
+                File.WriteAllText(logsPath + "\\greska_log-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "Greška u servisu prilikom obavljanja funkcije: " + ex.Message + ";" + ex.TargetSite + "; " + ex.StackTrace);
                 return false;
             }
         }
@@ -422,7 +428,6 @@ namespace INFOS_NXChecker_service
             catch (Exception ex)
             {
                 RestHelpers.PostDataSync("/insert_log", JsonConvert.SerializeObject(new { Type = "Error - Provjera diska", Message = "Greska pri provjeri slobodnog prostora na Backup disku", DevicesID = deviceID, LogDate = DateTime.Now }));
-                //File.WriteAllText(@"C:\Users\Kristijan\Desktop\errorFile-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "Greska kod provjere slobodnog prostora na disku: " + ex.Message);
             }
         }
 
@@ -455,7 +460,7 @@ namespace INFOS_NXChecker_service
 
         private void SetStatus()
         {
-            object statusJsonObj = new {
+            var statusJsonObj = new {
                 SMARTStatus         = SMARTStatus,
                 AvailableFreeSpace  = AvailableFreeSpace,
                 HDDType             = HDDType,
