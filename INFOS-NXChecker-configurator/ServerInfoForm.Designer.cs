@@ -130,6 +130,7 @@
             // 
             // gboxPristupni
             // 
+            this.gboxPristupni.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.gboxPristupni.Controls.Add(this.cBoxLozinka);
             this.gboxPristupni.Controls.Add(this.tboxPassword);
             this.gboxPristupni.Controls.Add(this.tboxUsername);

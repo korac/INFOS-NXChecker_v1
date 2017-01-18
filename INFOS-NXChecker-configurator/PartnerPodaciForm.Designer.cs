@@ -151,7 +151,7 @@
             // tboxPartnerName
             // 
             this.tboxPartnerName.Location = new System.Drawing.Point(141, 29);
-            this.tboxPartnerName.MaxLength = 11;
+            this.tboxPartnerName.MaxLength = 80;
             this.tboxPartnerName.Name = "tboxPartnerName";
             this.tboxPartnerName.Size = new System.Drawing.Size(214, 20);
             this.tboxPartnerName.TabIndex = 24;

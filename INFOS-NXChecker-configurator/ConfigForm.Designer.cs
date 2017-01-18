@@ -35,6 +35,9 @@
             this.lblServiceDesc = new System.Windows.Forms.Label();
             this.panelStatus = new System.Windows.Forms.Panel();
             this.panelKonf = new System.Windows.Forms.Panel();
+            this.gboxLogs = new System.Windows.Forms.GroupBox();
+            this.btnOpenLogs = new System.Windows.Forms.Button();
+            this.lblLogs = new System.Windows.Forms.Label();
             this.gboxPartnerPodaci = new System.Windows.Forms.GroupBox();
             this.lblPartnerName = new System.Windows.Forms.Label();
             this.lblLocation = new System.Windows.Forms.Label();
@@ -60,7 +63,6 @@
             this.lblTemp1 = new System.Windows.Forms.Label();
             this.btnZatvori = new System.Windows.Forms.Button();
             this.btnSpremi = new System.Windows.Forms.Button();
-            this.lblTitle = new System.Windows.Forms.Label();
             this.gboxPostavke = new System.Windows.Forms.GroupBox();
             this.lblStarijeOd2 = new System.Windows.Forms.Label();
             this.numDani = new System.Windows.Forms.NumericUpDown();
@@ -74,8 +76,11 @@
             this.errProviderTemp1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errProviderTemp2 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errProviderTemp3 = new System.Windows.Forms.ErrorProvider(this.components);
+            this.btnChangeLogs = new System.Windows.Forms.Button();
+            this.lblFolderName = new System.Windows.Forms.Label();
             this.panelStatus.SuspendLayout();
             this.panelKonf.SuspendLayout();
+            this.gboxLogs.SuspendLayout();
             this.gboxPartnerPodaci.SuspendLayout();
             this.gboxServerInfo.SuspendLayout();
             this.gboxTemps.SuspendLayout();
@@ -142,18 +147,59 @@
             // panelKonf
             // 
             this.panelKonf.BackColor = System.Drawing.Color.White;
+            this.panelKonf.Controls.Add(this.gboxLogs);
             this.panelKonf.Controls.Add(this.gboxPartnerPodaci);
             this.panelKonf.Controls.Add(this.gboxServerInfo);
             this.panelKonf.Controls.Add(this.gboxTemps);
             this.panelKonf.Controls.Add(this.btnZatvori);
             this.panelKonf.Controls.Add(this.btnSpremi);
-            this.panelKonf.Controls.Add(this.lblTitle);
             this.panelKonf.Controls.Add(this.gboxPostavke);
             this.panelKonf.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panelKonf.Location = new System.Drawing.Point(0, 68);
             this.panelKonf.Name = "panelKonf";
-            this.panelKonf.Size = new System.Drawing.Size(689, 536);
+            this.panelKonf.Size = new System.Drawing.Size(689, 548);
             this.panelKonf.TabIndex = 3;
+            // 
+            // gboxLogs
+            // 
+            this.gboxLogs.Controls.Add(this.lblFolderName);
+            this.gboxLogs.Controls.Add(this.btnChangeLogs);
+            this.gboxLogs.Controls.Add(this.btnOpenLogs);
+            this.gboxLogs.Controls.Add(this.lblLogs);
+            this.gboxLogs.ForeColor = System.Drawing.Color.IndianRed;
+            this.gboxLogs.Location = new System.Drawing.Point(44, 415);
+            this.gboxLogs.Name = "gboxLogs";
+            this.gboxLogs.Size = new System.Drawing.Size(605, 52);
+            this.gboxLogs.TabIndex = 20;
+            this.gboxLogs.TabStop = false;
+            this.gboxLogs.Text = "Logs lokacije";
+            // 
+            // btnOpenLogs
+            // 
+            this.btnOpenLogs.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnOpenLogs.BackColor = System.Drawing.Color.IndianRed;
+            this.btnOpenLogs.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnOpenLogs.ForeColor = System.Drawing.Color.White;
+            this.btnOpenLogs.Location = new System.Drawing.Point(502, 12);
+            this.btnOpenLogs.Name = "btnOpenLogs";
+            this.btnOpenLogs.Size = new System.Drawing.Size(97, 34);
+            this.btnOpenLogs.TabIndex = 22;
+            this.btnOpenLogs.Text = "OTVORI";
+            this.btnOpenLogs.UseVisualStyleBackColor = false;
+            this.btnOpenLogs.Click += new System.EventHandler(this.btnOpenLogs_Click);
+            // 
+            // lblLogs
+            // 
+            this.lblLogs.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.lblLogs.AutoSize = true;
+            this.lblLogs.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lblLogs.ForeColor = System.Drawing.Color.DimGray;
+            this.lblLogs.Location = new System.Drawing.Point(17, 23);
+            this.lblLogs.Name = "lblLogs";
+            this.lblLogs.Size = new System.Drawing.Size(134, 13);
+            this.lblLogs.TabIndex = 21;
+            this.lblLogs.Text = "NAZIV DIREKTORIJA:";
             // 
             // gboxPartnerPodaci
             // 
@@ -163,7 +209,7 @@
             this.gboxPartnerPodaci.Controls.Add(this.lblDevice);
             this.gboxPartnerPodaci.Controls.Add(this.btnPartnerPodaci);
             this.gboxPartnerPodaci.ForeColor = System.Drawing.SystemColors.MenuHighlight;
-            this.gboxPartnerPodaci.Location = new System.Drawing.Point(416, 70);
+            this.gboxPartnerPodaci.Location = new System.Drawing.Point(416, 19);
             this.gboxPartnerPodaci.Name = "gboxPartnerPodaci";
             this.gboxPartnerPodaci.Size = new System.Drawing.Size(233, 104);
             this.gboxPartnerPodaci.TabIndex = 19;
@@ -229,7 +275,7 @@
             this.gboxServerInfo.Controls.Add(this.lblDatabase);
             this.gboxServerInfo.Controls.Add(this.lblServerIP);
             this.gboxServerInfo.ForeColor = System.Drawing.SystemColors.MenuHighlight;
-            this.gboxServerInfo.Location = new System.Drawing.Point(44, 70);
+            this.gboxServerInfo.Location = new System.Drawing.Point(44, 19);
             this.gboxServerInfo.Name = "gboxServerInfo";
             this.gboxServerInfo.Size = new System.Drawing.Size(366, 104);
             this.gboxServerInfo.TabIndex = 18;
@@ -330,7 +376,7 @@
             this.gboxTemps.Controls.Add(this.lblTemp2);
             this.gboxTemps.Controls.Add(this.lblTemp1);
             this.gboxTemps.ForeColor = System.Drawing.SystemColors.MenuHighlight;
-            this.gboxTemps.Location = new System.Drawing.Point(44, 338);
+            this.gboxTemps.Location = new System.Drawing.Point(44, 287);
             this.gboxTemps.Name = "gboxTemps";
             this.gboxTemps.Size = new System.Drawing.Size(605, 122);
             this.gboxTemps.TabIndex = 17;
@@ -369,27 +415,33 @@
             // 
             // tboxTemp3
             // 
-            this.tboxTemp3.ForeColor = System.Drawing.Color.DimGray;
+            this.tboxTemp3.BackColor = System.Drawing.Color.White;
+            this.tboxTemp3.ForeColor = System.Drawing.SystemColors.WindowFrame;
             this.tboxTemp3.Location = new System.Drawing.Point(115, 80);
             this.tboxTemp3.Name = "tboxTemp3";
+            this.tboxTemp3.ReadOnly = true;
             this.tboxTemp3.Size = new System.Drawing.Size(466, 20);
             this.tboxTemp3.TabIndex = 18;
             this.tboxTemp3.Validating += new System.ComponentModel.CancelEventHandler(this.tboxTemp3_Validating);
             // 
             // tboxTemp2
             // 
-            this.tboxTemp2.ForeColor = System.Drawing.Color.DimGray;
+            this.tboxTemp2.BackColor = System.Drawing.Color.White;
+            this.tboxTemp2.ForeColor = System.Drawing.SystemColors.WindowFrame;
             this.tboxTemp2.Location = new System.Drawing.Point(115, 54);
             this.tboxTemp2.Name = "tboxTemp2";
+            this.tboxTemp2.ReadOnly = true;
             this.tboxTemp2.Size = new System.Drawing.Size(466, 20);
             this.tboxTemp2.TabIndex = 17;
             this.tboxTemp2.Validating += new System.ComponentModel.CancelEventHandler(this.tboxTemp2_Validating);
             // 
             // tboxTemp1
             // 
-            this.tboxTemp1.ForeColor = System.Drawing.Color.DimGray;
+            this.tboxTemp1.BackColor = System.Drawing.Color.White;
+            this.tboxTemp1.ForeColor = System.Drawing.SystemColors.WindowFrame;
             this.tboxTemp1.Location = new System.Drawing.Point(115, 28);
             this.tboxTemp1.Name = "tboxTemp1";
+            this.tboxTemp1.ReadOnly = true;
             this.tboxTemp1.Size = new System.Drawing.Size(466, 20);
             this.tboxTemp1.TabIndex = 16;
             this.tboxTemp1.Validating += new System.ComponentModel.CancelEventHandler(this.tboxTemp1_Validating);
@@ -432,7 +484,7 @@
             this.btnZatvori.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnZatvori.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnZatvori.ForeColor = System.Drawing.SystemColors.Highlight;
-            this.btnZatvori.Location = new System.Drawing.Point(435, 478);
+            this.btnZatvori.Location = new System.Drawing.Point(435, 496);
             this.btnZatvori.Name = "btnZatvori";
             this.btnZatvori.Size = new System.Drawing.Size(104, 40);
             this.btnZatvori.TabIndex = 16;
@@ -447,7 +499,7 @@
             this.btnSpremi.FlatAppearance.BorderSize = 0;
             this.btnSpremi.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSpremi.ForeColor = System.Drawing.Color.White;
-            this.btnSpremi.Location = new System.Drawing.Point(545, 478);
+            this.btnSpremi.Location = new System.Drawing.Point(545, 496);
             this.btnSpremi.Name = "btnSpremi";
             this.btnSpremi.Size = new System.Drawing.Size(104, 40);
             this.btnSpremi.TabIndex = 14;
@@ -455,17 +507,6 @@
             this.btnSpremi.UseVisualStyleBackColor = false;
             this.btnSpremi.EnabledChanged += new System.EventHandler(this.btnSpremi_EnabledChanged);
             this.btnSpremi.Click += new System.EventHandler(this.btnSpremi_Click);
-            // 
-            // lblTitle
-            // 
-            this.lblTitle.AutoSize = true;
-            this.lblTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.lblTitle.ForeColor = System.Drawing.Color.DimGray;
-            this.lblTitle.Location = new System.Drawing.Point(40, 26);
-            this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(179, 22);
-            this.lblTitle.TabIndex = 13;
-            this.lblTitle.Text = "Konfiguracija Servisa";
             // 
             // gboxPostavke
             // 
@@ -479,7 +520,7 @@
             this.gboxPostavke.Controls.Add(this.numSati);
             this.gboxPostavke.Controls.Add(this.tboxPath);
             this.gboxPostavke.ForeColor = System.Drawing.SystemColors.MenuHighlight;
-            this.gboxPostavke.Location = new System.Drawing.Point(44, 180);
+            this.gboxPostavke.Location = new System.Drawing.Point(44, 129);
             this.gboxPostavke.Name = "gboxPostavke";
             this.gboxPostavke.Size = new System.Drawing.Size(605, 152);
             this.gboxPostavke.TabIndex = 15;
@@ -630,11 +671,36 @@
             this.errProviderTemp3.BlinkStyle = System.Windows.Forms.ErrorBlinkStyle.NeverBlink;
             this.errProviderTemp3.ContainerControl = this;
             // 
+            // btnChangeLogs
+            // 
+            this.btnChangeLogs.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnChangeLogs.BackColor = System.Drawing.Color.IndianRed;
+            this.btnChangeLogs.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnChangeLogs.ForeColor = System.Drawing.Color.White;
+            this.btnChangeLogs.Location = new System.Drawing.Point(399, 12);
+            this.btnChangeLogs.Name = "btnChangeLogs";
+            this.btnChangeLogs.Size = new System.Drawing.Size(97, 34);
+            this.btnChangeLogs.TabIndex = 23;
+            this.btnChangeLogs.Text = "IZMIJENI";
+            this.btnChangeLogs.UseVisualStyleBackColor = false;
+            this.btnChangeLogs.Click += new System.EventHandler(this.btnChangeLogs_Click);
+            // 
+            // lblFolderName
+            // 
+            this.lblFolderName.AutoSize = true;
+            this.lblFolderName.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lblFolderName.Location = new System.Drawing.Point(157, 23);
+            this.lblFolderName.Name = "lblFolderName";
+            this.lblFolderName.Size = new System.Drawing.Size(138, 13);
+            this.lblFolderName.TabIndex = 24;
+            this.lblFolderName.Text = "DODAJ LOGS FOLDER";
+            // 
             // ConfigForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(689, 604);
+            this.ClientSize = new System.Drawing.Size(689, 616);
             this.Controls.Add(this.panelKonf);
             this.Controls.Add(this.panelStatus);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -647,7 +713,8 @@
             this.panelStatus.ResumeLayout(false);
             this.panelStatus.PerformLayout();
             this.panelKonf.ResumeLayout(false);
-            this.panelKonf.PerformLayout();
+            this.gboxLogs.ResumeLayout(false);
+            this.gboxLogs.PerformLayout();
             this.gboxPartnerPodaci.ResumeLayout(false);
             this.gboxPartnerPodaci.PerformLayout();
             this.gboxServerInfo.ResumeLayout(false);
@@ -675,7 +742,6 @@
         private System.Windows.Forms.Panel panelKonf;
         private System.Windows.Forms.Button btnZatvori;
         private System.Windows.Forms.Button btnSpremi;
-        private System.Windows.Forms.Label lblTitle;
         private System.Windows.Forms.GroupBox gboxPostavke;
         private System.Windows.Forms.Label lblPath;
         private System.Windows.Forms.Button btnPath;
@@ -712,5 +778,10 @@
         private System.Windows.Forms.Label lblLocation;
         private System.Windows.Forms.Label lblDevice;
         private System.Windows.Forms.Label lblPartnerName;
+        private System.Windows.Forms.GroupBox gboxLogs;
+        private System.Windows.Forms.Label lblLogs;
+        private System.Windows.Forms.Button btnOpenLogs;
+        private System.Windows.Forms.Button btnChangeLogs;
+        private System.Windows.Forms.Label lblFolderName;
     }
 }

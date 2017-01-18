@@ -15,8 +15,7 @@ namespace INFOS_NXChecker_regInfo
 
         /// <summary>
         /// Gets a value for a given subkey;
-        /// If subkey doesn't exists, it's created and inserted empty string;
-        /// isAuth indicates whether authentication is taking place
+        /// If subkey doesn't exists, it is created and inserted as an empty string;
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
@@ -48,7 +47,6 @@ namespace INFOS_NXChecker_regInfo
 
         /// <summary>
         /// Sets a value in registry for a given key;
-        /// isAuth indicates whether authentication is taking place
         /// </summary>
         /// <param name="key"></param>
         /// <param name="val"></param>

@@ -69,6 +69,12 @@
     <Compile Include="LoginForm.Designer.cs">
       <DependentUpon>LoginForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="LogsPathForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LogsPathForm.Designer.cs">
+      <DependentUpon>LogsPathForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="PartnerPodaciForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -88,6 +94,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="LoginForm.resx">
       <DependentUpon>LoginForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LogsPathForm.resx">
+      <DependentUpon>LogsPathForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PartnerPodaciForm.resx">
       <DependentUpon>PartnerPodaciForm.cs</DependentUpon>

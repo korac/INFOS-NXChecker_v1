@@ -8,6 +8,8 @@ using System.ServiceProcess;
 using System.Text;
 using System.Windows.Forms;
 using INFOS_NXChecker_regInfo;
+using System.Diagnostics;
+using System.IO;
 
 namespace INFOS_NXChecker_configurator
 {
@@ -30,6 +32,7 @@ namespace INFOS_NXChecker_configurator
         string tempPath1;
         string tempPath2;
         string tempPath3;
+        string logsFolderName;
         bool isServerInfo = true;
         bool isPartnerPod = true;
         #endregion
@@ -62,6 +65,13 @@ namespace INFOS_NXChecker_configurator
                 tempPath2   = HelperMethods.GetSubKey(RegistryNames.pathTemp2);
                 tempPath3   = HelperMethods.GetSubKey(RegistryNames.pathTemp3);
 
+                logsFolderName    = HelperMethods.GetSubKey(RegistryNames.logsName);
+
+                if (!String.IsNullOrEmpty(logsFolderName))
+                {
+                    lblFolderName.Text  = "..\\" + logsFolderName;
+                }
+
                 lblServerIPInfo.Text    = serverIP;
                 lblDatabaseInfo.Text    = databaseName;
                 lblUsernameInfo.Text    = serverUsername;
@@ -74,6 +84,8 @@ namespace INFOS_NXChecker_configurator
                 tboxTemp1.Text  = tempPath1;
                 tboxTemp2.Text  = tempPath2;
                 tboxTemp3.Text  = tempPath3;
+
+
 
                 CheckInfoPodaci(lblServerIPInfo, serverIP, "serverIP", false);
                 CheckInfoPodaci(lblDatabaseInfo, databaseName, "ime baze", false);
@@ -209,6 +221,30 @@ namespace INFOS_NXChecker_configurator
             }
         }
 
+        private void btnOpenLogs_Click(object sender, EventArgs e)
+        {
+            if (!String.IsNullOrEmpty(logsFolderName))
+            {
+                try
+                {
+                    Process.Start(Path.GetTempPath() + logsFolderName);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Greška", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void btnChangeLogs_Click(object sender, EventArgs e)
+        {
+            LogsPathForm logsForm = new LogsPathForm();
+            if (logsForm.ShowDialog() == DialogResult.OK)
+            {
+                lblFolderName.Text      = "..\\" + logsForm.FolderName; 
+            }
+        }
+
         private void tboxPath_Validating(object sender, CancelEventArgs e)
         {
             ValidatePath(tboxPath);
@@ -311,12 +347,14 @@ namespace INFOS_NXChecker_configurator
             {
                 gboxPostavke.Enabled    = true;
                 gboxTemps.Enabled       = true;
+                gboxLogs.Enabled        = true;
                 btnSpremi.Enabled       = true;
             }
             else
             {
                 gboxPostavke.Enabled    = false;
                 gboxTemps.Enabled       = false;
+                gboxLogs.Enabled        = false;
                 btnSpremi.Enabled       = false;
             }
         }
@@ -335,5 +373,7 @@ namespace INFOS_NXChecker_configurator
             }
             
         }
+
+
     }
 }

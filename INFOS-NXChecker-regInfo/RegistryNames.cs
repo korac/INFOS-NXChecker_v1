@@ -74,6 +74,16 @@ namespace INFOS_NXChecker_regInfo
         public const String pathTemp3       = "28rnvj";
 
         /// <summary>
+        /// Registry key string za naziv logs datoteke
+        /// </summary>
+        public const String logsName        = "dPP2dkoc3";
+
+        /// <summary>
+        /// Registry key string za full Logs path
+        /// </summary>
+        public const String pathLogs        = "NN4fkKWO3";
+
+        /// <summary>
         /// Registry key string za ime partnera
         /// </summary>
         public const String partnerName     = "nawar34TZ";
