@@ -36,6 +36,8 @@
             this.panelStatus = new System.Windows.Forms.Panel();
             this.panelKonf = new System.Windows.Forms.Panel();
             this.gboxLogs = new System.Windows.Forms.GroupBox();
+            this.lblFolderName = new System.Windows.Forms.Label();
+            this.btnChangeLogs = new System.Windows.Forms.Button();
             this.btnOpenLogs = new System.Windows.Forms.Button();
             this.lblLogs = new System.Windows.Forms.Label();
             this.gboxPartnerPodaci = new System.Windows.Forms.GroupBox();
@@ -76,8 +78,6 @@
             this.errProviderTemp1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errProviderTemp2 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errProviderTemp3 = new System.Windows.Forms.ErrorProvider(this.components);
-            this.btnChangeLogs = new System.Windows.Forms.Button();
-            this.lblFolderName = new System.Windows.Forms.Label();
             this.panelStatus.SuspendLayout();
             this.panelKonf.SuspendLayout();
             this.gboxLogs.SuspendLayout();
@@ -174,6 +174,32 @@
             this.gboxLogs.TabStop = false;
             this.gboxLogs.Text = "Logs lokacije";
             // 
+            // lblFolderName
+            // 
+            this.lblFolderName.AutoSize = true;
+            this.lblFolderName.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lblFolderName.Location = new System.Drawing.Point(157, 23);
+            this.lblFolderName.Name = "lblFolderName";
+            this.lblFolderName.Size = new System.Drawing.Size(138, 13);
+            this.lblFolderName.TabIndex = 24;
+            this.lblFolderName.Text = "DODAJ LOGS FOLDER";
+            // 
+            // btnChangeLogs
+            // 
+            this.btnChangeLogs.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnChangeLogs.BackColor = System.Drawing.Color.IndianRed;
+            this.btnChangeLogs.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnChangeLogs.ForeColor = System.Drawing.Color.White;
+            this.btnChangeLogs.Location = new System.Drawing.Point(399, 12);
+            this.btnChangeLogs.Name = "btnChangeLogs";
+            this.btnChangeLogs.Size = new System.Drawing.Size(97, 34);
+            this.btnChangeLogs.TabIndex = 23;
+            this.btnChangeLogs.Text = "IZMIJENI";
+            this.btnChangeLogs.UseVisualStyleBackColor = false;
+            this.btnChangeLogs.EnabledChanged += new System.EventHandler(this.btnChangeLogs_EnabledChanged);
+            this.btnChangeLogs.Click += new System.EventHandler(this.btnChangeLogs_Click);
+            // 
             // btnOpenLogs
             // 
             this.btnOpenLogs.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -187,6 +213,7 @@
             this.btnOpenLogs.TabIndex = 22;
             this.btnOpenLogs.Text = "OTVORI";
             this.btnOpenLogs.UseVisualStyleBackColor = false;
+            this.btnOpenLogs.EnabledChanged += new System.EventHandler(this.btnChangeLogs_EnabledChanged);
             this.btnOpenLogs.Click += new System.EventHandler(this.btnOpenLogs_Click);
             // 
             // lblLogs
@@ -209,9 +236,9 @@
             this.gboxPartnerPodaci.Controls.Add(this.lblDevice);
             this.gboxPartnerPodaci.Controls.Add(this.btnPartnerPodaci);
             this.gboxPartnerPodaci.ForeColor = System.Drawing.SystemColors.MenuHighlight;
-            this.gboxPartnerPodaci.Location = new System.Drawing.Point(416, 19);
+            this.gboxPartnerPodaci.Location = new System.Drawing.Point(387, 19);
             this.gboxPartnerPodaci.Name = "gboxPartnerPodaci";
-            this.gboxPartnerPodaci.Size = new System.Drawing.Size(233, 104);
+            this.gboxPartnerPodaci.Size = new System.Drawing.Size(262, 104);
             this.gboxPartnerPodaci.TabIndex = 19;
             this.gboxPartnerPodaci.TabStop = false;
             this.gboxPartnerPodaci.Text = "Partner podaci";
@@ -256,7 +283,7 @@
             this.btnPartnerPodaci.FlatAppearance.BorderSize = 0;
             this.btnPartnerPodaci.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnPartnerPodaci.ForeColor = System.Drawing.Color.White;
-            this.btnPartnerPodaci.Location = new System.Drawing.Point(155, 23);
+            this.btnPartnerPodaci.Location = new System.Drawing.Point(184, 23);
             this.btnPartnerPodaci.Name = "btnPartnerPodaci";
             this.btnPartnerPodaci.Size = new System.Drawing.Size(72, 68);
             this.btnPartnerPodaci.TabIndex = 23;
@@ -277,7 +304,7 @@
             this.gboxServerInfo.ForeColor = System.Drawing.SystemColors.MenuHighlight;
             this.gboxServerInfo.Location = new System.Drawing.Point(44, 19);
             this.gboxServerInfo.Name = "gboxServerInfo";
-            this.gboxServerInfo.Size = new System.Drawing.Size(366, 104);
+            this.gboxServerInfo.Size = new System.Drawing.Size(337, 104);
             this.gboxServerInfo.TabIndex = 18;
             this.gboxServerInfo.TabStop = false;
             this.gboxServerInfo.Text = "Server Info";
@@ -322,7 +349,7 @@
             this.btnServerInfo.FlatAppearance.BorderSize = 0;
             this.btnServerInfo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnServerInfo.ForeColor = System.Drawing.Color.White;
-            this.btnServerInfo.Location = new System.Drawing.Point(279, 23);
+            this.btnServerInfo.Location = new System.Drawing.Point(250, 23);
             this.btnServerInfo.Name = "btnServerInfo";
             this.btnServerInfo.Size = new System.Drawing.Size(72, 68);
             this.btnServerInfo.TabIndex = 19;
@@ -670,31 +697,6 @@
             // 
             this.errProviderTemp3.BlinkStyle = System.Windows.Forms.ErrorBlinkStyle.NeverBlink;
             this.errProviderTemp3.ContainerControl = this;
-            // 
-            // btnChangeLogs
-            // 
-            this.btnChangeLogs.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnChangeLogs.BackColor = System.Drawing.Color.IndianRed;
-            this.btnChangeLogs.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnChangeLogs.ForeColor = System.Drawing.Color.White;
-            this.btnChangeLogs.Location = new System.Drawing.Point(399, 12);
-            this.btnChangeLogs.Name = "btnChangeLogs";
-            this.btnChangeLogs.Size = new System.Drawing.Size(97, 34);
-            this.btnChangeLogs.TabIndex = 23;
-            this.btnChangeLogs.Text = "IZMIJENI";
-            this.btnChangeLogs.UseVisualStyleBackColor = false;
-            this.btnChangeLogs.Click += new System.EventHandler(this.btnChangeLogs_Click);
-            // 
-            // lblFolderName
-            // 
-            this.lblFolderName.AutoSize = true;
-            this.lblFolderName.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.lblFolderName.Location = new System.Drawing.Point(157, 23);
-            this.lblFolderName.Name = "lblFolderName";
-            this.lblFolderName.Size = new System.Drawing.Size(138, 13);
-            this.lblFolderName.TabIndex = 24;
-            this.lblFolderName.Text = "DODAJ LOGS FOLDER";
             // 
             // ConfigForm
             // 

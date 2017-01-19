@@ -335,13 +335,13 @@ namespace INFOS_NXChecker_service
 
                         if (ZipFile.IsZipFile(backupPath + "\\" + latestZip.Name))
                         {
-                            BackupCheck     = "OK";
+                            BackupCheck     = "Latest - Valid";
                             BackupCheckDate = DateTime.Now;
                             RestHelpers.PostDataSync("/insert_log", JsonConvert.SerializeObject(new { Type = "Zip status", Message = "ZIP File " + latestZip.Name + "- VALID", DevicesID = deviceID, LogDate = DateTime.Now}));
                         }
                         else
                         {
-                            BackupCheck     = "NE";
+                            BackupCheck     = "Latest - Corrputed";
                             BackupCheckDate = DateTime.Now;
                             RestHelpers.PostDataSync("/insert_log", JsonConvert.SerializeObject(new { Type = "Zip status", Message = "ZIP File " + latestZip.Name + "- CORRUPTED", DevicesID = deviceID, LogDate = DateTime.Now }));
                         }
@@ -366,7 +366,7 @@ namespace INFOS_NXChecker_service
                     }
                     catch (Exception ex)
                     {
-                        RestHelpers.PostDataSync("/insert_log", JsonConvert.SerializeObject(new { Type = "Error - Temp datoteke", Message = "Greska pri brisanju Temp datoteka", DevicesID = deviceID, LogDate = DateTime.Now }));
+                        //RestHelpers.PostDataSync("/insert_log", JsonConvert.SerializeObject(new { Type = "Error - Temp datoteke", Message = "Greska pri brisanju Temp datoteka", DevicesID = deviceID, LogDate = DateTime.Now }));
                     }
                 }
 

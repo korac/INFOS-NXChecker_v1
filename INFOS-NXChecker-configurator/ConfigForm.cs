@@ -286,9 +286,9 @@ namespace INFOS_NXChecker_configurator
             ServerInfoForm infoForm   = new ServerInfoForm();
             if(infoForm.ShowDialog() == DialogResult.OK)
             {
-                lblServerIPInfo.Text = infoForm.serverIP;
-                lblDatabaseInfo.Text = infoForm.databaseName;
-                lblUsernameInfo.Text = infoForm.serverUsername;
+                //lblServerIPInfo.Text = infoForm.serverIP;
+                //lblDatabaseInfo.Text = infoForm.databaseName;
+                //lblUsernameInfo.Text = infoForm.serverUsername;
 
                 lblServerIPInfo.ForeColor   = Color.DimGray;
                 lblDatabaseInfo.ForeColor   = Color.DimGray;
@@ -349,6 +349,8 @@ namespace INFOS_NXChecker_configurator
                 gboxTemps.Enabled       = true;
                 gboxLogs.Enabled        = true;
                 btnSpremi.Enabled       = true;
+                btnChangeLogs.Enabled   = true;
+                btnOpenLogs.Enabled     = true;
             }
             else
             {
@@ -356,6 +358,8 @@ namespace INFOS_NXChecker_configurator
                 gboxTemps.Enabled       = false;
                 gboxLogs.Enabled        = false;
                 btnSpremi.Enabled       = false;
+                btnChangeLogs.Enabled   = false;
+                btnOpenLogs.Enabled     = false;
             }
         }
 
@@ -374,6 +378,24 @@ namespace INFOS_NXChecker_configurator
             
         }
 
+        private void btnChangeLogs_EnabledChanged(object sender, EventArgs e)
+        {
+            if (btnChangeLogs.Enabled == true && btnOpenLogs.Enabled == true)
+            {
+                btnChangeLogs.ForeColor = Color.White;
+                btnChangeLogs.BackColor = Color.IndianRed;
 
+                btnOpenLogs.ForeColor = Color.White;
+                btnOpenLogs.BackColor = Color.IndianRed;
+            }
+            else
+            {
+                btnChangeLogs.ForeColor = Color.Silver;
+                btnChangeLogs.BackColor = SystemColors.ButtonShadow;
+
+                btnOpenLogs.ForeColor = Color.Silver;
+                btnOpenLogs.BackColor = SystemColors.ButtonShadow;
+            }
+        }
     }
 }

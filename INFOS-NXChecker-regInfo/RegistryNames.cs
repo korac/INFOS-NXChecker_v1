@@ -102,5 +102,65 @@ namespace INFOS_NXChecker_regInfo
         /// Registry key za uređaj partnera
         /// </summary>
         public const String partnerDevice   = "4s4MAWw3";
+
+
+
+        #region Endpoints
+
+        /// <summary>
+        /// Registry key za full REST adresu
+        /// </summary>
+        public const String fullAddress             = "FF33mWAO";
+
+        /// <summary>
+        /// Registry key za partnerSelectEndpoint
+        /// </summary>
+        public const String partnerSelectEndpoint   = "4545n45n";
+
+        /// <summary>
+        /// Registry key za partnerInsertEndpoint
+        /// </summary>
+        public const String partnerInsertEndpoint   = "gznth76gh";
+
+        /// <summary>
+        /// Registry key za locationSelectEndpoint
+        /// </summary>
+        public const String locationSelectEndpoint  = "88653fht4";
+
+        /// <summary>
+        /// Registry key za locationInsertEndpoint
+        /// </summary>
+        public const String locationInsertEndpoint  = "scscAEFrg";
+
+        /// <summary>
+        /// Registry key za locationIDEndpoint
+        /// </summary>
+        public const String locationIDEndpoint      = "t4tr23r45";
+
+        /// <summary>
+        /// Registry key za deviceSelectEndpoint
+        /// </summary>
+        public const String deviceSelectEndpoint    = "sgzcth734";
+
+        /// <summary>
+        /// Registry key za deviceInsertEndpoint
+        /// </summary>
+        public const String deviceInsertEndpoint    = "It4niNKI";
+
+        /// <summary>
+        /// Registry key za deviceIDEndpoint
+        /// </summary>
+        public const String deviceIDEndpoint        = "4h8oNE4";
+
+        /// <summary>
+        /// Registry key za statusInsertEndpoint
+        /// </summary>
+        public const String statusInsertEndpoint    = "qIKQ4kgs";
+
+        /// <summary>
+        /// Registry key za logsInsertEndpoint
+        /// </summary>
+        public const String logsInsertEndpoint      = "rgmkFE34s";
+        #endregion
     }
 }
