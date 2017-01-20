@@ -21,11 +21,6 @@ namespace INFOS_NXChecker_service
     public partial class NXCheckerService : ServiceBase
     {
         #region Variables
-        string serverIP;
-        string databaseName;
-        string serverUsername;
-        string serverPassword;
-        string serverPort;
         string partnerName;
         string OIB;
         string location;
@@ -43,6 +38,20 @@ namespace INFOS_NXChecker_service
         Timer safetyTimer   = new Timer();
         const int SAFETY_PERIOD = 20 * 60 * 1000;
         int safetyFlag          = 0;
+        #endregion
+
+        #region Variables - Endpoints
+        string fullAddress;
+        string partnerSelectEndpoint;
+        string partnerInsertEndpoint;
+        string locationSelectEndpoint;
+        string locationInsertEndpoint;
+        string locationIDEndpoint;
+        string deviceSelectEndpoint;
+        string deviceInsertEndpoint;
+        string deviceIDEndpoint;
+        string statusInsertEndpoint;
+        string logsInsertEndpoint;
         #endregion
 
         #region StatusVariables
@@ -69,11 +78,21 @@ namespace INFOS_NXChecker_service
             {
                 logsPath    = HelperMethods.GetSubKey(RegistryNames.pathLogs);
 
-                serverIP        = HelperMethods.GetSubKey(RegistryNames.serverIP);
-                databaseName    = HelperMethods.GetSubKey(RegistryNames.databaseName);
-                serverUsername  = HelperMethods.GetSubKey(RegistryNames.serverUsername);
-                serverPassword  = HelperMethods.GetSubKey(RegistryNames.serverPassword);
-                serverPort      = HelperMethods.GetSubKey(RegistryNames.serverPort);
+                fullAddress             = HelperMethods.GetSubKey(RegistryNames.fullAddress);
+
+                partnerSelectEndpoint   = HelperMethods.GetSubKey(RegistryNames.partnerSelectEndpoint);
+                partnerInsertEndpoint   = HelperMethods.GetSubKey(RegistryNames.partnerInsertEndpoint);
+
+                locationSelectEndpoint  = HelperMethods.GetSubKey(RegistryNames.locationSelectEndpoint);
+                locationInsertEndpoint  = HelperMethods.GetSubKey(RegistryNames.locationInsertEndpoint);
+                locationIDEndpoint      = HelperMethods.GetSubKey(RegistryNames.locationIDEndpoint);
+
+                deviceSelectEndpoint    = HelperMethods.GetSubKey(RegistryNames.deviceSelectEndpoint);
+                deviceInsertEndpoint    = HelperMethods.GetSubKey(RegistryNames.deviceInsertEndpoint);
+                deviceIDEndpoint        = HelperMethods.GetSubKey(RegistryNames.deviceIDEndpoint);
+
+                statusInsertEndpoint    = HelperMethods.GetSubKey(RegistryNames.statusInsertEndpoint);
+                logsInsertEndpoint      = HelperMethods.GetSubKey(RegistryNames.logsInsertEndpoint);
 
                 partnerName = HelperMethods.GetSubKey(RegistryNames.partnerName);
                 OIB         = HelperMethods.GetSubKey(RegistryNames.partnerOIB);
@@ -190,7 +209,7 @@ namespace INFOS_NXChecker_service
             }
             catch (Exception ex)
             {
-                File.WriteAllText(logsPath + "\\greska_log-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "Greška u servisu prilikom obavljanja funkcije: " + ex.Message + ";" + ex.TargetSite + "; " + ex.StackTrace);
+                File.WriteAllText(logsPath + "\\greska_log-" + DateTime.Now.ToString("dd_MM_yyyy__HH_mm_ss") + ".txt", "Greška u servisu prilikom obavljanja funkcije: " + Environment.NewLine + ex.Message + ";" + ex.TargetSite + "; " + ex.StackTrace);
                 return false;
             }
         }
@@ -199,7 +218,7 @@ namespace INFOS_NXChecker_service
         {
             try
             {
-                string userJson = RestHelpers.GetDataSync("/check_user/" + OIB);
+                string userJson = RestHelpers.GetDataSync(fullAddress + partnerSelectEndpoint + OIB);
                 if (String.IsNullOrEmpty(userJson))
                 {
                     return false;
@@ -209,7 +228,7 @@ namespace INFOS_NXChecker_service
 
                 if (isUser["COUNT(*)"] == 0)
                 {
-                    string isPosted = RestHelpers.PostDataSync("/insert_user", JsonConvert.SerializeObject(new { OIB = OIB, PartnerName = partnerName }));
+                    string isPosted = RestHelpers.PostDataSync(fullAddress + partnerInsertEndpoint, JsonConvert.SerializeObject(new { OIB = OIB, PartnerName = partnerName }));
 
                     if (String.IsNullOrEmpty(isPosted))
                     {
@@ -234,7 +253,7 @@ namespace INFOS_NXChecker_service
         {
             try
             {
-                string locationJson = RestHelpers.GetDataSync("/check_location/" + OIB.ToString() + "," + location.ToString());
+                string locationJson = RestHelpers.GetDataSync(fullAddress + locationSelectEndpoint + OIB.ToString() + "," + location.ToString());
 
                 if (String.IsNullOrEmpty(locationJson))
                 {
@@ -245,7 +264,7 @@ namespace INFOS_NXChecker_service
 
                 if (isLocation["COUNT(*)"] == 0)
                 {
-                    string isLocId = RestHelpers.PostDataSync("/insert_location", JsonConvert.SerializeObject(new { LocationName = location, PartnerOIB = OIB }));
+                    string isLocId = RestHelpers.PostDataSync(fullAddress + locationInsertEndpoint, JsonConvert.SerializeObject(new { LocationName = location, PartnerOIB = OIB }));
                     if (String.IsNullOrEmpty(isLocId))
                     {
                         return false;
@@ -256,7 +275,7 @@ namespace INFOS_NXChecker_service
                 }
                 else if (isLocation["COUNT(*)"] == 1)
                 {
-                    string isLocId = RestHelpers.GetDataSync("/select_location/" + OIB.ToString() + "," + location.ToString());
+                    string isLocId = RestHelpers.GetDataSync(fullAddress + locationIDEndpoint + OIB.ToString() + "," + location.ToString());
                     if (String.IsNullOrEmpty(isLocId))
                     {
                         return false;
@@ -279,7 +298,7 @@ namespace INFOS_NXChecker_service
         {
             try
             {
-                string deviceJson = RestHelpers.GetDataSync("/check_device/" + locationID.ToString() + "," + device.ToString());
+                string deviceJson = RestHelpers.GetDataSync(fullAddress + deviceSelectEndpoint + locationID.ToString() + "," + device.ToString());
                 if (String.IsNullOrEmpty(deviceJson))
                 {
                     return false;
@@ -289,7 +308,7 @@ namespace INFOS_NXChecker_service
 
                 if (isDevice["COUNT(*)"] == 0)
                 {
-                    string isDevId = RestHelpers.PostDataSync("/insert_device", JsonConvert.SerializeObject(new { DeviceName = device, LocationID = locationID }));
+                    string isDevId = RestHelpers.PostDataSync(fullAddress + deviceInsertEndpoint, JsonConvert.SerializeObject(new { DeviceName = device, LocationID = locationID }));
                     if (String.IsNullOrEmpty(isDevId))
                     {
                         return false;
@@ -300,7 +319,7 @@ namespace INFOS_NXChecker_service
                 }
                 else if (isDevice["COUNT(*)"] == 1)
                 {
-                    string isDevId = RestHelpers.GetDataSync("/select_device/" + locationID.ToString() + "," + device.ToString());
+                    string isDevId = RestHelpers.GetDataSync(fullAddress + deviceIDEndpoint + locationID.ToString() + "," + device.ToString());
                     if (String.IsNullOrEmpty(isDevId))
                     {
                         return false;
@@ -337,19 +356,19 @@ namespace INFOS_NXChecker_service
                         {
                             BackupCheck     = "Latest - Valid";
                             BackupCheckDate = DateTime.Now;
-                            RestHelpers.PostDataSync("/insert_log", JsonConvert.SerializeObject(new { Type = "Zip status", Message = "ZIP File " + latestZip.Name + "- VALID", DevicesID = deviceID, LogDate = DateTime.Now}));
+                            RestHelpers.PostDataSync(fullAddress + logsInsertEndpoint, JsonConvert.SerializeObject(new { Type = "Zip status", Message = "ZIP File " + latestZip.Name + "- VALID", DevicesID = deviceID, LogDate = DateTime.Now}));
                         }
                         else
                         {
                             BackupCheck     = "Latest - Corrputed";
                             BackupCheckDate = DateTime.Now;
-                            RestHelpers.PostDataSync("/insert_log", JsonConvert.SerializeObject(new { Type = "Zip status", Message = "ZIP File " + latestZip.Name + "- CORRUPTED", DevicesID = deviceID, LogDate = DateTime.Now }));
+                            RestHelpers.PostDataSync(fullAddress + logsInsertEndpoint, JsonConvert.SerializeObject(new { Type = "Zip status", Message = "ZIP File " + latestZip.Name + "- CORRUPTED", DevicesID = deviceID, LogDate = DateTime.Now }));
                         }
                     }
                 }
                 catch (Exception ex)
                 {
-                    RestHelpers.PostDataSync("/insert_log", JsonConvert.SerializeObject(new { Type = "Error - Zip status", Message = "Greska pri provjeri Backup Zip datoteka", DevicesID = deviceID, LogDate = DateTime.Now }));
+                    RestHelpers.PostDataSync(fullAddress + logsInsertEndpoint, JsonConvert.SerializeObject(new { Type = "Error - Zip status", Message = "Greska pri provjeri Backup Zip datoteka", DevicesID = deviceID, LogDate = DateTime.Now }));
                 }
             }
         }
@@ -394,7 +413,7 @@ namespace INFOS_NXChecker_service
             }
             catch (Exception ex)
             {
-                RestHelpers.PostDataSync("/insert_log", JsonConvert.SerializeObject(new { Type = "Error - Brisanje starih Backupa", Message = "Greska pri brisanju starih Backup datoteka", DevicesID = deviceID, LogDate = DateTime.Now }));
+                RestHelpers.PostDataSync(fullAddress + logsInsertEndpoint, JsonConvert.SerializeObject(new { Type = "Error - Brisanje starih Backupa", Message = "Greska pri brisanju starih Backup datoteka", DevicesID = deviceID, LogDate = DateTime.Now }));
             }
         }
 
@@ -427,7 +446,7 @@ namespace INFOS_NXChecker_service
             }
             catch (Exception ex)
             {
-                RestHelpers.PostDataSync("/insert_log", JsonConvert.SerializeObject(new { Type = "Error - Provjera diska", Message = "Greska pri provjeri slobodnog prostora na Backup disku", DevicesID = deviceID, LogDate = DateTime.Now }));
+                RestHelpers.PostDataSync(fullAddress + logsInsertEndpoint, JsonConvert.SerializeObject(new { Type = "Error - Provjera diska", Message = "Greska pri provjeri slobodnog prostora na Backup disku", DevicesID = deviceID, LogDate = DateTime.Now }));
             }
         }
 
@@ -454,7 +473,7 @@ namespace INFOS_NXChecker_service
             }
             catch (Exception ex)
             {
-                RestHelpers.PostDataSync("/insert_log", JsonConvert.SerializeObject(new { Type = "Error - SMART Status", Message = "Greska pri provjeri SMART statusa diska (ili drugih svojstava diska)", DevicesID = deviceID, LogDate = DateTime.Now }));
+                RestHelpers.PostDataSync(fullAddress + logsInsertEndpoint, JsonConvert.SerializeObject(new { Type = "Error - SMART Status", Message = "Greska pri provjeri SMART statusa diska (ili drugih svojstava diska)", DevicesID = deviceID, LogDate = DateTime.Now }));
             }
         }
 
@@ -473,7 +492,7 @@ namespace INFOS_NXChecker_service
                 BackupCleanupDate   = BackupCleanupDate
             };
 
-            RestHelpers.PostDataSync("/insert_status", JsonConvert.SerializeObject(statusJsonObj));
+            RestHelpers.PostDataSync(fullAddress + statusInsertEndpoint, JsonConvert.SerializeObject(statusJsonObj));
         }
 
         protected override void OnStop()

@@ -99,6 +99,7 @@
             this.tboxKorisnicko.Name = "tboxKorisnicko";
             this.tboxKorisnicko.Size = new System.Drawing.Size(211, 20);
             this.tboxKorisnicko.TabIndex = 0;
+            this.tboxKorisnicko.KeyDown += new System.Windows.Forms.KeyEventHandler(this.LoginForm_KeyDown);
             this.tboxKorisnicko.Validating += new System.ComponentModel.CancelEventHandler(this.tboxKorisnicko_Validating);
             // 
             // lblKorisnicko
@@ -132,6 +133,7 @@
             this.tboxLozinka.PasswordChar = '*';
             this.tboxLozinka.Size = new System.Drawing.Size(211, 20);
             this.tboxLozinka.TabIndex = 1;
+            this.tboxLozinka.KeyDown += new System.Windows.Forms.KeyEventHandler(this.LoginForm_KeyDown);
             this.tboxLozinka.Validating += new System.ComponentModel.CancelEventHandler(this.tboxLozinka_Validating);
             // 
             // errProviderLozinka
@@ -172,6 +174,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "NX Checker Servis Login";
             this.Load += new System.EventHandler(this.LoginForm_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.LoginForm_KeyDown);
             this.gboxLogin.ResumeLayout(false);
             this.gboxLogin.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errProviderLozinka)).EndInit();

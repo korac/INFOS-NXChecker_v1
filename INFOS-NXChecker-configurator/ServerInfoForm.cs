@@ -15,14 +15,8 @@ namespace INFOS_NXChecker_configurator
 {
     public partial class ServerInfoForm : Form
     {
-        public string serverIP;
-        public string databaseName;
-        public string serverUsername;
-        string serverPassword;
-        string serverPort;
-
         #region Variables - Endpoints
-        string fullAddress;
+        public string FullAddress { get; set; }
         string partnerSelectEndpoint;
         string partnerInsertEndpoint;
         string locationSelectEndpoint;
@@ -44,7 +38,7 @@ namespace INFOS_NXChecker_configurator
         {
             try
             {
-                fullAddress             = HelperMethods.GetSubKey(RegistryNames.fullAddress);
+                FullAddress             = HelperMethods.GetSubKey(RegistryNames.fullAddress);
 
                 partnerSelectEndpoint   = HelperMethods.GetSubKey(RegistryNames.partnerSelectEndpoint);
                 partnerInsertEndpoint   = HelperMethods.GetSubKey(RegistryNames.partnerInsertEndpoint);
@@ -61,7 +55,7 @@ namespace INFOS_NXChecker_configurator
                 logsInsertEndpoint      = HelperMethods.GetSubKey(RegistryNames.logsInsertEndpoint);
 
 
-                tboxServerAdresa.Text   = fullAddress;
+                tboxServerAdresa.Text   = FullAddress;
 
                 tboxPartnerSelect.Text  = partnerSelectEndpoint;
                 tboxPartnerInsert.Text  = partnerInsertEndpoint;
@@ -76,20 +70,6 @@ namespace INFOS_NXChecker_configurator
 
                 tboxStatusInsert.Text   = statusInsertEndpoint;
                 tboxLogsInsert.Text     = logsInsertEndpoint;
-
-
-                //serverIP        = HelperMethods.GetSubKey(RegistryNames.serverIP);
-                //databaseName    = HelperMethods.GetSubKey(RegistryNames.databaseName);
-                //serverUsername  = HelperMethods.GetSubKey(RegistryNames.serverUsername);
-                //serverPassword  = HelperMethods.GetSubKey(RegistryNames.serverPassword);
-                //serverPort      = HelperMethods.GetSubKey(RegistryNames.serverPort);
-
-                //tboxServerIP.Text   = serverIP;
-                //tboxImeBaze.Text    = databaseName;
-                //tboxPort.Text       = serverPort;
-
-                //tboxUsername.Text   = serverUsername;
-                //tboxPassword.Text   = serverPassword; 
             }
             catch (Exception ex)
             {
@@ -101,30 +81,39 @@ namespace INFOS_NXChecker_configurator
         {
             if (ValidateInput(tboxServerAdresa) && ValidateInput(tboxPartnerSelect) && ValidateInput(tboxPartnerInsert) && ValidateInput(tboxLokacijaSelect) && ValidateInput(tboxLokacijaInsert) && ValidateInput(tboxLokacijaID) && ValidateInput(tboxUredajSelect) && ValidateInput(tboxUredajInsert) && ValidateInput(tboxUredajID) && ValidateInput(tboxStatusInsert) && ValidateInput(tboxLogsInsert))
             {
-                try
+                if (ConnectionTest())
                 {
-                    HelperMethods   .SetSubKey(RegistryNames.fullAddress, tboxServerAdresa.Text);
+                    try
+                    {
+                        HelperMethods   .SetSubKey(RegistryNames.fullAddress, tboxServerAdresa.Text);
 
-                    HelperMethods   .SetSubKey(RegistryNames.partnerSelectEndpoint, tboxPartnerSelect.Text);
-                    HelperMethods   .SetSubKey(RegistryNames.partnerInsertEndpoint, tboxPartnerInsert.Text);
+                        HelperMethods   .SetSubKey(RegistryNames.partnerSelectEndpoint, tboxPartnerSelect.Text);
+                        HelperMethods   .SetSubKey(RegistryNames.partnerInsertEndpoint, tboxPartnerInsert.Text);
 
-                    HelperMethods   .SetSubKey(RegistryNames.locationSelectEndpoint, tboxLokacijaSelect.Text);
-                    HelperMethods   .SetSubKey(RegistryNames.locationInsertEndpoint, tboxLokacijaInsert.Text);
-                    HelperMethods   .SetSubKey(RegistryNames.locationIDEndpoint, tboxLokacijaID.Text);
+                        HelperMethods   .SetSubKey(RegistryNames.locationSelectEndpoint, tboxLokacijaSelect.Text);
+                        HelperMethods   .SetSubKey(RegistryNames.locationInsertEndpoint, tboxLokacijaInsert.Text);
+                        HelperMethods   .SetSubKey(RegistryNames.locationIDEndpoint, tboxLokacijaID.Text);
 
-                    HelperMethods   .SetSubKey(RegistryNames.deviceSelectEndpoint, tboxUredajSelect.Text);
-                    HelperMethods   .SetSubKey(RegistryNames.deviceInsertEndpoint, tboxUredajInsert.Text);
-                    HelperMethods   .SetSubKey(RegistryNames.deviceIDEndpoint, tboxUredajID.Text);
+                        HelperMethods   .SetSubKey(RegistryNames.deviceSelectEndpoint, tboxUredajSelect.Text);
+                        HelperMethods   .SetSubKey(RegistryNames.deviceInsertEndpoint, tboxUredajInsert.Text);
+                        HelperMethods   .SetSubKey(RegistryNames.deviceIDEndpoint, tboxUredajID.Text);
 
-                    HelperMethods   .SetSubKey(RegistryNames.statusInsertEndpoint, tboxStatusInsert.Text);
-                    HelperMethods   .SetSubKey(RegistryNames.logsInsertEndpoint, tboxLogsInsert.Text);
+                        HelperMethods   .SetSubKey(RegistryNames.statusInsertEndpoint, tboxStatusInsert.Text);
+                        HelperMethods   .SetSubKey(RegistryNames.logsInsertEndpoint, tboxLogsInsert.Text);
 
-                    MessageBox      .Show("Podaci ažurirani.", "Podaci", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    this            .DialogResult = DialogResult.OK;
+                        FullAddress     = tboxServerAdresa.Text;
+
+                        MessageBox      .Show("Podaci ažurirani.", "Podaci", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        this            .DialogResult = DialogResult.OK;
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Problem kod ažuriranja podataka. " + ex.Message, "Greška", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
-                catch (Exception ex)
+                else
                 {
-                    MessageBox.Show("Problem kod ažuriranja podataka. " + ex.Message, "Greška", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Unesite valjanu adresu prije ažuriranja podataka.", "Adresa", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             else
@@ -158,41 +147,55 @@ namespace INFOS_NXChecker_configurator
 
         private void btnTestirajKonekciju_Click(object sender, EventArgs e)
         {
+            if (ConnectionTest())
+            {
+                MessageBox.Show("Konekcija uspješna", "Konekcija", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                MessageBox.Show("Problem pri konekciji! Provjerite unesenu adresu.", "Konekcija", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+        }
+
+        private bool ConnectionTest()
+        {
             if (!String.IsNullOrEmpty(tboxServerAdresa.Text) && !String.IsNullOrWhiteSpace(tboxServerAdresa.Text))
             {
-                Ping pingSender     = new Ping();
+                Ping pingSender = new Ping();
 
                 try
                 {
-                    IPAddress address   = IPAddress.Parse(tboxServerAdresa.Text);
-                    PingReply reply     = pingSender.Send(address);
+                    Uri fullUrl = new Uri(tboxServerAdresa.Text);
+
+                    IPAddress address = IPAddress.Parse(fullUrl.Host);
+                    this.Cursor = Cursors.WaitCursor;
+                    PingReply reply = pingSender.Send(address);
+                    this.Cursor = Cursors.Default;
 
                     if (reply.Status == IPStatus.Success)
                     {
-                        MessageBox.Show("Konekcija uspješna", "Konekcija", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                        Console.WriteLine("STATUS: {0}", reply.Status.ToString());
-                        Console.WriteLine("Address: {0}", reply.Address.ToString());
-                        Console.WriteLine("RoundTrip time: {0}", reply.RoundtripTime);
-                        Console.WriteLine("Time to live: {0}", reply.Options.Ttl);
-                        Console.WriteLine("Don't fragment: {0}", reply.Options.DontFragment);
-                        Console.WriteLine("Buffer size: {0}", reply.Buffer.Length);
+                        //MessageBox.Show("Konekcija uspješna", "Konekcija", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        return true;
                     }
                     else
                     {
-                        MessageBox.Show("Konekcija neuspješna", "Konekcija", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        //MessageBox.Show("Konekcija neuspješna", "Konekcija", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return false;
                     }
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Problem pri konekciji! Provjerite unesenu adresu." + ex.Message, "Konekcija", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    this.Cursor = Cursors.Default;
+                    //MessageBox.Show("Problem pri konekciji! Provjerite unesenu adresu." + Environment.NewLine + "Error message: " + ex.Message, "Konekcija", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return false;
                 }
-                
             }
             else
             {
-                MessageBox.Show("Unesite adresu!", "Greška", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }            
+                //MessageBox.Show("Unesite adresu!", "Greška", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
         }
 
         private void tboxServerAdresa_Validating(object sender, CancelEventArgs e)

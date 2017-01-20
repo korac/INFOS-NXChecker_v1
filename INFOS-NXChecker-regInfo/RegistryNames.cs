@@ -18,31 +18,6 @@ namespace INFOS_NXChecker_regInfo
         public const String password        = "kvVx9T0";
 
         /// <summary>
-        /// Registry key string za ServerIP
-        /// </summary>
-        public const String serverIP        = "r34fk9oKO";
-
-        /// <summary>
-        /// Registry key za database name
-        /// </summary>
-        public const String databaseName    = "eFJios34"; 
-
-        /// <summary>
-        /// Registry key za server username
-        /// </summary>
-        public const String serverUsername  = "XYxad3rk";
-
-        /// <summary>
-        /// Registry key za server password
-        /// </summary>
-        public const String serverPassword  = "yxxyx34";
-
-        /// <summary>
-        /// Registry key za server port
-        /// </summary>
-        public const String serverPort      = "XMe34g45";
-
-        /// <summary>
         /// Registry key string za Period
         /// </summary>
         public const String period          = "xx27aMZ";

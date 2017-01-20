@@ -10,14 +10,12 @@ namespace INFOS_NXChecker_service
     static class RestHelpers
     {
         #region REST parameters
-        const string ISM_REST_ROOT  = "http://192.168.5.200/infos/ism/public";
+        //const string ISM_REST_ROOT  = "http://192.168.5.200/infos/ism/public";
         const string CONTENT_TYPE   = "application/json";
         #endregion
 
-        public static string GetDataSync(string endpoint)
+        public static string GetDataSync(string url)
         {
-            string url = ISM_REST_ROOT + endpoint;
-
             try
             {
                 using (HttpClient client = new HttpClient())
@@ -46,10 +44,8 @@ namespace INFOS_NXChecker_service
 
         }
 
-        public static string PostDataSync(string endpoint, string jsonData)
+        public static string PostDataSync(string url, string jsonData)
         {
-            string url = ISM_REST_ROOT + endpoint;
-
             StringContent postContent = new StringContent(jsonData, Encoding.UTF8, CONTENT_TYPE);
 
             try

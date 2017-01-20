@@ -31,8 +31,16 @@ namespace INFOS_NXChecker_configurator
                 korisnicko   = HelperMethods.GetSubKey(RegistryNames.username);
                 lozinka      = HelperMethods.GetSubKey(RegistryNames.password);
 
+                if (String.IsNullOrEmpty(korisnicko))
+                {
+                    HelperMethods.SetSubKey(RegistryNames.username, "infos");
+                    HelperMethods.SetSubKey(RegistryNames.password, "infos");
+
+                    korisnicko   = HelperMethods.GetSubKey(RegistryNames.username);
+                    lozinka      = HelperMethods.GetSubKey(RegistryNames.password);
+                }
+
                 tboxKorisnicko.Text = korisnicko;
-                tboxLozinka.Text    = lozinka;
             }
             catch (Exception ex)
             {
@@ -40,13 +48,15 @@ namespace INFOS_NXChecker_configurator
 
                 tboxKorisnicko.Text = "";
                 tboxLozinka.Text    = "";
-            }
-            
-
-            
+            }  
         }
 
         private void btnOk_Click(object sender, EventArgs e)
+        {
+            Login();
+        }
+
+        private void Login()
         {
             if (ValidateKorisnicko() && ValidateLozinka())
             {
@@ -117,6 +127,14 @@ namespace INFOS_NXChecker_configurator
             }
 
             return bStatus;
+        }
+
+        private void LoginForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                Login();
+            }
         }
     }
 }

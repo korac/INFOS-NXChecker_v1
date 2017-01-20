@@ -17,11 +17,7 @@ namespace INFOS_NXChecker_configurator
     {
         #region Varibles
         TimeSpan timeInterval;
-        string serverIP;
-        string databaseName;
-        string serverUsername;
-        //string serverPassword;
-        //string serverPort;
+        string fullAddress;
         string partnerName;
         string OIB;
         string location;
@@ -50,11 +46,7 @@ namespace INFOS_NXChecker_configurator
                 backupPath  = HelperMethods.GetSubKey(RegistryNames.path);
                 deleteDays  = HelperMethods.GetSubKey(RegistryNames.deletionDays);
 
-                serverIP        = HelperMethods.GetSubKey(RegistryNames.serverIP);
-                databaseName    = HelperMethods.GetSubKey(RegistryNames.databaseName);
-                serverUsername  = HelperMethods.GetSubKey(RegistryNames.serverUsername);
-                //serverPassword  = HelperMethods.GetSubKey(RegistryNames.serverPassword);
-                //serverPort      = HelperMethods.GetSubKey(RegistryNames.serverPort);
+                fullAddress = HelperMethods.GetSubKey(RegistryNames.fullAddress);
 
                 partnerName = HelperMethods.GetSubKey(RegistryNames.partnerName);
                 OIB         = HelperMethods.GetSubKey(RegistryNames.partnerOIB);
@@ -72,27 +64,23 @@ namespace INFOS_NXChecker_configurator
                     lblFolderName.Text  = "..\\" + logsFolderName;
                 }
 
-                lblServerIPInfo.Text    = serverIP;
-                lblDatabaseInfo.Text    = databaseName;
-                lblUsernameInfo.Text    = serverUsername;
+                lblFullAddressInfo.Text = fullAddress;
 
-                timeInterval    = new TimeSpan(0, 0, Convert.ToInt32(period) / 1000);
-                numSati.Value   = timeInterval.Hours;
-                numDani.Value   = Convert.ToInt32(deleteDays);
+                if (!String.IsNullOrEmpty(period))
+                {
+                    timeInterval    = new TimeSpan(0, 0, Convert.ToInt32(period) / 1000);
+                    numSati.Value   = timeInterval.Hours;
+                    numDani.Value   = Convert.ToInt32(deleteDays);
+                }
 
                 tboxPath.Text   = backupPath;
                 tboxTemp1.Text  = tempPath1;
                 tboxTemp2.Text  = tempPath2;
                 tboxTemp3.Text  = tempPath3;
 
-
-
-                CheckInfoPodaci(lblServerIPInfo, serverIP, "serverIP", false);
-                CheckInfoPodaci(lblDatabaseInfo, databaseName, "ime baze", false);
-                CheckInfoPodaci(lblUsernameInfo, serverUsername, "korisničko ime", false);
+                CheckInfoPodaci(lblFullAddressInfo, fullAddress, "punu adresu", false);
 
                 CheckInfoPodaci(lblPartnerName, partnerName, "ime partnera", true);
-                //CheckInfoPodaci(lblOIB, OIB, "OIB", true);
                 CheckInfoPodaci(lblLocation, location, "lokaciju", true);
                 CheckInfoPodaci(lblDevice, device, "uređaj", true);
 
@@ -234,6 +222,10 @@ namespace INFOS_NXChecker_configurator
                     MessageBox.Show(ex.Message, "Greška", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
+            else
+            {
+                MessageBox.Show("Unesite naziv direktorija", "Greška", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void btnChangeLogs_Click(object sender, EventArgs e)
@@ -241,6 +233,7 @@ namespace INFOS_NXChecker_configurator
             LogsPathForm logsForm = new LogsPathForm();
             if (logsForm.ShowDialog() == DialogResult.OK)
             {
+                logsFolderName          = logsForm.FolderName;
                 lblFolderName.Text      = "..\\" + logsForm.FolderName; 
             }
         }
@@ -286,13 +279,8 @@ namespace INFOS_NXChecker_configurator
             ServerInfoForm infoForm   = new ServerInfoForm();
             if(infoForm.ShowDialog() == DialogResult.OK)
             {
-                //lblServerIPInfo.Text = infoForm.serverIP;
-                //lblDatabaseInfo.Text = infoForm.databaseName;
-                //lblUsernameInfo.Text = infoForm.serverUsername;
-
-                lblServerIPInfo.ForeColor   = Color.DimGray;
-                lblDatabaseInfo.ForeColor   = Color.DimGray;
-                lblUsernameInfo.ForeColor   = Color.DimGray;
+                lblFullAddressInfo.Text        = infoForm.FullAddress;
+                lblFullAddressInfo.ForeColor   = Color.DimGray;
 
                 isServerInfo = true;
                 EnableConfiguration();
@@ -305,12 +293,10 @@ namespace INFOS_NXChecker_configurator
             if(partnerForm.ShowDialog() == DialogResult.OK)
             {
                 lblPartnerName.Text = partnerForm.PartnerName;
-                //lblOIB.Text         = partnerForm.OIB;
                 lblLocation.Text    = partnerForm.PartnerLocation;
                 lblDevice.Text      = partnerForm.PartnerDevice;
 
                 lblPartnerName.ForeColor    = Color.DimGray;
-                //lblOIB.ForeColor            = Color.DimGray;
                 lblLocation.ForeColor       = Color.DimGray;
                 lblDevice.ForeColor         = Color.DimGray;
 
