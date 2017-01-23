@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using INFOS_NXChecker_regInfo;
+using System.Security.Cryptography;
 
 namespace INFOS_NXChecker_configurator
 {
@@ -28,17 +29,22 @@ namespace INFOS_NXChecker_configurator
         {
             try
             {
-                korisnicko   = HelperMethods.GetSubKey(RegistryNames.username);
-                lozinka      = HelperMethods.GetSubKey(RegistryNames.password);
+                korisnicko              = HelperMethods.GetSubKey(RegistryNames.username);
+                string cryptedlozinka   = HelperMethods.GetSubKey(RegistryNames.password);
 
-                if (String.IsNullOrEmpty(korisnicko))
+                if (String.IsNullOrEmpty(korisnicko) || String.IsNullOrEmpty(cryptedlozinka))
                 {
-                    HelperMethods.SetSubKey(RegistryNames.username, "infos");
-                    HelperMethods.SetSubKey(RegistryNames.password, "infos");
+                    byte[] bytePassword         = Encoding.Unicode.GetBytes("infos");
+                    string encryptedPassword    = Convert.ToBase64String(ProtectedData.Protect(bytePassword, null, DataProtectionScope.CurrentUser));
 
-                    korisnicko   = HelperMethods.GetSubKey(RegistryNames.username);
-                    lozinka      = HelperMethods.GetSubKey(RegistryNames.password);
+                    HelperMethods.SetSubKey(RegistryNames.username, "infos");
+                    HelperMethods.SetSubKey(RegistryNames.password, encryptedPassword);
+
+                    korisnicko              = HelperMethods.GetSubKey(RegistryNames.username);
+                    cryptedlozinka          = HelperMethods.GetSubKey(RegistryNames.password);
                 }
+
+                lozinka             = Encoding.Unicode.GetString(ProtectedData.Unprotect(Convert.FromBase64String(cryptedlozinka), null, DataProtectionScope.CurrentUser));
 
                 tboxKorisnicko.Text = korisnicko;
             }
