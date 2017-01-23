@@ -129,7 +129,7 @@ namespace INFOS_NXChecker_configurator
                     HelperMethods   .SetSubKey(RegistryNames.pathTemp2, tboxTemp2.Text);
                     HelperMethods   .SetSubKey(RegistryNames.pathTemp3, tboxTemp3.Text);
 
-                    MessageBox      .Show("Podaci ažurirani.", "Podaci", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox      .Show("Podaci ažurirani. Resetirajte servis kako bi primjenili ažurirane postavke.", "Podaci", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 catch (Exception ex)
                 {
@@ -151,26 +151,27 @@ namespace INFOS_NXChecker_configurator
         {
             try
             {
-                ServiceController nxService = new ServiceController("NXCheckerService");
-                if(nxService.Status.ToString() == "Stopped")
+                using (ServiceController nxService = new ServiceController("NXCheckerService"))
                 {
-                    nxService.Start();
-                    lblServiceStatus.Text       = "RUNNING";                    
-                    lblServiceStatus.ForeColor  = Color.Chartreuse;
+                    if (nxService.Status == ServiceControllerStatus.Stopped)
+                    {
+                        nxService.Start();
+                        lblServiceStatus.Text = "RUNNING";
+                        lblServiceStatus.ForeColor = Color.Chartreuse;
 
-                    btnRunStop.Text             = "Zaustavi Servis".ToUpper();
-                    btnRunStop.ForeColor        = Color.IndianRed;
-                }
-                else
-                {
-                    nxService.Stop();
-                    lblServiceStatus.Text       = "STOPPED";                    
-                    lblServiceStatus.ForeColor  = Color.LightSalmon;
+                        btnRunStop.Text = "Zaustavi Servis".ToUpper();
+                        btnRunStop.ForeColor = Color.IndianRed;
+                    }
+                    else
+                    {
+                        nxService.Stop();
+                        lblServiceStatus.Text = "STOPPED";
+                        lblServiceStatus.ForeColor = Color.LightSalmon;
 
-                    btnRunStop.Text             = "Pokreni Servis".ToUpper();
-                    btnRunStop.ForeColor        = Color.Chartreuse;
-                }
-                
+                        btnRunStop.Text = "Pokreni Servis".ToUpper();
+                        btnRunStop.ForeColor = Color.Chartreuse;
+                    }
+                }               
             }
             catch (Exception ex)
             {
