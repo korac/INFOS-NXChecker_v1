@@ -74,6 +74,7 @@
             this.errProviderTemp1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errProviderTemp2 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errProviderTemp3 = new System.Windows.Forms.ErrorProvider(this.components);
+            this.btnRefresh = new System.Windows.Forms.Button();
             this.panelStatus.SuspendLayout();
             this.panelKonf.SuspendLayout();
             this.gboxLogs.SuspendLayout();
@@ -131,6 +132,7 @@
             // panelStatus
             // 
             this.panelStatus.BackColor = System.Drawing.SystemColors.MenuHighlight;
+            this.panelStatus.Controls.Add(this.btnRefresh);
             this.panelStatus.Controls.Add(this.btnRunStop);
             this.panelStatus.Controls.Add(this.lblServiceStatus);
             this.panelStatus.Controls.Add(this.lblServiceDesc);
@@ -646,6 +648,22 @@
             this.errProviderTemp3.BlinkStyle = System.Windows.Forms.ErrorBlinkStyle.NeverBlink;
             this.errProviderTemp3.ContainerControl = this;
             // 
+            // btnRefresh
+            // 
+            this.btnRefresh.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.btnRefresh.BackColor = System.Drawing.SystemColors.MenuHighlight;
+            this.btnRefresh.FlatAppearance.BorderSize = 3;
+            this.btnRefresh.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnRefresh.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.btnRefresh.ForeColor = System.Drawing.Color.White;
+            this.btnRefresh.Image = global::INFOS_NXChecker_configurator.Properties.Resources.refresh2;
+            this.btnRefresh.Location = new System.Drawing.Point(463, 11);
+            this.btnRefresh.Name = "btnRefresh";
+            this.btnRefresh.Size = new System.Drawing.Size(104, 40);
+            this.btnRefresh.TabIndex = 4;
+            this.btnRefresh.UseVisualStyleBackColor = false;
+            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
+            // 
             // ConfigForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -729,5 +747,6 @@
         private System.Windows.Forms.Button btnOpenLogs;
         private System.Windows.Forms.Button btnChangeLogs;
         private System.Windows.Forms.Label lblFolderName;
+        private System.Windows.Forms.Button btnRefresh;
     }
 }
